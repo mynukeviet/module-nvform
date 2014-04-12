@@ -30,7 +30,9 @@ $lang_module['form_image'] = 'Ảnh minh họa';
 $lang_module['form_description'] = 'Mô tả';
 
 $lang_module['question'] = 'Câu hỏi';
+$lang_module['question_list'] = 'Danh sách câu hỏi';
 $lang_module['question_manage'] = 'Quản lý câu hỏi';
+$lang_module['question_content'] = 'Nội dung câu hỏi';
 $lang_module['question_add'] = 'Thêm câu hỏi';
 $lang_module['question_edit'] = 'Sửa câu hỏi';
 $lang_module['question_form'] = 'Thuộc biểu mẫu';

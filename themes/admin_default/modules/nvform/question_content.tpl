@@ -161,7 +161,7 @@
 	</table>
 	<div style="margin-left: 350px;">
 		<input type="hidden" value="{DATAFORM.fid}" name="fid">
-		<input class="w150" type="submit" value="{LANG.question_add}" name="submit">
+		<input class="w150" type="submit" value="{LANG_SUBMIT}" name="submit">
 	</div>
 </form>
 

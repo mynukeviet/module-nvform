@@ -11,6 +11,7 @@
 if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_MODADMIN' ) ) die( 'Stop!!!' );
 
 $submenu['form_content'] = $lang_module['form_add'];
+$submenu['question'] = $lang_module['question_list'];
 $submenu['config'] = $lang_module['config'];
 
 $allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'del', 'question', 'question_content' );

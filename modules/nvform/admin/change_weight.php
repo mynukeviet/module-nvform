@@ -11,15 +11,31 @@
 if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $id = $nv_Request->get_int( 'id', 'post', 0 );
+$op = $nv_Request->get_string( 'op', 'post', '' );
 
-$sql = 'SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id=' . $id;
+$table = '';
+$field = '';
+
+if( empty( $op ) ) die( 'NO_' . $id );
+
+if( $op == 'form' )
+{
+	$field = 'id';
+}
+elseif( $op == 'question' )
+{
+	$table = '_question';
+	$field = 'qid';
+}
+
+$sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE ' . $field . '=' . $id;
 $id = $db->query( $sql )->fetchColumn();
 if( empty( $id ) ) die( 'NO_' . $id );
 
 $new_weight = $nv_Request->get_int( 'new_weight', 'post', 0 );
 if( empty( $new_weight ) ) die( 'NO_' . $mod );
 
-$sql = 'SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id!=' . $id . ' ORDER BY weight ASC';
+$sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE ' . $field . ' !=' . $id . ' ORDER BY weight ASC';
 $result = $db->query( $sql );
 
 $weight = 0;
@@ -28,11 +44,11 @@ while( $row = $result->fetch() )
 	++$weight;
 	if( $weight == $new_weight ) ++$weight;
 
-	$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET weight=' . $weight . ' WHERE id=' . $row['id'];
+	$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET weight=' . $weight . ' WHERE ' . $field . '=' . $row[$field];
 	$db->query( $sql );
 }
 
-$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET weight=' . $new_weight . ' WHERE id=' . $id;
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET weight=' . $new_weight . ' WHERE ' . $field . '=' . $id;
 $db->query( $sql );
 
 nv_del_moduleCache( $module_name );

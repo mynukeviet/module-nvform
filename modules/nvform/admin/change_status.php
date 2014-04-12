@@ -11,15 +11,29 @@
 if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $id = $nv_Request->get_int( 'id', 'post', 0 );
+$op = $nv_Request->get_string( 'op', 'post', '' );
 
-$sql = 'SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id=' . $id;
+$table = '';
+$field = '';
+
+if( $op == 'form' )
+{
+	$field = 'id';
+}
+elseif( $op == 'question' )
+{
+	$table = '_question';
+	$field = 'qid';
+}
+
+$sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE ' . $field . '=' . $id;
 $id = $db->query( $sql )->fetchColumn();
-if( empty( $id ) ) die( 'NO_' . $id );
+if( empty( $id ) or empty( $op ) ) die( 'NO_' . $id );
 
 $new_status = $nv_Request->get_bool( 'new_status', 'post' );
 $new_status = ( int )$new_status;
 
-$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET status=' . $new_status . ' WHERE id=' . $id;
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET status=' . $new_status . ' WHERE ' . $field . '=' . $id;	
 $db->query( $sql );
 nv_del_moduleCache( $module_name );
 

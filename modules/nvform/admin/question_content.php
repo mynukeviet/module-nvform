@@ -10,8 +10,6 @@
 
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
-$page_title = $lang_module['question_manage'];
-
 $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
@@ -21,6 +19,17 @@ $xtpl->assign( 'MODULE_NAME', $module_name );
 $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
 
+// Danh sach cac bieu mau hien co
+$sql = 'SELECT `id`, `title` FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE `status` = 1 ORDER BY weight ASC';
+$lform = $db->query( $sql )->fetchAll();
+
+$num = sizeof( $lform );
+if( $num < 1 )
+{
+	Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=form_content' );
+	die();
+}
+
 $qid = $nv_Request->get_int( 'qid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
@@ -29,8 +38,15 @@ $text_questions = $number_questions = $date_questions = $choice_questions = $cho
 
 if( $qid )
 {
+	$lang_submit = $lang_module['question_edit'];
 	// Bind data to form
 	$question = $db->query( 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
+	
+	if( ! $question )
+	{
+		Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question' );
+		die();
+	}
 	
 	if( ! empty( $question['question_choices'] ) )
 	{
@@ -42,6 +58,7 @@ if( $qid )
 }
 else 
 {
+	$lang_submit = $lang_module['question_add'];
 	$question['required'] = 0;
 	$question['user_editable'] = 0;
 	$question['question_type'] = 'textbox';
@@ -211,7 +228,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 				question_type = '" . $question['question_type'] . "',
 				user_editable = '" . $question['user_editable'] . "',
 				class = :class,
-				default_value= :default_value
+				default_value= :default_value, 1
 				WHERE qid = " . $qid;
 
 			$stmt = $db->prepare( $query ) ;
@@ -227,6 +244,16 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		}
 	}
 
+}
+
+foreach ( $lform as $row )
+{
+	$form_list = array(
+		'id' => $row['id'],
+		'title' => $row['title'],
+		'selected' => $question['question_form'] == $row['id'] ? 'selected="selected"' : '' );
+	$xtpl->assign( 'FLIST', $form_list );
+	$xtpl->parse( 'main.flist' );
 }
 
 if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
@@ -350,25 +377,14 @@ foreach( $array_match_type as $key => $value )
 	$xtpl->parse( 'main.match_type' );
 }
 
-// Danh sach cac bieu mau hien co
-$sql = 'SELECT `id`, `title` FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE `status` = 1 ORDER BY weight ASC';
-$_rows = $db->query( $sql )->fetchAll();
-foreach ( $_rows as $row )
-{
-	$form_list = array(
-		'id' => $row['id'],
-		'title' => $row['title'],
-		'selected' => $question['question_form'] == $row['id'] ? 'selected="selected"' : '' );
-	$xtpl->assign( 'FLIST', $form_list );
-	$xtpl->parse( 'main.flist' );
-}
-
 if( $error )
 {
 	$xtpl->assign( 'ERROR', $error );
 	$xtpl->parse( 'main.error' );
 }
 
+$page_title = $lang_submit;
+$xtpl->assign( 'LANG_SUBMIT', $lang_submit );
 $xtpl->assign( 'DATAFORM', $question );
 $xtpl->assign( 'FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op );
 $xtpl->parse( 'main' );
