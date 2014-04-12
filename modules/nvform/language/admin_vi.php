@@ -18,6 +18,21 @@ $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
 $lang_module['config'] = 'Cấu hình';
-$lang_module['save'] = 'Save';
+$lang_module['form_list'] = 'Danh sách biểu mẫu';
+$lang_module['form_add'] = 'Thêm biểu mẫu';
+$lang_module['form_content'] = 'Quản lý biểu mẫu';
+$lang_module['form_edit'] = 'Sửa biểu mẫu';
+$lang_module['form_active'] = 'Hoạt động';
+$lang_module['form_deactive'] = 'Không hoạt động';
+$lang_module['form_title'] = 'Tiêu đề';
+$lang_module['form_alias'] = 'Liên kết tĩnh';
+$lang_module['form_image'] = 'Ảnh minh họa';
+$lang_module['form_description'] = 'Mô tả';
+
+$lang_module['order'] = 'Sắp xếp';
+$lang_module['status'] = 'Trạng thái';
+
+$lang_module['error_formtitle'] = 'Nhập tiêu đề biểu mẫu';
+$lang_module['error_save'] = 'Có lỗi xảy ra trong quá trình lưu dữ liệu';
 
 ?>
