@@ -14,7 +14,7 @@
 		<tfoot>
 			<tr>
 				<td></td>
-				<td><input type="submit" value="{LANG.form_add}"/></td>
+				<td><input type="submit" value="{LANG_SUBMIT}"/></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -33,6 +33,26 @@
 			<tr>
 				<td class="right strong">{LANG.form_description} </td>
 				<td ><textarea class="w500" id="description" name="description" cols="100" rows="5">{DATA.description}</textarea></td>
+			</tr>
+			<tr>
+				<td class="right strong">{LANG.form_who_view} </td>
+				<td >
+					<select name="who_view">
+						<!-- BEGIN: who_view -->
+						<option value="{WHO_VIEW.key}"{WHO_VIEW.selected}>{WHO_VIEW.title}</option>
+						<!-- END: who_view -->
+					</select>
+					
+					<div id="form_groups">
+						<!-- BEGIN: group_view_empty -->
+						<strong>{LANG.form_groups}</strong><div class="hr"></div>
+						<!-- BEGIN: groups_view -->
+						<input name="groups_view[]" value="{GROUPS_VIEW.key}" type="checkbox"{GROUPS_VIEW.checked} /> {GROUPS_VIEW.title}
+						<br />
+						<!-- END: groups_view -->
+						<!-- END: group_view_empty -->
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>

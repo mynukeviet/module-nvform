@@ -23,6 +23,8 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
  	alias varchar(255) NOT NULL,
  	image varchar(255) DEFAULT '',
  	description text,
+	who_view tinyint(2) NOT NULL DEFAULT '0',
+	groups_view varchar(255) DEFAULT '',
  	weight smallint(4) NOT NULL DEFAULT '0',
  	add_time int(11) NOT NULL DEFAULT '0',
 	status tinyint(1) unsigned NOT NULL DEFAULT '0',

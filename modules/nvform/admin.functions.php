@@ -12,10 +12,9 @@ if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_
 
 $submenu['form_content'] = $lang_module['form_add'];
 $submenu['question'] = $lang_module['question_list'];
+$submenu['question_content'] = $lang_module['question_add'];
 $submenu['config'] = $lang_module['config'];
 
 $allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'del', 'question', 'question_content' );
 
 define( 'NV_IS_FILE_ADMIN', true );
-
-?>
