@@ -8,6 +8,12 @@
 <script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 
+<!-- BEGIN: error -->
+<div class="quote">
+	<blockquote class="error"><span>{ERROR}</span></blockquote>
+</div>
+<!-- END: error -->
+
 <form action="{FORM_ACTION}" method="post" id="fquestion">
 	<table class="tab1">
 		<colgroup>

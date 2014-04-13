@@ -13,6 +13,32 @@ if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 $page_title = $lang_module['form_list'];
 $array = array();
 
+// Del form
+if( $nv_Request->isset_request( 'del', 'post' ) )
+{
+	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
+
+	$fid = $nv_Request->get_int( 'fid', 'post', 0 );
+
+	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid;
+	$db->exec( $sql );
+		
+	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
+	$db->exec( $sql );
+
+	$sql = 'SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . ' ORDER BY weight ASC';
+	$result = $db->query( $sql );
+	$weight = 0;
+	while( $row = $result->fetch() )
+	{
+		++$weight;
+		$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET weight=' . $weight . ' WHERE id = ' . $row['id'];
+		$db->query( $sql );
+	}
+	nv_del_moduleCache( $module_name );
+	die('OK');
+}
+
 $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' ORDER BY weight ASC';
 $_rows = $db->query( $sql )->fetchAll();
 $num = sizeof( $_rows );

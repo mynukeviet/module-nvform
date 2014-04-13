@@ -49,11 +49,24 @@ function nv_chang_weight_res(res) {
 	return;
 }
 
-function nv_module_del(did) {
+function nv_del_question(qid) {
 	if (confirm(nv_is_del_confirm[0])) {
-		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=del&nocache=' + new Date().getTime(), 'id=' + did, function(res) {
-			var r_split = res.split("_");
-			if (r_split[0] == 'OK') {
+		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=question&nocache=' + new Date().getTime(), 'del=1&qid=' + qid, function(res) {
+			alert(res);
+			if (res == 'OK') {
+				window.location.href = window.location.href;
+			} else {
+				alert(nv_is_del_confirm[2]);
+			}
+		});
+	}
+	return false;
+}
+
+function nv_del_form(fid) {
+	if (confirm(nv_is_del_confirm[0])) {
+		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&nocache=' + new Date().getTime(), 'del=1&fid=' + fid, function(res) {
+			if (res == 'OK') {
 				window.location.href = window.location.href;
 			} else {
 				alert(nv_is_del_confirm[2]);

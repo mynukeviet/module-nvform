@@ -31,7 +31,7 @@
 			</select></td>
 			<td class="center">
 				<em class="icon-edit icon-large">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
-				<em class="icon-trash icon-large">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_module_del({ROW.id});">{GLANG.delete}</a>
+				<em class="icon-trash icon-large">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_question({ROW.qid});">{GLANG.delete}</a>
 			</td>
 		</tr>
 		<!-- END: row -->

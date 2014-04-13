@@ -32,7 +32,7 @@
 			<td class="center">
 				<em class="icon-share icon-large">&nbsp;</em> <a href="{ROW.qlist}">{LANG.question}</a> &nbsp;
 				<em class="icon-edit icon-large">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
-				<em class="icon-trash icon-large">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_module_del({ROW.id});">{GLANG.delete}</a>
+				<em class="icon-trash icon-large">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_form({ROW.id});">{GLANG.delete}</a>
 			</td>
 		</tr>
 		<!-- END: row -->

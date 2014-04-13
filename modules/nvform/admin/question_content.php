@@ -41,7 +41,7 @@ if( $qid )
 	$lang_submit = $lang_module['question_edit'];
 	// Bind data to form
 	$question = $db->query( 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
-	
+
 	if( ! $question )
 	{
 		Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question' );
@@ -55,9 +55,12 @@ if( $qid )
 	
 	$question['question_form'] = $question['fid'];
 	$question['default_value_number'] = $question['default_value'];
+	
+	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;qid=' . $qid;
 }
 else 
 {
+	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
 	$lang_submit = $lang_module['question_add'];
 	$question['required'] = 0;
 	$question['user_editable'] = 0;
@@ -84,7 +87,16 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 	$question['required'] = $nv_Request->get_int( 'required', 'post', 0 );
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['class'] = nv_substr( $nv_Request->get_title( 'class', 'post', '', 0, $preg_replace ), 0, 50);
-	$question['question_type'] = nv_substr( $nv_Request->get_title( 'question_type', 'post', '', 0, $preg_replace ), 0, 50);
+	
+	if( $qid )
+	{
+		$data_old = $db->query( 'SELECT question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
+		$question['question_type'] = $data_old['question_type'];
+	}
+	else 
+	{
+		$question['question_type'] = nv_substr( $nv_Request->get_title( 'question_type', 'post', '', 0, $preg_replace ), 0, 50);
+	}
 	
 	if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
 	{
@@ -184,7 +196,8 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		$question_choice_value = $nv_Request->get_array( 'question_choice', 'post' );
 		$question_choice_text = $nv_Request->get_array( 'question_choice_text', 'post' );
 		$question_choices = array_combine( array_map( 'strip_punctuation', $question_choice_value ), array_map( 'strip_punctuation', $question_choice_text ) );
-		if( sizeof( $question_choices ) )
+		
+		if( ! empty( $question_choices ) )
 		{
 			unset( $question_choices[''] );
 			$question['question_choices'] = serialize( $question_choices );
@@ -197,26 +210,26 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 
 	if( empty( $error ) )
 	{
-		if(  $question['max_length'] <= 4294967296 and ! empty( $question['question'] ) )
+		if(  ! $qid )
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_question" )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
 			$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
-				(title, fid, weight, question_type, question_choices, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, class, default_value) VALUES
+				(title, fid, weight, question_type, question_choices, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, class, default_value, status) VALUES
 				('" . $question['question'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
-				" . $question['required'] . ", '" . $question['user_editable'] . "', :class, :default_value)";
+				" . $question['required'] . ", '" . $question['user_editable'] . "', :class, :default_value, 1)";
 
 			$data_insert = array();
             $data_insert['class'] = $question['class'];
 			$data_insert['default_value'] = $question['default_value'];
-			$question['new_qid'] = $db->insert_id( $sql, 'qid', $data_insert );
+			$save = $db->insert_id( $sql, 'qid', $data_insert );
 		}
-		elseif( $question['max_length'] <= 4294967296 )
+		else
 		{
 			$query = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_question SET";
-			if( $text_questions == 1 )
+			if( $choice_type_text == 1 )
 			{
 				$query .= " question_choices='" . $question['question_choices'] . "', match_type='" . $question['match_type'] . "',
 				match_regex='" . $question['match_regex'] . "', func_callback='" . $question['func_callback'] . "', ";
@@ -228,7 +241,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 				question_type = '" . $question['question_type'] . "',
 				user_editable = '" . $question['user_editable'] . "',
 				class = :class,
-				default_value= :default_value, 1
+				default_value= :default_value
 				WHERE qid = " . $qid;
 
 			$stmt = $db->prepare( $query ) ;
@@ -237,7 +250,8 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$stmt->execute();
 			$save = $stmt->rowCount();
 		}
-		if( $save or $question['new_qid'] )
+
+		if( $save )
 		{
 			Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question' );
 			die();
@@ -377,7 +391,7 @@ foreach( $array_match_type as $key => $value )
 	$xtpl->parse( 'main.match_type' );
 }
 
-if( $error )
+if( ! empty( $error ) )
 {
 	$xtpl->assign( 'ERROR', $error );
 	$xtpl->parse( 'main.error' );
@@ -386,7 +400,7 @@ if( $error )
 $page_title = $lang_submit;
 $xtpl->assign( 'LANG_SUBMIT', $lang_submit );
 $xtpl->assign( 'DATAFORM', $question );
-$xtpl->assign( 'FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op );
+$xtpl->assign( 'FORM_ACTION', $action );
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );
 
