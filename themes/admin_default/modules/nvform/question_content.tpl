@@ -28,11 +28,14 @@
 			<tr>
 				<td>{LANG.question_form}</td>
 				<td>
+					<!-- BEGIN: form -->
 					<select name="question_form">
 						<!-- BEGIN: flist -->
 						<option value="{FLIST.id}" {FLIST.selected}>{FLIST.title}</option>
 						<!-- END: flist -->
 					</select>
+					<!-- END: form -->
+					{FORM_TEXT}
 				</td>
 			</tr>
 			<tr>

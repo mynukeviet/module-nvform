@@ -20,7 +20,7 @@ $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
 
 // Danh sach cac bieu mau hien co
-$sql = 'SELECT `id`, `title` FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE `status` = 1 ORDER BY weight ASC';
+$sql = 'SELECT id, title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE status = 1 ORDER BY weight ASC';
 $lform = $db->query( $sql )->fetchAll();
 
 $num = sizeof( $lform );
@@ -83,18 +83,19 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 	$preg_replace = array( 'pattern' => '/[^a-zA-Z0-9\_]/', 'replacement' => '' );
 
 	$question['question'] = $nv_Request->get_title( 'question', 'post', '' );
-	$question['question_form'] = $nv_Request->get_int( 'question_form', 'post', 0 );
 	$question['required'] = $nv_Request->get_int( 'required', 'post', 0 );
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['class'] = nv_substr( $nv_Request->get_title( 'class', 'post', '', 0, $preg_replace ), 0, 50);
 	
 	if( $qid )
 	{
-		$data_old = $db->query( 'SELECT question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
+		$data_old = $db->query( 'SELECT fid, question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
+		$question['question_form'] = $data_old['fid'];
 		$question['question_type'] = $data_old['question_type'];
 	}
 	else 
 	{
+		$question['question_form'] = $nv_Request->get_int( 'question_form', 'post', 0 );
 		$question['question_type'] = nv_substr( $nv_Request->get_title( 'question_type', 'post', '', 0, $preg_replace ), 0, 50);
 	}
 	
@@ -252,21 +253,30 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 
 		if( $save )
 		{
-			Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question' );
+			Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question&fid=' . $question['question_form'] );
 			die();
 		}
 	}
 
 }
 
-foreach ( $lform as $row )
+if( ! $qid )
 {
-	$form_list = array(
-		'id' => $row['id'],
-		'title' => $row['title'],
-		'selected' => $question['question_form'] == $row['id'] ? 'selected="selected"' : '' );
-	$xtpl->assign( 'FLIST', $form_list );
-	$xtpl->parse( 'main.flist' );
+	foreach ( $lform as $row )
+	{
+		$form_list = array(
+			'id' => $row['id'],
+			'title' => $row['title'],
+			'selected' => $question['question_form'] == $row['id'] ? 'selected="selected"' : '' );
+		$xtpl->assign( 'FLIST', $form_list );
+		$xtpl->parse( 'main.form.flist' );
+	}
+	$xtpl->parse( 'main.form' );
+}
+else
+{
+	$ftitle = $db->query( "SELECT title FROM " . NV_PREFIXLANG . "_" . $module_data . " WHERE id = " . $question['question_form'] )->fetchColumn();
+	$xtpl->assign( 'FORM_TEXT', $ftitle );
 }
 
 if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
@@ -295,30 +305,30 @@ else
 	$choice_type_text = 1;
 }
 
-if( $text_questions == 0 )
+// Load các lựa chọn cho select, radio,...
+$number = 1;
+if( ! empty( $question_choices ) )
 {
-	$number = 1;
-	if( ! empty( $question_choices ) )
+	foreach( $question_choices as $key => $value )
 	{
-		foreach( $question_choices as $key => $value )
-		{
-			$xtpl->assign( 'FIELD_CHOICES', array(
-				'checked' => ( $number == $question['default_value'] ) ? ' checked="checked"' : '',
-				"number" => $number++,
-				'key' => $key,
-				'value' => $value
-			) );
-			$xtpl->parse( 'main.loop_field_choice' );
-		}
+		$xtpl->assign( 'FIELD_CHOICES', array(
+			'checked' => ( $number == $question['default_value'] ) ? ' checked="checked"' : '',
+			"number" => $number++,
+			'key' => $key,
+			'value' => $value
+		) );
+		$xtpl->parse( 'main.loop_field_choice' );
+		$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 	}
-	$xtpl->assign( 'FIELD_CHOICES', array(
-		'number' => $number,
-		'key' => '',
-		'value' => ''
-	) );
-	$xtpl->parse( 'main.loop_field_choice' );
-	$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 }
+	
+$xtpl->assign( 'FIELD_CHOICES', array(
+	'number' => $number,
+	'key' => '',
+	'value' => ''
+) );
+$xtpl->parse( 'main.loop_field_choice' );
+$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 
 // Hien thi tuy chon theo kieu cau hoi
 $question['display_textquestions'] = ( $text_questions ) ? '' : 'style="display: none;"';
