@@ -12,8 +12,23 @@ if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $page_title = $lang_module['question_list'];
 $array = array();
+$where = '';
 
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question ORDER BY weight ASC';
+$fid = $nv_Request->get_int( 'fid', 'get', 0 );
+if( $fid )
+{
+	$where = ' AND fid = ' . $fid;
+}
+else
+{
+	$max_fid = $db->query( "SELECT MAX(id) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
+	$max_fid = intval( $max_fid );
+	
+	Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question&fid=' . $max_fid );
+	die();
+}
+
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE 1 = 1 ' . $where . ' ORDER BY weight ASC';
 $_rows = $db->query( $sql )->fetchAll();
 $num = sizeof( $_rows );
 

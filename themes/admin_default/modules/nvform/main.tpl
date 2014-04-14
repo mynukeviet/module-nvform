@@ -17,7 +17,7 @@
 		<!-- BEGIN: row -->
 		<tr>
 			<td class="center">
-			<select id="change_weight_{ROW.id}" onchange="nv_chang_weight('{ROW.id}', 'form');">
+			<select id="change_weight_{ROW.id}" onchange="nv_chang_weight('{ROW.id}', 0, 'form');">
 				<!-- BEGIN: weight -->
 				<option value="{WEIGHT.w}"{WEIGHT.selected}>{WEIGHT.w}</option>
 				<!-- END: weight -->

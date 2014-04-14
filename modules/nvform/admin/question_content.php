@@ -212,7 +212,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 	{
 		if(  ! $qid )
 		{
-			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_question" )->fetchColumn();
+			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_question WHERE fid = " . $question['question_form'] )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
 			$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
@@ -236,7 +236,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			}
 			$query .= " max_length=" . $question['max_length'] . ", min_length=" . $question['min_length'] . ",
 				title = '" . $question['question'] . "',
-				fid = " . $question['fid'] . ",
+				fid = " . $question['question_form'] . ",
 				required = '" . $question['required'] . "',
 				question_type = '" . $question['question_type'] . "',
 				user_editable = '" . $question['user_editable'] . "',
@@ -247,8 +247,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$stmt = $db->prepare( $query ) ;
             $stmt->bindParam( ':class', $question['class'], PDO::PARAM_STR );
 			$stmt->bindParam( ':default_value', $question['default_value'], PDO::PARAM_STR, strlen( $question['default_value'] ) );
-			$stmt->execute();
-			$save = $stmt->rowCount();
+			$save = $stmt->execute();
 		}
 
 		if( $save )
