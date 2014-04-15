@@ -21,7 +21,6 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 	id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
 	title varchar(255) NOT NULL,
  	alias varchar(255) NOT NULL,
- 	image varchar(255) DEFAULT '',
  	description text,
 	who_view tinyint(2) NOT NULL DEFAULT '0',
 	groups_view varchar(255) DEFAULT '',

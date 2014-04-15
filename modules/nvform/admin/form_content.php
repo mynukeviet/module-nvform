@@ -21,6 +21,7 @@ $form_data = array();
 $error = '';
 $form_data['who_view'] = '';
 $form_data['groups_view'] = '';
+$form_data['description'] = '';
 
 if( $id )
 {
@@ -85,18 +86,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['title'] = $nv_Request->get_string( 'title', 'post', '', 1 );
 	$form_data['alias'] = $nv_Request->get_string( 'alias', 'post', '', 1 );
 	$image = $nv_Request->get_string( 'image', 'post', '' );
-	if( is_file( NV_DOCUMENT_ROOT . $image ) )
-	{
-		$lu = strlen( NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_name . '/' );
-		$form_data['image'] = substr( $image, $lu );
-	}
-	else
-	{
-		$form_data['image'] = '';
-	}
-	
 	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
-	
 	$form_data['alias'] = empty( $form_data['alias'] ) ? change_alias( $form_data['title'] ) : change_alias( $form_data['alias'] );
 	
 	$gr = array();
@@ -123,20 +113,19 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, image = :image, description = :description, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 	
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, image, description, who_view, groups_view, weight, add_time, status) VALUES (:title, :alias, :image, :description, ' . intval( $form_data['who_view'] ) . ', :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, who_view, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, ' . intval( $form_data['who_view'] ) . ', :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
 		$query->bindParam( ':title', $form_data['title'], PDO::PARAM_STR );
 		$query->bindParam( ':alias', $form_data['alias'], PDO::PARAM_STR );
-		$query->bindParam( ':image', $form_data['image'], PDO::PARAM_STR );
 		$query->bindParam( ':description', $form_data['description'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
 		$query->execute();
