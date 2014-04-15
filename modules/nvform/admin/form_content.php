@@ -95,8 +95,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['image'] = '';
 	}
 	
-	$form_data['description'] = $nv_Request->get_string( 'description', 'post', '' );
-	$form_data['description'] = nv_nl2br( nv_htmlspecialchars( strip_tags( $form_data['description'] ) ), '<br />' );
+	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
 	
 	$form_data['alias'] = empty( $form_data['alias'] ) ? change_alias( $form_data['title'] ) : change_alias( $form_data['alias'] );
 	
@@ -121,6 +120,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	
 	if( empty( $error ) ) 
 	{
+		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
 			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, image = :image, description = :description, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
@@ -194,12 +194,27 @@ if( ! empty( $array['groups_view'] ) )
 
 if( empty( $alias ) ) $xtpl->parse( 'main.get_alias' );
 
+// Trình soạn thảo
+if( ! empty( $form_data['description'] ) ) $form_data['description'] = nv_htmlspecialchars( $form_data['description'] );
+
+if( defined( 'NV_EDITOR' ) ) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+
+if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
+{
+	$form_data['description'] = nv_aleditor( 'description', '100%', '300px', $form_data['description'] );
+}
+else
+{
+	$form_data['description'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $form_data['description'] . '</textarea>';
+}
+
 if( $error )
 {
 	$xtpl->assign( 'ERROR', $error );
 	$xtpl->parse( 'main.error' );
 }
 
+$xtpl->assign( 'DESCRIPTION', $form_data['description'] );
 $xtpl->assign( 'LANG_SUBMIT', $lang_summit );
 $xtpl->assign( 'DATA', $form_data );
 $xtpl->assign( 'FORM_ACTION', $action );

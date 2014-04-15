@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td class="right strong">{LANG.form_description} </td>
-				<td ><textarea class="w500" id="description" name="description" cols="100" rows="5">{DATA.description}</textarea></td>
+				<td >{DESCRIPTION}</td>
 			</tr>
 			<tr>
 				<td class="right strong">{LANG.form_who_view} </td>
