@@ -52,7 +52,6 @@ function nv_chang_weight_res(res) {
 function nv_del_question(qid) {
 	if (confirm(nv_is_del_confirm[0])) {
 		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=question&nocache=' + new Date().getTime(), 'del=1&qid=' + qid, function(res) {
-			alert(res);
 			if (res == 'OK') {
 				window.location.href = window.location.href;
 			} else {

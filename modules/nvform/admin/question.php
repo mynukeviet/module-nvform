@@ -14,6 +14,29 @@ $page_title = $lang_module['question_list'];
 $array = array();
 $where = '';
 
+// Xóa câu hỏi
+if( $nv_Request->isset_request( 'del', 'post' ) )
+{
+	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
+
+	$qid = $nv_Request->get_int( 'qid', 'post', 0 );
+	
+	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
+	$db->exec( $sql );
+
+	$sql = 'SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question ORDER BY weight ASC';
+	$result = $db->query( $sql );
+	$weight = 0;
+	while( $row = $result->fetch() )
+	{
+		++$weight;
+		$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_question SET weight=' . $weight . ' WHERE qid = ' . $row['qid'];
+		$db->query( $sql );
+	}
+	nv_del_moduleCache( $module_name );
+	die('OK');
+}
+
 $fid = $nv_Request->get_int( 'fid', 'get', 0 );
 if( $fid )
 {
@@ -39,29 +62,6 @@ if( $num < 1 )
 }
 
 $array_status = array( $lang_module['form_deactive'], $lang_module['form_active'] );
-
-// Xóa form
-if( $nv_Request->isset_request( 'del', 'post' ) )
-{
-	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
-
-	$qid = $nv_Request->get_int( 'qid', 'post', 0 );
-	
-	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
-	$db->exec( $sql );
-
-	$sql = 'SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question ORDER BY weight ASC';
-	$result = $db->query( $sql );
-	$weight = 0;
-	while( $row = $result->fetch() )
-	{
-		++$weight;
-		$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_question SET weight=' . $weight . ' WHERE qid = ' . $row['qid'];
-		$db->query( $sql );
-	}
-	nv_del_moduleCache( $module_name );
-	die('OK');
-}
 
 $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
