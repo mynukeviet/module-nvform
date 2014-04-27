@@ -17,14 +17,52 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
  * @param mixed $question
  * @return
  */
-function nv_theme_nvform_main ( $form_info, $question_info )
+function nv_theme_nvform_main ( $form_info, $question_info, $info )
 {
-    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $op;
+    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $op, $my_head;
+	
+	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
+	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
+
+	$my_head .= "<script type=\"text/javascript\">\n";
+	$my_head .= "$(document).ready(function(){
+					$('#question').validate({
+					});
+				 });";
+	$my_head .= " </script>\n";
 
     $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'FORM', $form_info );
-    
+
+	foreach( $question_info as $row )
+	{
+		$row['required'] = ( $row['required'] ) ? 'required' : '';
+		$xtpl->assign( 'QUESTION', $row );
+		
+		if( $row['required'] )
+		{
+			$xtpl->parse( 'main.loop.required' );
+		}
+		if( $row['question_type'] == 'textbox' or $row['question_type'] == 'number' )
+		{
+			$xtpl->parse( 'main.loop.textbox' );
+		}
+		elseif( $row['question_type'] == 'date' )
+		{
+			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'd/m/Y', $row['value'] );
+			$xtpl->assign( 'QUESTION', $row );
+			$xtpl->parse( 'main.loop.date' );
+		}
+		
+		$xtpl->parse( 'main.loop' );
+	}
+
+	if( !empty( $info ) )
+	{
+		$xtpl->assign( 'INFO', $info );
+		$xtpl->parse( 'main.info' );
+	}
 
     $xtpl->parse( 'main' );
     return $xtpl->text( 'main' );

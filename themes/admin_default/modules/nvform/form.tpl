@@ -13,7 +13,7 @@
 		</colgroup>
 		<tfoot>
 			<tr>
-				<td></td>
+				<td>&nbsp;</td>
 				<td><input type="submit" value="{LANG_SUBMIT}"/></td>
 			</tr>
 		</tfoot>

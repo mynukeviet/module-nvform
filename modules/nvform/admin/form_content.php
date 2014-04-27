@@ -128,9 +128,8 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':alias', $form_data['alias'], PDO::PARAM_STR );
 		$query->bindParam( ':description', $form_data['description'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
-		$query->execute();
 		
-		if( $query->rowCount() )
+		if( $query->execute() )
 		{
 			if( $id )
 			{

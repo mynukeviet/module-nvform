@@ -45,14 +45,25 @@ if( ! nv_set_allow( $form_info['who_view'], $form_info['groups_view'] ) )
 $question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1" )->fetchAll();
 if( ! empty( $question_info ) )
 {
-	// Không có câu hỏi
+	//var_dump($question_info); exit;
+}
+
+$info = '';
+if( $nv_Request->isset_request( 'submit', 'post') )
+{
+	$error = '';
+	$question = $nv_Request->get_array( 'question', 'post' );
+	//var_dump($question); exit;
+	require NV_ROOTDIR . '/modules/' . $module_name . '/form.check.php';
+	if( ! empty( $error ) )
+	{
+		$info = $error;
+	}
 }
 
 $page_title = $form_info['title'];
-$contents = nv_theme_nvform_main( $form_info, $question_info );
+$contents = nv_theme_nvform_main( $form_info, $question_info, $info );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );
 include NV_ROOTDIR . '/includes/footer.php';
-
-?>
