@@ -230,7 +230,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		else
 		{
 			$query = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_question SET";
-			if( $text_questions == 1 )
+			if( $choice_type_text != 1 )
 			{
 				$query .= " question_choices='" . $question['question_choices'] . "', match_type='" . $question['match_type'] . "',
 				match_regex='" . $question['match_regex'] . "', func_callback='" . $question['func_callback'] . "', ";

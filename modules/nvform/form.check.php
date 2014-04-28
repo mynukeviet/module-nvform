@@ -12,13 +12,14 @@ if( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 foreach( $question_info as $row_f )
 {
-	$value = ( isset( $question[$row_f['qid']] ) ) ? $question[$row_f['qid']] : '';
+	$value = ( isset( $answer_info[$row_f['qid']] ) ) ? $answer_info[$row_f['qid']] : '';
 
 	if( $value != '' )
 	{
 		if( $row_f['question_type'] == 'number' )
 		{
-			$number_type = $row_f['field_choices']['number_type'];
+			$number_type = unserialize( $row_f['question_choices'] );
+			$number_type = $number_type['number_type'];
 			$pattern = ( $number_type == 1 ) ? "/^[0-9]+$/" : "/^[0-9\.]+$/";
 
 			if( ! preg_match( $pattern, $value ) )
@@ -40,7 +41,6 @@ foreach( $question_info as $row_f )
 			if( preg_match( "/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/", $value, $m ) )
 			{
 				$value = mktime( 0, 0, 0, $m[2], $m[1], $m[3] );
-
 				if( $value < $row_f['min_length'] or $value > $row_f['max_length'] )
 				{
 					$error = sprintf( $lang_module['field_min_max_value'], $row_f['title'], date( 'd/m/Y', $row_f['min_length'] ), date( 'd/m/Y', $row_f['max_length'] ) );
@@ -133,7 +133,7 @@ foreach( $question_info as $row_f )
 				}
 			}
 
-			$value = ( $row_f['field_type'] == 'textarea' ) ? nv_nl2br( $value, '<br />' ) : nv_editor_nl2br( $value );
+			$value = ( $row_f['question_type'] == 'textarea' ) ? nv_nl2br( $value, '<br />' ) : nv_editor_nl2br( $value );
 			$strlen = nv_strlen( $value );
 
 			if( $strlen < $row_f['min_length'] or $strlen > $row_f['max_length'] )
@@ -144,9 +144,10 @@ foreach( $question_info as $row_f )
 		elseif( $row_f['question_type'] == 'checkbox' or $row_f['question_type'] == 'multiselect' )
 		{
 			$temp_value = array();
+			$row_f['question_choices'] = unserialize( $row_f['question_choices'] );
 			foreach( $value as $value_i )
 			{
-				if( isset( $row_f['field_choices'][$value_i] ) )
+				if( isset( $row_f['question_choices'][$value_i] ) )
 				{
 					$temp_value[] = $value_i;
 				}
@@ -156,13 +157,14 @@ foreach( $question_info as $row_f )
 		}
 		elseif( $row_f['question_type'] == 'select' or $row_f['question_type'] == 'radio' )
 		{
-			if( ! isset( $row_f['field_choices'][$value] ) )
+			$row_f['question_choices'] = unserialize( $row_f['question_choices'] );
+			if( ! isset( $row_f['question_choices'][$value] ) )
 			{
 				$error = sprintf( $lang_module['field_match_type_error'], $row_f['title'] );
 			}
 		}
 
-		$question[$row_f['qid']] = $value;
+		$answer_info[$row_f['qid']] = $value;
 	}
 
 	if( empty( $value ) and $row_f['required'] )

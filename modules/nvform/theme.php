@@ -17,7 +17,7 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
  * @param mixed $question
  * @return
  */
-function nv_theme_nvform_main ( $form_info, $question_info, $info )
+function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info )
 {
     global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $op, $my_head;
 	
@@ -34,9 +34,11 @@ function nv_theme_nvform_main ( $form_info, $question_info, $info )
     $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'FORM', $form_info );
+	$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
 
 	foreach( $question_info as $row )
 	{
+		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
 		
@@ -53,6 +55,131 @@ function nv_theme_nvform_main ( $form_info, $question_info, $info )
 			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'd/m/Y', $row['value'] );
 			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.date' );
+		}
+		elseif( $row['question_type'] == 'textarea' )
+		{
+			$row['value'] = nv_htmlspecialchars( nv_br2nl( $row['value'] ) );
+			$xtpl->parse( 'main.loop.textarea' );
+		}
+		elseif( $row['question_type'] == 'editor' )
+		{
+			if( defined( 'NV_EDITOR' ) )
+			{
+				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php' ;
+			}
+			elseif( ! nv_function_exists( 'nv_aleditor' ) and file_exists( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor_php5.php' ) )
+			{
+				define( 'NV_EDITOR', true );
+				define( 'NV_IS_CKEDITOR', true );
+				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor_php5.php' ;
+			
+				function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '' )
+				{
+					// Create class instance.
+					$editortoolbar = array( array( 'Link', 'Unlink', 'Image', 'Table', 'Font', 'FontSize', 'RemoveFormat' ), array( 'Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'Subscript', 'Superscript', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'OrderedList', 'UnorderedList', '-', 'Outdent', 'Indent', 'TextColor', 'BGColor', 'Source' ) );
+					$CKEditor = new CKEditor();
+					// Do not print the code directly to the browser, return it instead
+					$CKEditor->returnOutput = true;
+					$CKEditor->config['skin'] = 'kama';
+					$CKEditor->config['entities'] = false;
+					// $CKEditor->config['enterMode'] = 2;
+					$CKEditor->config['language'] = NV_LANG_INTERFACE;
+					$CKEditor->config['toolbar'] = $editortoolbar;
+					// Path to CKEditor directory, ideally instead of relative dir, use an
+					// absolute path:
+					// $CKEditor->basePath = '/ckeditor/'
+					// If not set, CKEditor will try to detect the correct path.
+					$CKEditor->basePath = NV_BASE_SITEURL . NV_EDITORSDIR . '/ckeditor/';
+					// Set global configuration (will be used by all instances of CKEditor).
+					if( ! empty( $width ) )
+					{
+						$CKEditor->config['width'] = strpos( $width, '%' ) ? $width : intval( $width );
+					}
+					if( ! empty( $height ) )
+					{
+						$CKEditor->config['height'] = strpos( $height, '%' ) ? $height : intval( $height );
+					}
+					// Change default textarea attributes
+					$CKEditor->textareaAttributes = array( 'cols' => 80, 'rows' => 10 );
+					$val = nv_unhtmlspecialchars( $val );
+					return $CKEditor->editor( $textareaname, $val );
+				}
+			}
+
+			if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
+			{
+				$row['value'] = nv_htmlspecialchars( nv_editor_br2nl( $row['value'] ) );
+				$edits = nv_aleditor( 'question[' . $row['qid'] . ']', '100%', '350px' , $row['value'] );
+				$xtpl->assign( 'EDITOR', $edits );
+				$xtpl->parse( 'main.loop.editor' );
+			}
+			else
+			{
+				$row['value'] = nv_htmlspecialchars( nv_br2nl( $row['value'] ) );
+				$row['class'] = '';
+				$xtpl->assign( 'QUESTION', $row );
+				$xtpl->parse( 'main.loop.textarea' );
+			}
+		}
+		elseif( $row['question_type'] == 'select' )
+		{
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			foreach( $row['question_choices'] as $key => $value )
+			{
+				$xtpl->assign( 'QUESTION_CHOICES', array(
+					'key' => $key,
+					'selected' => ( $key == $row['value'] ) ? ' selected="selected"' : '',
+					"value" => $value
+				) );
+				$xtpl->parse( 'main.loop.select.loop' );
+			}
+			$xtpl->parse( 'main.loop.select' );
+		}
+		elseif( $row['question_type'] == 'radio' )
+		{
+			$number = 0;
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			foreach( $row['question_choices'] as $key => $value )
+			{
+				$xtpl->assign( 'QUESTION_CHOICES', array(
+					'id' => $row['qid'] . '_' . $number++,
+					'key' => $key,
+					'checked' => ( $key == $row['value'] ) ? ' checked="checked"' : '',
+					"value" => $value
+				) );
+				$xtpl->parse( 'main.loop.radio' );
+			}
+		}
+		elseif( $row['question_type'] == 'checkbox' )
+		{
+			$number = 0;
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			$valuecheckbox = ( ! empty( $row['value'] ) ) ? explode( ',', $row['value'] ) : array();
+			foreach( $row['question_choices'] as $key => $value )
+			{
+				$xtpl->assign( 'QUESTION_CHOICES', array(
+					'id' => $row['qid'] . '_' . $number++,
+					'key' => $key,
+					'checked' => ( in_array( $key, $valuecheckbox ) ) ? ' checked="checked"' : '',
+					"value" => $value
+				) );
+				$xtpl->parse( 'main.loop.checkbox' );
+			}
+		}
+		elseif( $row['question_type'] == 'multiselect' )
+		{
+			$valueselect = ( ! empty( $row['value'] ) ) ? explode( ',', $row['value'] ) : array();
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			foreach( $row['question_choices'] as $key => $value )
+			{
+				$xtpl->assign( 'QUESTION_CHOICES', array(
+					'key' => $key,
+					'selected' => ( in_array( $key, $valueselect ) ) ? ' selected="selected"' : '',
+					"value" => $value
+				) );
+				$xtpl->parse( 'main.loop.multiselect.loop' );
+			}
+			$xtpl->parse( 'main.loop.multiselect' );
 		}
 		
 		$xtpl->parse( 'main.loop' );

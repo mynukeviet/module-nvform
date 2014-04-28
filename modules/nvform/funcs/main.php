@@ -8,7 +8,7 @@
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
 
-if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
+if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' ); 
 
 if( ! empty( $array_op ) )
 {
@@ -42,18 +42,19 @@ if( ! nv_set_allow( $form_info['who_view'], $form_info['groups_view'] ) )
 }
 
 // Lấy thông tin câu hỏi
-$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1" )->fetchAll();
+$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1 ORDER BY `weight`" )->fetchAll();
 if( ! empty( $question_info ) )
 {
 	//var_dump($question_info); exit;
 }
 
 $info = '';
+$answer_info = array();
+
 if( $nv_Request->isset_request( 'submit', 'post') )
 {
 	$error = '';
-	$question = $nv_Request->get_array( 'question', 'post' );
-	//var_dump($question); exit;
+	$answer_info = $nv_Request->get_array( 'question', 'post' );
 	require NV_ROOTDIR . '/modules/' . $module_name . '/form.check.php';
 	if( ! empty( $error ) )
 	{
@@ -62,7 +63,7 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 }
 
 $page_title = $form_info['title'];
-$contents = nv_theme_nvform_main( $form_info, $question_info, $info );
+$contents = nv_theme_nvform_main( $form_info, $question_info, $answer_info, $info );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );
