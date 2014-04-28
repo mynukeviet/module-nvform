@@ -14,6 +14,7 @@ $sql_drop_module = array();
 
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . ";";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_question" . ";";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_answer" . ";";
 
 $sql_create_module = $sql_drop_module;
 
@@ -49,4 +50,14 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 	default_value varchar(255) NOT NULL DEFAULT '',
 	status tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (qid)
+) ENGINE=MyISAM";
+
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_answer (
+	id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+	fid mediumint(8) NOT NULL DEFAULT 0,
+	answer text,
+	who_answer tinyint(2) NOT NULL DEFAULT '0',
+ 	answer_time int(11) NOT NULL DEFAULT '0',
+ 	answer_edit_time int(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (id)
 ) ENGINE=MyISAM";

@@ -49,14 +49,47 @@ if( ! empty( $question_info ) )
 }
 
 $info = '';
+$filled = false;
 $answer_info = array();
+
+// Trạng thái trả lời
+if( defined( 'NV_IS_USER' ) )
+{
+	$sql = "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_answer WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'];
+	$_rows = $db->query( $sql )->fetch();
+	$num = sizeof( $_rows );
+	
+	if( $num >= 1 )
+	{
+		$filled = true;
+		$answer_info = unserialize( $_rows['answer'] );
+	}	
+}
 
 if( $nv_Request->isset_request( 'submit', 'post') )
 {
 	$error = '';
 	$answer_info = $nv_Request->get_array( 'question', 'post' );
 	require NV_ROOTDIR . '/modules/' . $module_name . '/form.check.php';
-	if( ! empty( $error ) )
+	
+	if( empty( $error ) )
+	{
+		$answer_info = serialize( $answer_info );
+		if( ! isset( $user_info['userid'] ) ) $user_info['userid'] = 0;	
+		
+		if ( $filled )
+		{
+			$sth = $db->prepare( "UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_edit_time = " . NV_CURRENTTIME . " WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'] );
+		}
+		else
+		{
+			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, who_answer, answer_time) VALUES (" . $fid . ", :answer, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
+		}
+		
+		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
+		$sth->execute();
+	}
+	else
 	{
 		$info = $error;
 	}

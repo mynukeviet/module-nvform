@@ -17,6 +17,7 @@ $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['success'] = 'Hoàn tất';
+$lang_module['reset'] = 'Làm lại';
 
 $lang_module['error_form_not_found_detail'] = 'Hệ thống không tìm thấy biểu mẫu nào theo như yêu cầu của bạn.<br />Vui lòng liên hệ với quản trị để biết thêm thông tin.';
 $lang_module['error_form_not_premission_detail'] = 'Bạn không được phép truy cập biểu mẫu này.<br />Vui lòng liên hệ quản trị để biết thêm chi tiết.';
