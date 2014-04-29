@@ -342,19 +342,6 @@ $question['classdisabled'] = ( $question['question_type'] == 'editor' ) ? ' styl
 $question['checked_required'] = ( $question['required'] ) ? ' checked="checked"' : '';
 $question['checked_user_editable'] = ( $question['user_editable'] ) ? ' checked="checked"' : '';
 
-// Danh sach cac kieu du lieu
-$array_field_type = array(
-	'number' => $lang_module['question_type_number'],
-	'date' => $lang_module['question_type_date'],
-	'textbox' => $lang_module['question_type_textbox'],
-	'textarea' => $lang_module['question_type_textarea'],
-	'editor' => $lang_module['question_type_editor'],
-	'select' => $lang_module['question_type_select'],
-	'radio' => $lang_module['question_type_radio'],
-	'checkbox' => $lang_module['question_type_checkbox'],
-	'multiselect' => $lang_module['question_type_multiselect']
-);
-
 if( ! $qid ) // Neu sua thi khong cho phep thay doi kieu cau hoi
 {	
 	foreach( $array_field_type as $key => $value )
