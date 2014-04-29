@@ -18,3 +18,16 @@ $submenu['config'] = $lang_module['config'];
 $allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content' );
 
 define( 'NV_IS_FILE_ADMIN', true );
+
+// Danh sach cac kieu du lieu
+$array_field_type = array(
+	'number' => $lang_module['question_type_number'],
+	'date' => $lang_module['question_type_date'],
+	'textbox' => $lang_module['question_type_textbox'],
+	'textarea' => $lang_module['question_type_textarea'],
+	'editor' => $lang_module['question_type_editor'],
+	'select' => $lang_module['question_type_select'],
+	'radio' => $lang_module['question_type_radio'],
+	'checkbox' => $lang_module['question_type_checkbox'],
+	'multiselect' => $lang_module['question_type_multiselect']
+);

@@ -93,6 +93,8 @@ foreach ( $_rows as $row )
 		$xtpl->parse( 'main.row.status' );
 	}
 
+	$xtpl->assign( 'FIELD_TYPE_TEXT', $array_field_type[$row['question_type']] );
+
 	$xtpl->assign( 'ROW', $row );
 	$xtpl->parse( 'main.row' );
 }
