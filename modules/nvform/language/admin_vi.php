@@ -26,10 +26,11 @@ $lang_module['form_active'] = 'Hoạt động';
 $lang_module['form_deactive'] = 'Không hoạt động';
 $lang_module['form_title'] = 'Tiêu đề';
 $lang_module['form_alias'] = 'Liên kết tĩnh';
-$lang_module['form_image'] = 'Ảnh minh họa';
 $lang_module['form_description'] = 'Mô tả';
 $lang_module['form_who_view'] = 'Quyền xem';
 $lang_module['form_groups'] = 'Nếu chọn "Nhóm thành viên", hãy chọn nhóm trong danh sách dưới đây';
+$lang_module['form_start_time'] = 'Từ ngày';
+$lang_module['form_end_time'] = 'Đến ngày';
 
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';
@@ -91,6 +92,7 @@ $lang_module['status'] = 'Trạng thái';
 
 $lang_module['error_groups_choice'] = 'Chọn ít nhất một nhóm thành viên';
 $lang_module['error_formtitle'] = 'Nhập tiêu đề biểu mẫu';
+$lang_module['error_formtime'] = 'Thời gian bắt đầu phải trước thời gian kết thúc';
 $lang_module['error_save'] = 'Có lỗi xảy ra trong quá trình lưu dữ liệu';
 
 ?>

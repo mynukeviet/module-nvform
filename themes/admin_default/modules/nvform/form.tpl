@@ -1,4 +1,11 @@
 <!-- BEGIN: main -->
+<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.core.css" rel="stylesheet" />
+<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.theme.css" rel="stylesheet" />
+<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
+
 <!-- BEGIN: error -->
 <div class="quote">
 	<blockquote class="error"><span>{ERROR}</span></blockquote>
@@ -50,12 +57,45 @@
 					</div>
 				</td>
 			</tr>
+			<tr>
+				<td class="right strong">{LANG.form_start_time} </td>
+				<td>
+					<input name="start_time" id="start_time" value="{DATA.start_time}" style="width: 90px;" maxlength="10" readonly="readonly" type="text"/>
+					<select name="phour">
+						{phour}
+					</select>
+					:
+					<select name="pmin">
+						{pmin}
+					</select>
+					
+					{LANG.form_end_time}
+					<input name="end_time" id="end_time" value="{DATA.end_time}" style="width: 90px;" maxlength="10" readonly="readonly" type="text"/>
+					<select name="ehour">
+						{ehour}
+					</select>
+					:
+					<select name="emin">
+						{emin}
+					</select>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </form>
 <!-- BEGIN: get_alias -->
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("#start_time,#end_time").datepicker({
+			showOn : "both",
+			dateFormat : "dd/mm/yy",
+			changeMonth : true,
+			changeYear : true,
+			showOtherMonths : true,
+			buttonImage : nv_siteroot + "images/calendar.gif",
+			buttonImageOnly : true
+		});
+		
 		$('#idtitle').change(function() {
 			get_alias('{ID}');
 		});

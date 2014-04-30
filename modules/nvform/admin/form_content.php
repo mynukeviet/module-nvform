@@ -17,11 +17,15 @@ $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_name );
 
 $id = $nv_Request->get_int( 'id', 'get, post', 0 );
-$form_data = array();
 $error = '';
-$form_data['who_view'] = '';
-$form_data['groups_view'] = '';
-$form_data['description'] = '';
+$phour = $pmin = $ehour = $emin = 0;
+
+$form_data = array(
+	'who_view' => '',
+	'groups_view' => '',
+	'description' => '',
+	'start_time' => '',
+	'end_time' => '');
 
 if( $id )
 {
@@ -85,15 +89,47 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 {
 	$form_data['title'] = $nv_Request->get_string( 'title', 'post', '', 1 );
 	$form_data['alias'] = $nv_Request->get_string( 'alias', 'post', '', 1 );
-	$image = $nv_Request->get_string( 'image', 'post', '' );
-	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
 	$form_data['alias'] = empty( $form_data['alias'] ) ? change_alias( $form_data['title'] ) : change_alias( $form_data['alias'] );
+	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
+	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
+	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
+	
+	if( ! empty( $form_data['start_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m ) )
+	{
+		$phour = $nv_Request->get_int( 'phour', 'post', 0 );
+		$pmin = $nv_Request->get_int( 'pmin', 'post', 0 );
+		$form_data['start_time'] = mktime( $phour, $pmin, 0, $m[2], $m[1], $m[3] );
+	}
+	else
+	{
+		$form_data['start_time'] = 0;
+	}
+	
+	if( ! empty( $form_data['end_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['end_time'], $m ) )
+	{
+		$ehour = $nv_Request->get_int( 'ehour', 'post', 0 );
+		$emin = $nv_Request->get_int( 'emin', 'post', 0 );
+		$form_data['end_time'] = mktime( $ehour, $emin, 0, $m[2], $m[1], $m[3] );
+	}
+	else
+	{
+		$form_data['end_time'] = 0;
+	}
 	
 	$gr = array();
 	$gr = $nv_Request->get_typed_array( 'groups_view', 'post', '' );
 	$form_data['groups_view'] = implode( ',', $gr );	
 	$form_data['who_view'] = $nv_Request->get_int( 'who_view', 'post', 0 );
 	
+	if( empty( $form_data['title'] ) )
+	{
+		$error = $lang_module['error_formtitle'];
+	}
+	elseif( $form_data['start_time'] > $form_data['end_time'] )
+	{
+		$error = $lang_module['error_formtime'];
+	}
+
 	if( $form_data['who_view'] != 3 )
 	{
 		$form_data['groups_view'] = '';
@@ -102,31 +138,28 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	{
 		$error = $lang_module['error_groups_choice'];
 	}
-
-	if( empty( $form_data['title'] ) )
-	{
-		$error = $lang_module['error_formtitle'];
-	}
 	
 	if( empty( $error ) ) 
 	{
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 	
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, who_view, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, ' . intval( $form_data['who_view'] ) . ', :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, who_view, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, ' . intval( $form_data['who_view'] ) . ', :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
 		$query->bindParam( ':title', $form_data['title'], PDO::PARAM_STR );
 		$query->bindParam( ':alias', $form_data['alias'], PDO::PARAM_STR );
 		$query->bindParam( ':description', $form_data['description'], PDO::PARAM_STR );
+		$query->bindParam( ':start_time', $form_data['start_time'], PDO::PARAM_STR );
+		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
 		
 		if( $query->execute() )
@@ -150,6 +183,55 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		}
 	}
 }
+
+// Thời gian
+if( ! empty( $form_data['start_time'] ) )
+{
+	$tdate = date( 'H|i', $form_data['start_time'] );
+	$form_data['start_time'] = date( 'd/m/Y', $form_data['start_time'] );
+	list( $phour, $pmin ) = explode( '|', $tdate );
+}
+else
+{
+	$form_data['start_time'] = '';
+}
+
+$select = '';
+for( $i = 0; $i <= 23; ++$i )
+{
+	$select .= "<option value=\"" . $i . "\"" . ( ( $i == $phour ) ? ' selected="selected"' : '' ) . ">" . str_pad( $i, 2, "0", STR_PAD_LEFT ) . "</option>\n";
+}
+$xtpl->assign( 'phour', $select );
+
+if( !empty( $form_data['end_time'] ) )
+{
+	$tdate = date( 'H|i', $form_data['end_time'] );
+	$form_data['end_time'] = date( 'd/m/Y', $form_data['end_time'] );
+	list( $ehour, $emin ) = explode( '|', $tdate );	
+}
+else
+{
+	$form_data['end_time'] = '';
+}
+$select = '';
+for( $i = 0; $i < 60; ++$i )
+{
+	$select .= "<option value=\"" . $i . "\"" . ( ( $i == $pmin ) ? ' selected="selected"' : '' ) . ">" . str_pad( $i, 2, "0", STR_PAD_LEFT ) . "</option>\n";
+}
+$xtpl->assign( 'pmin', $select );
+
+$select = '';
+for( $i = 0; $i <= 23; ++$i )
+{
+	$select .= "<option value=\"" . $i . "\"" . ( ( $i == $ehour ) ? ' selected="selected"' : '' ) . ">" . str_pad( $i, 2, "0", STR_PAD_LEFT ) . "</option>\n";
+}
+$xtpl->assign( 'ehour', $select );
+$select = '';
+for( $i = 0; $i < 60; ++$i )
+{
+	$select .= "<option value=\"" . $i . "\"" . ( ( $i == $emin ) ? ' selected="selected"' : '' ) . ">" . str_pad( $i, 2, "0", STR_PAD_LEFT ) . "</option>\n";
+}
+$xtpl->assign( 'emin', $select );
 
 // Hien thi cac nhom thanh vien mac dinh
 $who_view = $form_data['who_view'];
@@ -206,6 +288,8 @@ $xtpl->assign( 'DESCRIPTION', $form_data['description'] );
 $xtpl->assign( 'LANG_SUBMIT', $lang_summit );
 $xtpl->assign( 'DATA', $form_data );
 $xtpl->assign( 'FORM_ACTION', $action );
+$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
+$xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );
 
