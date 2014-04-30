@@ -30,9 +30,24 @@ if( ! $form_info )
 }
 
 // Kiểm tra trạng thái biểu mẫu
+// Trạng thái hoạt động
 if( ! $form_info['status'] )
 {
 	nv_theme_nvform_alert( $form_info['title'], $lang_module['error_form_not_status_detail'] );
+}
+
+// Thời gian hoạt động
+if( $form_info['start_time'] > NV_CURRENTTIME )
+{
+	$start_time = date( "d/m/Y H:i", $form_info['start_time'] );
+	nv_theme_nvform_alert( $form_info['title'], sprintf( $lang_module['error_form_not_start'], $start_time ) );
+}
+
+// Thời gian kết thúc
+if( ! empty( $form_info['end_time'] ) and $form_info['end_time'] < NV_CURRENTTIME )
+{
+	$end_time = date( "d/m/Y H:i", $form_info['end_time'] );
+	nv_theme_nvform_alert( $form_info['title'], sprintf( $lang_module['error_form_closed'], $end_time ) );
 }
 
 // Kiểm tra quyền truy cập
@@ -50,25 +65,31 @@ if( ! empty( $question_info ) )
 
 $info = '';
 $filled = false;
-$answer_info = array();
+$answer_info = $old_answer_info = array();
 
 // Trạng thái trả lời
 if( defined( 'NV_IS_USER' ) )
 {
 	$sql = "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_answer WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'];
 	$_rows = $db->query( $sql )->fetch();
-	$num = sizeof( $_rows );
-	
-	if( $num >= 1 )
+
+	if( $_rows )
 	{
 		$filled = true;
+		$form_info['filled'] = true;
 		$answer_info = unserialize( $_rows['answer'] );
-	}	
+	}
 }
 
 if( $nv_Request->isset_request( 'submit', 'post') )
 {
 	$error = '';
+	
+	if( $filled )
+	{
+		$old_answer_info = $answer_info;
+	}
+	
 	$answer_info = $nv_Request->get_array( 'question', 'post' );
 	require NV_ROOTDIR . '/modules/' . $module_name . '/form.check.php';
 	
@@ -87,7 +108,16 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 		}
 		
 		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
-		$sth->execute();
+		if( $sth->execute() )
+		{
+			$info = $lang_module['success_info'];
+			if( defined( 'NV_IS_USER' ) )
+			{
+				$link_form = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $form_info['id'] . '-' . $form_info['alias'] . $global_config['rewrite_exturl'];
+				$info .= '<br />' . sprintf( $lang_module['success_user_info'], $link_form );
+			}
+			nv_theme_nvform_alert( $lang_module['success'], $info, 'success' );
+		}
 	}
 	else
 	{

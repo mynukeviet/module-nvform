@@ -14,6 +14,11 @@ foreach( $question_info as $row_f )
 {
 	$value = ( isset( $answer_info[$row_f['qid']] ) ) ? $answer_info[$row_f['qid']] : '';
 
+	if( $filled )
+	{
+		$old_value = ( isset( $old_answer_info[$row_f['qid']] ) ) ? $old_answer_info[$row_f['qid']] : '';
+	}
+
 	if( $value != '' )
 	{
 		if( $row_f['question_type'] == 'number' )
@@ -165,6 +170,11 @@ foreach( $question_info as $row_f )
 		}
 
 		$answer_info[$row_f['qid']] = $value;
+	}
+
+	if( $filled and ! $row_f['user_editable'] and $value != $old_value )
+	{
+		$error = sprintf( $lang_module['field_no_edit'], $row_f['title'] );
 	}
 
 	if( empty( $value ) and $row_f['required'] )

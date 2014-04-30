@@ -41,24 +41,35 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
-		
+
 		if( $row['required'] )
 		{
 			$xtpl->parse( 'main.loop.required' );
 		}
 		if( $row['question_type'] == 'textbox' or $row['question_type'] == 'number' )
 		{
+			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+			{
+				$row['readonly'] = 'readonly="readonly"';
+			}
+			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.textbox' );
 		}
 		elseif( $row['question_type'] == 'date' )
 		{
 			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'd/m/Y', $row['value'] );
+			$row['datepicker'] = ( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) ) ? '' : 'datepicker';
 			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.date' );
 		}
 		elseif( $row['question_type'] == 'textarea' )
 		{
+			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+			{
+				$row['readonly'] = 'readonly';
+			}
 			$row['value'] = nv_htmlspecialchars( nv_br2nl( $row['value'] ) );
+			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.textarea' );
 		}
 		elseif( $row['question_type'] == 'editor' )
@@ -78,6 +89,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 					// Create class instance.
 					$editortoolbar = array( array( 'Link', 'Unlink', 'Image', 'Table', 'Font', 'FontSize', 'RemoveFormat' ), array( 'Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'Subscript', 'Superscript', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'OrderedList', 'UnorderedList', '-', 'Outdent', 'Indent', 'TextColor', 'BGColor', 'Source' ) );
 					$CKEditor = new CKEditor();
+
 					// Do not print the code directly to the browser, return it instead
 					$CKEditor->returnOutput = true;
 					$CKEditor->config['skin'] = 'kama';
@@ -109,6 +121,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 			{
 				$row['value'] = nv_htmlspecialchars( nv_editor_br2nl( $row['value'] ) );
+				
 				$edits = nv_aleditor( 'question[' . $row['qid'] . ']', '100%', '350px' , $row['value'] );
 				$xtpl->assign( 'EDITOR', $edits );
 				$xtpl->parse( 'main.loop.editor' );
@@ -133,6 +146,13 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 				) );
 				$xtpl->parse( 'main.loop.select.loop' );
 			}
+			
+			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+			{
+				$row['readonly'] = 'readonly="readonly"';
+			}
+			$xtpl->assign( 'QUESTION', $row );
+			
 			$xtpl->parse( 'main.loop.select' );
 		}
 		elseif( $row['question_type'] == 'radio' )
@@ -141,10 +161,15 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			$row['question_choices'] = unserialize( $row['question_choices'] );
 			foreach( $row['question_choices'] as $key => $value )
 			{
+				if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+				{
+					$row['readonly'] = 'onclick="return false;"';
+				}
 				$xtpl->assign( 'QUESTION_CHOICES', array(
 					'id' => $row['qid'] . '_' . $number++,
 					'key' => $key,
 					'checked' => ( $key == $row['value'] ) ? ' checked="checked"' : '',
+					'readonly' => $row['readonly'],
 					"value" => $value
 				) );
 				$xtpl->parse( 'main.loop.radio' );
@@ -152,6 +177,11 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		}
 		elseif( $row['question_type'] == 'checkbox' )
 		{
+			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+			{
+				$row['readonly'] = 'onclick="return false;"';
+			}
+				
 			$number = 0;
 			$row['question_choices'] = unserialize( $row['question_choices'] );
 			$valuecheckbox = ( ! empty( $row['value'] ) ) ? explode( ',', $row['value'] ) : array();
@@ -161,6 +191,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 					'id' => $row['qid'] . '_' . $number++,
 					'key' => $key,
 					'checked' => ( in_array( $key, $valuecheckbox ) ) ? ' checked="checked"' : '',
+					'readonly' => $row['readonly'],
 					"value" => $value
 				) );
 				$xtpl->parse( 'main.loop.checkbox' );
@@ -179,6 +210,14 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 				) );
 				$xtpl->parse( 'main.loop.multiselect.loop' );
 			}
+
+			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+			{
+				$row['readonly'] = 'readonly="readonly"';
+			}
+			
+			$xtpl->assign( 'QUESTION', $row );
+		
 			$xtpl->parse( 'main.loop.multiselect' );
 		}
 		

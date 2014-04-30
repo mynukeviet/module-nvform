@@ -102,7 +102,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	}
 	else
 	{
-		$form_data['start_time'] = 0;
+		$form_data['start_time'] = NV_CURRENTTIME;
 	}
 	
 	if( ! empty( $form_data['end_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['end_time'], $m ) )
@@ -125,9 +125,12 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	{
 		$error = $lang_module['error_formtitle'];
 	}
-	elseif( $form_data['start_time'] > $form_data['end_time'] )
+	elseif( ! empty( $form_data['start_time'] ) and ! empty( $form_data['end_time'] ) )
 	{
-		$error = $lang_module['error_formtime'];
+		if( $form_data['start_time'] > $form_data['end_time'] )
+		{
+			$error = $lang_module['error_formtime'];	
+		}
 	}
 
 	if( $form_data['who_view'] != 3 )
