@@ -230,11 +230,8 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		else
 		{
 			$query = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_question SET";
-			if( $choice_type_text != 1 )
-			{
-				$query .= " question_choices='" . $question['question_choices'] . "', match_type='" . $question['match_type'] . "',
+			$query .= " question_choices='" . $question['question_choices'] . "', match_type='" . $question['match_type'] . "',
 				match_regex='" . $question['match_regex'] . "', func_callback='" . $question['func_callback'] . "', ";
-			}
 			$query .= " max_length=" . $question['max_length'] . ", min_length=" . $question['min_length'] . ",
 				title = '" . $question['question'] . "',
 				fid = " . $question['question_form'] . ",
@@ -244,7 +241,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 				class = :class,
 				default_value= :default_value
 				WHERE qid = " . $qid;
-
+				
 			$stmt = $db->prepare( $query ) ;
             $stmt->bindParam( ':class', $question['class'], PDO::PARAM_STR );
 			$stmt->bindParam( ':default_value', $question['default_value'], PDO::PARAM_STR, strlen( $question['default_value'] ) );

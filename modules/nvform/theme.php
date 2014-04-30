@@ -30,6 +30,11 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 					});
 				 });";
 	$my_head .= " </script>\n";
+	
+	if( ! empty( $form_info['end_time'] ) )
+	{
+		$form_info['close_info'] = sprintf( $lang_module['form_close_info'], date( 'd/m/Y H:i' ) );
+	}
 
     $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
@@ -161,6 +166,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			$row['question_choices'] = unserialize( $row['question_choices'] );
 			foreach( $row['question_choices'] as $key => $value )
 			{
+				$row['readonly'] = '';
 				if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
 				{
 					$row['readonly'] = 'onclick="return false;"';
@@ -177,6 +183,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		}
 		elseif( $row['question_type'] == 'checkbox' )
 		{
+			$row['readonly'] = '';
 			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
 			{
 				$row['readonly'] = 'onclick="return false;"';

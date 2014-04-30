@@ -19,6 +19,7 @@ $lang_translator['langtype'] = 'lang_module';
 $lang_module['success'] = 'Hoàn tất';
 $lang_module['success_info'] = 'Thông tin trả lời của bạn đã được hệ thống ghi nhận.';
 $lang_module['success_user_info'] = 'Bạn có thể xem lại thông tin trả lời tại <a href="%s">đây</a>';
+$lang_module['form_close_info'] = 'Biểu mẫu này sẽ được đóng vào ngày %s';
 $lang_module['reset'] = 'Làm lại';
 
 $lang_module['error_form_not_found_detail'] = 'Hệ thống không tìm thấy biểu mẫu nào theo như yêu cầu của bạn.<br />Vui lòng liên hệ với quản trị để biết thêm thông tin.';
