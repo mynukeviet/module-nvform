@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<div style="margin: 5px 0 10px 0; display: block;">
+	<a href="{ADD_QUESTION}" class="button button-h">{LANG.question_add}</a>
+</div>
 <table class="tab1">
 	<colgroup>
 		<col class="w50">

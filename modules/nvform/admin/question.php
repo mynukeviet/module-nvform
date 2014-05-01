@@ -66,6 +66,7 @@ $array_status = array( $lang_module['form_deactive'], $lang_module['form_active'
 $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
+$xtpl->assign( 'ADD_QUESTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=question_content&amp;fid=' . $fid );
 
 $i = 0;
 foreach ( $_rows as $row )

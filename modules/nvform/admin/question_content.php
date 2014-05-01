@@ -31,6 +31,7 @@ if( $num < 1 )
 }
 
 $qid = $nv_Request->get_int( 'qid', 'get, post', 0 );
+$fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
 $error = '';
@@ -65,7 +66,7 @@ else
 	$question['required'] = 0;
 	$question['user_editable'] = 0;
 	$question['question_type'] = 'textbox';
-	$question['question_form'] = 0;
+	$question['question_form'] = $fid;
 	$question['match_type'] = 'none';
 	$question['min_length'] = 0;
 	$question['max_length'] = 255;
