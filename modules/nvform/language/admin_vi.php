@@ -31,7 +31,7 @@ $lang_module['form_who_view'] = 'Quyền xem';
 $lang_module['form_groups'] = 'Nếu chọn "Nhóm thành viên", hãy chọn nhóm trong danh sách dưới đây';
 $lang_module['form_start_time'] = 'Từ ngày';
 $lang_module['form_end_time'] = 'Đến ngày';
-$lang_module['form_report'] = 'Báo cáo';
+$lang_module['form_report'] = 'Thống kê';
 
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';
