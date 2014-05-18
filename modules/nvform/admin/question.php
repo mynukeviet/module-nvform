@@ -38,6 +38,17 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 }
 
 $fid = $nv_Request->get_int( 'fid', 'get', 0 );
+
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
+$_rows = $db->query( $sql )->fetchAll();
+$num = sizeof( $_rows );
+
+if( $num < 1 )
+{
+	Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=form_content' );
+	die();
+}
+
 if( $fid )
 {
 	$where = ' AND fid = ' . $fid;
