@@ -19,6 +19,9 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
 
 	$fid = $nv_Request->get_int( 'fid', 'post', 0 );
+	
+	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE fid = ' . $fid;
+	$db->exec( $sql );
 
 	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid;
 	$db->exec( $sql );
