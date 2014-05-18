@@ -55,6 +55,7 @@
 				} else if (response == "OK_COMPLETE") {
 					$("#export").hide();
 					alert('{LANG.report_export_complete}');
+					$("input[name=export_excel]").removeAttr("disabled");
 					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
 				} else {
 					$("#export").hide();
@@ -65,8 +66,9 @@
 	}
 
 	$("input[name=export_excel]").click(function() {
+		$("input[name=export_excel]").attr("disabled", "disabled");
 		$("#export").show();
-		$('#export').html('<center>{LANG.report_export_note}<br /><br /><img src="{NV_BASE_SITEURL}images/load_bar.gif" alt="" /></center>');
+		$('#export').html('<div class="text-center well">{LANG.report_export_note}<br /><br /><em class="fa fa-spinner fa-spin fa-3x"></em></div>');
 		nv_data_export(1, '{FID}' );
 	});
 </script>
