@@ -19,6 +19,7 @@ $xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_name );
 $id = $nv_Request->get_int( 'id', 'get, post', 0 );
 $error = '';
 $phour = $pmin = $ehour = $emin = 0;
+$groups_list = nv_groups_list();
 
 $form_data = array(
 	'who_view' => '',
@@ -32,14 +33,11 @@ if( $id )
 	$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $id;
 	$form_data = $db->query( $sql )->fetch();
 
-	if(empty( $form_data ) )
+	if( empty( $form_data ) )
 	{
 		Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name );
 		die();
 	}
-
-
-	$form_data['groups_view'] = explode( ',', $form_data['groups_view'] );
 
 	$page_title = $lang_module['form_edit'] . ': ' . $form_data['title'];
 	$lang_summit = $lang_module['form_edit'];
@@ -49,40 +47,6 @@ else
 {
 	$lang_summit = $page_title = $lang_module['form_add'];
 	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
-}
-
-// System groups user
-$groups_list = nv_groups_list();
-$array_who = array( $lang_global['who_view0'], $lang_global['who_view1'], $lang_global['who_view2'] );
-if( ! empty( $groups_list ) )
-{
-	$array_who[] = $lang_global['who_view3'];
-}
-
-$groups_view = $form_data['groups_view'];
-
-$array['groups_view'] = array();
-if( ! empty( $groups_list ) )
-{
-	foreach( $groups_list as $key => $title )
-	{
-		if( ! empty( $groups_view ) )
-		{
-			$array['groups_view'][] = array(
-				'key' => $key,
-				'title' => $title,
-				'checked' => in_array( $key, $groups_view ) ? ' checked="checked"' : ''
-			);
-		}
-		else
-		{
-			$array['groups_view'][] = array(
-				'key' => $key,
-				'title' => $title,
-				'checked' => ''
-			);
-		}
-	}
 }
 
 if( $nv_Request->get_int( 'save', 'post' ) == '1' )
@@ -116,10 +80,8 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['end_time'] = 0;
 	}
 	
-	$gr = array();
-	$gr = $nv_Request->get_typed_array( 'groups_view', 'post', '' );
-	$form_data['groups_view'] = implode( ',', $gr );	
-	$form_data['who_view'] = $nv_Request->get_int( 'who_view', 'post', 0 );
+	$_groups_post = $nv_Request->get_array( 'groups_view', 'post', array() );
+	$form_data['groups_view'] = ! empty( $_groups_post ) ? implode( ',', nv_groups_post( array_intersect( $_groups_post, array_keys( $groups_list ) ) ) ) : '';
 	
 	if( empty( $form_data['title'] ) )
 	{
@@ -132,29 +94,20 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 			$error = $lang_module['error_formtime'];	
 		}
 	}
-
-	if( $form_data['who_view'] != 3 )
-	{
-		$form_data['groups_view'] = '';
-	}
-	elseif( empty( $form_data['groups_view'] ) )
-	{
-		$error = $lang_module['error_groups_choice'];
-	}
 	
 	if( empty( $error ) ) 
 	{
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, who_view = ' . $form_data['who_view'] . ', groups_view = :groups_view WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 	
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, who_view, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, ' . intval( $form_data['who_view'] ) . ', :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -236,34 +189,18 @@ for( $i = 0; $i < 60; ++$i )
 }
 $xtpl->assign( 'emin', $select );
 
-// Hien thi cac nhom thanh vien mac dinh
-$who_view = $form_data['who_view'];
-$array['who_view'] = array();
-foreach( $array_who as $key => $who )
+// System groups user
+$groups_view = explode( ',', $form_data['groups_view'] );
+foreach( $groups_list as $_group_id => $_title )
 {
-	$array['who_view'][] = array(
-		'key' => $key,
-		'title' => $who,
-		'selected' => $key == $who_view ? ' selected="selected"' : ''
-	);
+	$xtpl->assign( 'GR_VIEW', array(
+		'value' => $_group_id,
+		'checked' => in_array( $_group_id, $groups_view ) ? ' checked="checked"' : '',
+		'title' => $_title
+	) );
+	$xtpl->parse( 'main.group_view' );
 }
 
-foreach( $array['who_view'] as $who )
-{
-	$xtpl->assign( 'WHO_VIEW', $who );
-	$xtpl->parse( 'main.who_view' );
-}
-
-// Hien thi cac nhom thanh vien mo rong
-if( ! empty( $array['groups_view'] ) )
-{
-	foreach( $array['groups_view'] as $group )
-	{
-		$xtpl->assign( 'GROUPS_VIEW', $group );
-		$xtpl->parse( 'main.group_view_empty.groups_view' );
-	}
-	$xtpl->parse( 'main.group_view_empty' );
-}
 
 if( empty( $alias ) ) $xtpl->parse( 'main.get_alias' );
 

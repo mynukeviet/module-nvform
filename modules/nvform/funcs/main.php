@@ -51,7 +51,7 @@ if( ! empty( $form_info['end_time'] ) and $form_info['end_time'] < NV_CURRENTTIM
 }
 
 // Kiểm tra quyền truy cập
-if( ! nv_set_allow( $form_info['who_view'], $form_info['groups_view'] ) )
+if( ! nv_user_in_groups( $form_info['groups_view'] ) )
 {
 	nv_theme_nvform_alert( $form_info['title'], $lang_module['error_form_not_premission_detail'], 'warning' );
 }

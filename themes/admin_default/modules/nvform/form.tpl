@@ -39,21 +39,11 @@
 				<tr>
 					<td class="right strong">{LANG.form_who_view} </td>
 					<td >
-						<select name="who_view" class="form-control w200">
-							<!-- BEGIN: who_view -->
-							<option value="{WHO_VIEW.key}"{WHO_VIEW.selected}>{WHO_VIEW.title}</option>
-							<!-- END: who_view -->
-						</select>
-						
-						<div id="form_groups">
-							<!-- BEGIN: group_view_empty -->
-							<strong>{LANG.form_groups}</strong>
-							<!-- BEGIN: groups_view -->
-							<input name="groups_view[]" value="{GROUPS_VIEW.key}" type="checkbox"{GROUPS_VIEW.checked} /> {GROUPS_VIEW.title}
-							<br />
-							<!-- END: groups_view -->
-							<!-- END: group_view_empty -->
+						<!-- BEGIN: group_view -->
+						<div class="row">
+							<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>
 						</div>
+						<!-- END: group_view -->
 					</td>
 				</tr>
 				<tr>
