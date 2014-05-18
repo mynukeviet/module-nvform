@@ -74,3 +74,16 @@ function nv_del_form(fid) {
 	}
 	return false;
 }
+
+function nv_del_answer(aid) {
+	if (confirm(nv_is_del_confirm[0])) {
+		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=report&nocache=' + new Date().getTime(), 'del=1&aid=' + aid, function(res) {
+			if (res == 'OK') {
+				window.location.href = window.location.href;
+			} else {
+				alert(nv_is_del_confirm[2]);
+			}
+		});
+	}
+	return false;
+}

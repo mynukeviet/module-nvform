@@ -27,7 +27,7 @@
 				</select></td>
 				<td class="center">
 					<em class="fa fa-tasks fa-lg">&nbsp;</em> <a href="{ROW.qlist}">{LANG.question}</a> &nbsp;
-					<em class="fa fa-bar-chart-o fa-lg">&nbsp;</em> <a href="{ROW.qlist}">{LANG.form_report}</a> &nbsp;
+					<em class="fa fa-bar-chart-o fa-lg">&nbsp;</em> <a href="{ROW.url_report}">{LANG.form_report}</a> &nbsp;
 					<em class="fa fa-edit fa-lg">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
 					<em class="fa fa-trash-o fa-lg">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_form({ROW.id});">{GLANG.delete}</a>
 				</td>

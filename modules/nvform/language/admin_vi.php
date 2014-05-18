@@ -33,6 +33,11 @@ $lang_module['form_start_time'] = 'Từ ngày';
 $lang_module['form_end_time'] = 'Đến ngày';
 $lang_module['form_report'] = 'Thống kê';
 
+$lang_module['report_who_answer'] = 'Trả lời';
+$lang_module['report_guest'] = 'Khách';
+$lang_module['report_answer_time'] = 'Thời gian';
+$lang_module['report_answer_edit_time'] = 'Cập nhật lần cuối';
+
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';
 $lang_module['question_manage'] = 'Quản lý câu hỏi';

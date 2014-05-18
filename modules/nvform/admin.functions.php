@@ -15,7 +15,7 @@ $submenu['question'] = $lang_module['question_list'];
 $submenu['question_content'] = $lang_module['question_add'];
 $submenu['config'] = $lang_module['config'];
 
-$allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content' );
+$allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content', 'report' );
 
 define( 'NV_IS_FILE_ADMIN', true );
 
