@@ -1,6 +1,7 @@
 <!-- BEGIN: main -->
+<input type="button" name="export_excel" class="btn btn-success" style="margin-bottom: 10px" value="{LANG.report_ex_excel}">
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
-	<table class="table table-striped table-bordered table-hover">
+	<table class="table table-striped table-bordered table-hover" id="table_report">
 		<colgroup>
 			<col width="20" />
 			<col class="w150" />
@@ -37,5 +38,29 @@
     $(function () {
         $("[rel='tooltip']").tooltip();
     });
+    
+	function nv_data_export(set_export, fid) {
+		$.ajax({
+			type : "POST",
+			url : "index.php?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=export_excel&nocache=" + new Date().getTime(),
+			data : "step=1&set_export=" + set_export + "&fid=" + fid,
+			success : function(response) {
+				alert(response);
+				if (response == "OK_GETFILE") {
+					nv_data_export(0);
+				} else if (response == "OK_COMPLETE") {
+					alert('{LANG.export_complete}');
+					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
+				} else {
+					alert(response);
+					//window.location.href = window.location.href;
+				}
+			}
+		});
+	}
+
+	$("input[name=export_excel]").click(function() {
+		nv_data_export(1, '{FID}' );
+	});
 </script>
 <!-- END: main -->

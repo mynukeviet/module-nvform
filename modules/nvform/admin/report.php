@@ -10,7 +10,7 @@
 
 if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
-$id = $nv_Request->get_int( 'id', 'get', 0 );
+$fid = $nv_Request->get_int( 'fid', 'get', 0 );
 $question_data = $answer_data = array();
 
 // Xoa cau tra loi
@@ -32,11 +32,11 @@ $xtpl = new XTemplate( 'report.tpl', NV_ROOTDIR . '/themes/' . $global_config['m
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
 
-$sql = 'SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $id;
+$sql = 'SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
 $result = $db->query( $sql );
 $answer_data = $result->fetchAll();
 
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $id;
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid;
 $result = $db->query( $sql );
 
 while( $row = $result->fetch() )
@@ -79,12 +79,14 @@ foreach( $answer_data as $answer )
 	$xtpl->parse( 'main.tr' );
 }
 
-$sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $id;
+$sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
 $result = $db->query( $sql );
 list( $title ) = $result->fetch( 3 );
 $page_title = sprintf( $lang_module['report_page_title'], $title );
 
 unset( $answer_data, $question_data );
+
+$xtpl->assign( 'FID', $fid );
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

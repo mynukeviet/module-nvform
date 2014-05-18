@@ -23,7 +23,7 @@ $groups_list = nv_groups_list();
 
 $form_data = array(
 	'who_view' => '',
-	'groups_view' => '',
+	'groups_view' => 6,
 	'description' => '',
 	'start_time' => '',
 	'end_time' => '');
@@ -80,7 +80,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['end_time'] = 0;
 	}
 	
-	$_groups_post = $nv_Request->get_array( 'groups_view', 'post', array() );
+	$_groups_post = $nv_Request->get_array( 'groups_view', 'post', 6 );
 	$form_data['groups_view'] = ! empty( $_groups_post ) ? implode( ',', nv_groups_post( array_intersect( $_groups_post, array_keys( $groups_list ) ) ) ) : '';
 	
 	if( empty( $form_data['title'] ) )
