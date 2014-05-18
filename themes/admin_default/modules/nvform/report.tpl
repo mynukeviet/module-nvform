@@ -21,10 +21,10 @@
 		<tbody>
 			<!-- BEGIN: tr -->
 			<tr>
-				<td><a href="javascript:void(0);" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
-				<td>{ANSWER.username}</td>
-				<td>{ANSWER.answer_time}</td>
-				<td>{ANSWER.answer_edit_time}</td>
+				<td class="success"><a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="bottom" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
+				<td class="success">{ANSWER.username}</td>
+				<td class="success">{ANSWER.answer_time}</td>
+				<td class="success">{ANSWER.answer_edit_time}</td>
 				<!-- BEGIN: td -->
 				<td>{ANSWER}</td>
 				<!-- END: td -->

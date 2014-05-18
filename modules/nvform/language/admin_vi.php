@@ -35,7 +35,7 @@ $lang_module['form_report'] = 'Thống kê';
 
 $lang_module['report_who_answer'] = 'Người trả lời';
 $lang_module['report_guest'] = 'Khách';
-$lang_module['report_answer_time'] = 'Thời gian';
+$lang_module['report_answer_time'] = 'Thời gian trả lời';
 $lang_module['report_answer_edit_time'] = 'Cập nhật lần cuối';
 $lang_module['report_page_title'] = 'Danh sách câu trả lời thuộc biểu mẫu "%s"';
 
