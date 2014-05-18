@@ -1,5 +1,6 @@
 <!-- BEGIN: main -->
 <input type="button" name="export_excel" class="btn btn-success" style="margin-bottom: 10px" value="{LANG.report_ex_excel}">
+<p id="export" class="text-center">&nbsp;</p>
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
 	<table class="table table-striped table-bordered table-hover" id="table_report">
 		<colgroup>
@@ -11,8 +12,8 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th>STT</th>
 				<th>&nbsp;</th>
+				<th>STT</th>
 				<th>{LANG.report_who_answer}</th>
 				<th>{LANG.report_answer_time}</th>
 				<th>{LANG.report_answer_edit_time}</th>
@@ -24,8 +25,8 @@
 		<tbody>
 			<!-- BEGIN: tr -->
 			<tr>
-				<td class="danger">{ANSWER.no}</td>
-				<td class="success"><a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="bottom" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
+				<td class="danger"><a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="bottom" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
+				<td class="success">{ANSWER.no}</td>
 				<td class="success">{ANSWER.username}</td>
 				<td class="success">{ANSWER.answer_time}</td>
 				<td class="success">{ANSWER.answer_edit_time}</td>
@@ -40,6 +41,7 @@
 <script type="text/javascript">
     $(function () {
         $("[rel='tooltip']").tooltip();
+        $("#export").hide();
     });
     
 	function nv_data_export(set_export, fid) {
@@ -48,21 +50,23 @@
 			url : "index.php?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=export_excel&nocache=" + new Date().getTime(),
 			data : "step=1&set_export=" + set_export + "&fid=" + fid,
 			success : function(response) {
-				alert(response);
 				if (response == "OK_GETFILE") {
 					nv_data_export(0);
 				} else if (response == "OK_COMPLETE") {
-					alert('{LANG.export_complete}');
+					$("#export").hide();
+					alert('{LANG.report_export_complete}');
 					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
 				} else {
+					$("#export").hide();
 					alert(response);
-					//window.location.href = window.location.href;
 				}
 			}
 		});
 	}
 
 	$("input[name=export_excel]").click(function() {
+		$("#export").show();
+		$('#export').html('<center>{LANG.report_export_note}<br /><br /><img src="{NV_BASE_SITEURL}images/load_bar.gif" alt="" /></center>');
 		nv_data_export(1, '{FID}' );
 	});
 </script>

@@ -41,6 +41,8 @@ $lang_module['report_page_title'] = 'Danh sách câu trả lời thuộc biểu 
 $lang_module['report_ex_excel'] = 'Xuất ra Excel';
 $lang_module['report_required_phpexcel'] = 'Để sử dụng chức năng này bạn cần cài đặt thư viện PHPExcel, bạn có thể download tại <a title="Download PHPExcel" href="http://nukeviet.vn/vi/store/other/phpexcel/">NukeViet Store</a>';
 $lang_module['report_export_excel'] = 'Xuất dữ liệu ra file Excel';
+$lang_module['report_export_complete'] = "Xuất dữ liệu thành công, bạn hãy download và giải nén để lấy các file dữ liệu";
+$lang_module['report_export_note'] = "Quá trình xuất dữ liệu có thể diễn ra trong vòng vài phút, vui lòng đợi đến khi có thông báo hoàn thành";
 
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';
