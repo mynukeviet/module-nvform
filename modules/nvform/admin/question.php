@@ -39,7 +39,7 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 
 $fid = $nv_Request->get_int( 'fid', 'get', 0 );
 
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data;
 $_rows = $db->query( $sql )->fetchAll();
 $num = sizeof( $_rows );
 
