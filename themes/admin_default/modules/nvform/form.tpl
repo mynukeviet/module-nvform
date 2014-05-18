@@ -28,14 +28,20 @@
 					<td class="right strong">{LANG.form_title}</td>
 					<td><input class="w500 form-control" type="text" value="{DATA.title}" name="title" id="idtitle" maxlength="255" /></td>
 				</tr>
+			</tbody>
+			<tbody>
 				<tr>
 					<td class="right strong">{LANG.form_alias}</td>
 					<td><input class="w500 form-control pull-left" type="text" value="{DATA.alias}" name="alias" id="idalias" maxlength="255" />&nbsp;<em class="fa fa-refresh fa-lg icon-pointer" onclick="get_alias('{ID}');">&nbsp;</em></td>
 				</tr>
+			</tbody>
+			<tbody>
 				<tr>
 					<td class="right strong">{LANG.form_description} </td>
 					<td >{DESCRIPTION}</td>
 				</tr>
+			</tbody>
+			<tbody>
 				<tr>
 					<td class="right strong">{LANG.form_who_view} </td>
 					<td >
@@ -46,6 +52,8 @@
 						<!-- END: group_view -->
 					</td>
 				</tr>
+			</tbody>
+			<tbody>
 				<tr>
 					<td class="right strong">{LANG.form_start_time} </td>
 					<td>
@@ -78,6 +86,18 @@
 						<span class="text-middle pull-left">&nbsp;:&nbsp;</span>
 						<select name="emin" class="form-control w100 pull-left">
 							{emin}
+						</select>
+					</td>
+				</tr>
+			</tbody>
+			<tbody>
+				<tr>
+					<td>{LANG.form_question_display}</td>
+					<td>
+						<select name="question_display" class="form-control w200">
+						<!-- BEGIN: question_display -->
+						<option value="{STYLE.value}" {STYLE.seleced}>{STYLE.title}</option>
+						<!-- END: question_display -->	
 						</select>
 					</td>
 				</tr>

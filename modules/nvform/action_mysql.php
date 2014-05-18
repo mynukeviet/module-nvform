@@ -26,6 +26,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
  	start_time int(11) NOT NULL DEFAULT '0',
  	end_time int(11) NOT NULL DEFAULT '0',
 	groups_view varchar(255) DEFAULT '',
+	question_display varchar(100) DEFAULT '',
  	weight smallint(4) NOT NULL DEFAULT '0',
  	add_time int(11) NOT NULL DEFAULT '0',
 	status tinyint(1) unsigned NOT NULL DEFAULT '0',

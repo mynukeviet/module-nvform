@@ -40,13 +40,21 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
     $xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'FORM', $form_info );
 	$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
-
+	
+	if( $form_info['question_display'] == 'question_display_left' )
+	{
+		$xtpl->assign( 'FORM_LEFT', 'class="form-horizontal"' );
+	}
+	
+	$i = 1;
 	foreach( $question_info as $row )
 	{
+		$row['no'] = $i;
 		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
-
+		$i++;
+		
 		if( $row['required'] )
 		{
 			$xtpl->parse( 'main.loop.required' );
@@ -226,6 +234,11 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			$xtpl->assign( 'QUESTION', $row );
 		
 			$xtpl->parse( 'main.loop.multiselect' );
+		}
+		
+		if( $form_info['question_display'] == 'question_display_left' )
+		{
+			$xtpl->assign( 'LEFT', array( 'label' => 'class="col-sm-3 control-label"', 'div' => 'class="col-sm-9"' ) );
 		}
 		
 		$xtpl->parse( 'main.loop' );

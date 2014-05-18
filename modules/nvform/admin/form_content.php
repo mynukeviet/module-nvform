@@ -26,7 +26,8 @@ $form_data = array(
 	'groups_view' => 6,
 	'description' => '',
 	'start_time' => '',
-	'end_time' => '');
+	'end_time' => '',
+	'question_display' => '');
 
 if( $id )
 {
@@ -57,6 +58,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
 	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
 	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
+	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
 	
 	if( ! empty( $form_data['start_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m ) )
 	{
@@ -100,14 +102,14 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, question_display = :question_display WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 	
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -117,6 +119,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':start_time', $form_data['start_time'], PDO::PARAM_STR );
 		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
+		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
 		
 		if( $query->execute() )
 		{
@@ -201,6 +204,21 @@ foreach( $groups_list as $_group_id => $_title )
 	$xtpl->parse( 'main.group_view' );
 }
 
+// Kieu hien thi
+$style_list = array(
+	'question_display_top' => $lang_module['form_question_display_top'],
+	'question_display_left' => $lang_module['form_question_display_left'] 
+);
+
+foreach( $style_list as $key => $_title )
+{
+	$xtpl->assign( 'STYLE', array(
+		'value' => $key,
+		'title' => $_title,
+		'seleced' => $form_data['question_display'] == $key ? ' selected="selected"' : ''
+	) );
+	$xtpl->parse( 'main.question_display' );
+}
 
 if( empty( $alias ) ) $xtpl->parse( 'main.get_alias' );
 
