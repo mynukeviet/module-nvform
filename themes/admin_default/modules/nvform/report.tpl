@@ -58,6 +58,7 @@
 					$("input[name=export_excel]").removeAttr("disabled");
 					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
 				} else {
+					$("input[name=export_excel]").removeAttr("disabled");
 					$("#export").hide();
 					alert(response);
 				}

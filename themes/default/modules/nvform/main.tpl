@@ -18,7 +18,7 @@
 <form action="" {FORM_LEFT} method="post" id="question">
 	<!-- BEGIN: loop -->
 		<div class="form-group">
-		<label {LEFT.label}><span class="label label-info">{QUESTION.no}</span>&nbsp;{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
+		<label {LEFT.label}>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
 		<div {LEFT.div}>
 			<!-- BEGIN: textbox -->
 				<input class="{QUESTION.required} {QUESTION.class} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />

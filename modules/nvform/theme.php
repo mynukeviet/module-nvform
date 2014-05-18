@@ -46,14 +46,11 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		$xtpl->assign( 'FORM_LEFT', 'class="form-horizontal"' );
 	}
 	
-	$i = 1;
 	foreach( $question_info as $row )
 	{
-		$row['no'] = $i;
 		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
-		$i++;
 		
 		if( $row['required'] )
 		{
