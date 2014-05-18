@@ -10,7 +10,6 @@
 
 if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
-$page_title = $lang_module['form_list'];
 $id = $nv_Request->get_int( 'id', 'get', 0 );
 $question_data = $answer_data = array();
 
@@ -78,6 +77,11 @@ foreach( $answer_data as $answer )
 	$xtpl->assign( 'ANSWER', $answer );
 	$xtpl->parse( 'main.tr' );
 }
+
+$sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $id;
+$result = $db->query( $sql );
+list( $title ) = $result->fetch( 3 );
+$page_title = sprintf( $lang_module['report_page_title'], $title );
 
 unset( $answer_data, $question_data );
 
