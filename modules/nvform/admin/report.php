@@ -47,6 +47,7 @@ while( $row = $result->fetch() )
 	$xtpl->parse( 'main.thead' );
 }
 
+$i = 1;
 foreach( $answer_data as $answer )
 {
 	$answer['answer'] = unserialize( $answer['answer'] );
@@ -55,7 +56,8 @@ foreach( $answer_data as $answer )
 	{
 		if( isset( $question_data[$qid] ) )
 		{
-			if( $question_data[$qid]['question_type'] == 'multiselect' )
+			$question_type = $question_data[$qid]['question_type'];
+			if( $question_type == 'multiselect' OR $question_type == 'select' OR $question_type == 'radio' OR $question_type == 'checkbox' )
 			{
 				$data = unserialize( $question_data[$qid]['question_choices'] );
 				$ans = $data[$ans];
@@ -75,8 +77,10 @@ foreach( $answer_data as $answer )
 	$answer['answer_time'] = nv_date( 'd/m/Y H:i', $answer['answer_time'] );
 	$answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date( 'd/m/Y H:i', $answer['answer_edit_time'] );
 	
+	$answer['no'] = $i;
 	$xtpl->assign( 'ANSWER', $answer );
 	$xtpl->parse( 'main.tr' );
+	$i++;
 }
 
 $sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
