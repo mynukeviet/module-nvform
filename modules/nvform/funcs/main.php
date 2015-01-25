@@ -57,11 +57,7 @@ if( ! nv_user_in_groups( $form_info['groups_view'] ) )
 }
 
 // Lấy thông tin câu hỏi
-$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1 ORDER BY `weight`" )->fetchAll();
-if( ! empty( $question_info ) )
-{
-	//var_dump($question_info); exit;
-}
+$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1 ORDER BY weight" )->fetchAll();
 
 $info = '';
 $filled = false;
