@@ -25,7 +25,7 @@ $form_data = array(
 	'who_view' => '',
 	'groups_view' => 6,
 	'description' => '',
-	'start_time' => '',
+	'start_time' => NV_CURRENTTIME,
 	'end_time' => '',
 	'question_display' => '');
 
@@ -59,7 +59,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
 	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
 	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
-	
+
 	if( ! empty( $form_data['start_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m ) )
 	{
 		$phour = $nv_Request->get_int( 'phour', 'post', 0 );
@@ -70,7 +70,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	{
 		$form_data['start_time'] = NV_CURRENTTIME;
 	}
-	
+
 	if( ! empty( $form_data['end_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['end_time'], $m ) )
 	{
 		$ehour = $nv_Request->get_int( 'ehour', 'post', 0 );
@@ -81,10 +81,10 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	{
 		$form_data['end_time'] = 0;
 	}
-	
+
 	$_groups_post = $nv_Request->get_array( 'groups_view', 'post', 6 );
 	$form_data['groups_view'] = ! empty( $_groups_post ) ? implode( ',', nv_groups_post( array_intersect( $_groups_post, array_keys( $groups_list ) ) ) ) : '';
-	
+
 	if( empty( $form_data['title'] ) )
 	{
 		$error = $lang_module['error_formtitle'];
@@ -93,11 +93,11 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	{
 		if( $form_data['start_time'] > $form_data['end_time'] )
 		{
-			$error = $lang_module['error_formtime'];	
+			$error = $lang_module['error_formtime'];
 		}
 	}
-	
-	if( empty( $error ) ) 
+
+	if( empty( $error ) )
 	{
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
@@ -108,7 +108,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
-	
+
 			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
@@ -120,7 +120,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
 		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
-		
+
 		if( $query->execute() )
 		{
 			if( $id )
@@ -166,7 +166,7 @@ if( !empty( $form_data['end_time'] ) )
 {
 	$tdate = date( 'H|i', $form_data['end_time'] );
 	$form_data['end_time'] = date( 'd/m/Y', $form_data['end_time'] );
-	list( $ehour, $emin ) = explode( '|', $tdate );	
+	list( $ehour, $emin ) = explode( '|', $tdate );
 }
 else
 {
@@ -207,7 +207,7 @@ foreach( $groups_list as $_group_id => $_title )
 // Kieu hien thi
 $style_list = array(
 	'question_display_top' => $lang_module['form_question_display_top'],
-	'question_display_left' => $lang_module['form_question_display_left'] 
+	'question_display_left' => $lang_module['form_question_display_left']
 );
 
 foreach( $style_list as $key => $_title )
