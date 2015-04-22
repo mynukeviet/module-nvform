@@ -369,8 +369,8 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 					if( $form_info['question_display'] == 'question_display_left' )
 					{
 						$xtpl->assign( 'LEFT', array(
-							'label' => 'class="col-sm-3 control-label"',
-							'div' => 'class="col-sm-9"'
+							'label' => 'class="col-sm-6 control-label"',
+							'div' => 'class="col-sm-18"'
 						) );
 					}
 
