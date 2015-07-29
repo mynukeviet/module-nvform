@@ -1,29 +1,20 @@
 Module cho phép tạo form khảo sát (Tương tự công cụ tạo form của google) hoạt động trên NukeViet với các trường dữ liệu phổ biến, giúp việc khảo sát và thu thập dữ liệu an toàn, tiện dụng.
 
-# Các chức năng chính
-- Quản lý biểu mẫu
- - Cập nhật biểu mẫu
- - Quản lý câu hỏi của biểu mẫu
- - Xem thống kê các câu trả lời (và xuất ra MS Excel)
-- Quản lý câu hỏi (với các loại câu trả lời bên dưới)
- - Số
- - Ngày
- - Một dòng (textbox)
- - Nhiều dòng (textarea)
- - Trình soạn thảo
- - Lựa chọn thả xuống (Selectdbox)
- - Một lựa chọn (Radio)
- - Nhiều lựa chọn (Checkbox)
- - Nhiều lựa chọn thả xuống (Multi selectbox)
+# Giấy phép
+Module được phát hành theo giấy phép GNU/GPL v2 hoặc các phiên bản cao hơn.
 
-# Ý tưởng phát triển
-- Tiếp tục mở rộng thêm các loại câu trả lời
- - Dạng lưới
- - Dạng chọn thời gian
- - Dạng bảng chọn
- - Trả lời mở rộng cho một lựa chọn
-- Chức năng xem lại form
-- Thống kê kết quả thu thập dưới dạng biểu đồ
-- Xuất thống kê với nhiều định dạng file (Hiện mới chỉ có MS Excel)
-- Thêm chức năng ngắt trang (Chia câu hỏi thành nhiều trang)
-- Cho phép người dùng đính kèm tập tin them mỗi phiếu trả lời (VD ứng viên nhập thông tin đính kèm CV)
+Xem [LICENSE.txt](LICENSE.txt) để biết thêm thông tin.
+
+# Cài đặt
+- Tải về mã nguồn
+- Đăng nhập quản trị tối cao. Truy cập menu Mở rộng / Cài dặt gói ứng dụng
+- Hoặc có thể cài đặt từ store (Cho phiên bản ổn định)
+
+# Tài trợ
+Công ty cổ phần phát triển nguồn mở Việt Nam (VINADES.,JSC)
+
+Phòng 2004 - Tòa nhà CT2 Nàng Hương, 583 Nguyễn Trãi, Hà Nội.
+
+Điện thoại: +84-4-85872007, Fax: +84-4-35500914, Email: contact@vinades.vn
+
+Website: www.vinades.vn | www.nukeviet.vn | www.webnhanh.vn | www.toasoandientu.vn
