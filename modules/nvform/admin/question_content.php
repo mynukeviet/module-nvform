@@ -78,6 +78,7 @@ else
 	$question['number_type_1'] = ' checked="checked"';
 	$question['current_date_0'] = ' checked="checked"';
 	$question['current_time_0'] = ' checked="checked"';
+	$question['editor_mode_0'] = ' checked="checked"';
 }
 
 if( $nv_Request->isset_request( 'submit', 'post' ) )
@@ -115,7 +116,9 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		$question['min_length'] = $nv_Request->get_int( 'min_length', 'post', 255 );
 		$question['max_length'] = $nv_Request->get_int( 'max_length', 'post', 255 );
 		$question['default_value'] = $nv_Request->get_title( 'default_value', 'post', '' );
-		$question['question_choices'] = '';
+
+		$editor_mode = $nv_Request->get_int( 'editor_mode', 'post', 0 );
+		$question['question_choices'] = serialize( array( 'editor_mode' => $editor_mode ) );
 	}
 	elseif( $question['question_type'] == 'number' )
 	{
@@ -300,6 +303,12 @@ else
 if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
 {
 	$text_questions = 1;
+
+	if( $question['question_type'] == 'editor' )
+	{
+		$question['editor_mode_0'] = ( $question_choices['editor_mode'] == 0 ) ? ' checked="checked"' : '';
+		$question['editor_mode_1'] = ( $question_choices['editor_mode'] == 1 ) ? ' checked="checked"' : '';
+	}
 }
 elseif( $question['question_type'] == 'number' )
 {

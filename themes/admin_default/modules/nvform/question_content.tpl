@@ -39,11 +39,15 @@
 				</tr>
 				<tr>
 					<td>{LANG.question_required}</td>
-					<td><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</td>
+					<td>
+						<label><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</label>
+					</td>
 				</tr>
 				<tr>
 					<td>{LANG.question_user_edit}</td>
-					<td><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</td>
+					<td>
+						<label><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</label>
+					</td>
 				</tr>
 				<tr>
 					<td>{LANG.question_type}:</td>
@@ -65,7 +69,7 @@
 	</div>
 
 	<div class="table-responsive">
-		<table class="table table-striped table-bordered table-hover" id="textfields" {DATAFORM.display_textquestions}>
+		<table class="table table-striped table-bordered table-hover" id="textfields" {DATAFORM.display_textquestions1}>
 			<caption>
 				{LANG.question_options_text}
 			</caption>
@@ -95,6 +99,13 @@
 				<tr id="max_length">
 					<td>{LANG.question_min_length}:</td>
 					<td><input class="w100 number form-control pull-left" type="text" value="{DATAFORM.min_length}" name="min_length"><span style="margin-left: 30px;" class="text-middle pull-left">{LANG.question_max_length}:</span><input class="w100 number form-control" type="text" value="{DATAFORM.max_length}" name="max_length"></td>
+				</tr>
+				<tr id="editor_mode">
+					<td>{LANG.question_editor_mode}:</td>
+					<td>
+						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>
+						<label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
+					</td>
 				</tr>
 			</tbody>
 		</table>

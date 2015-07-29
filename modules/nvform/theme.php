@@ -75,7 +75,8 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		}
 		elseif( $row['question_type'] == 'time' )
 		{
-			$row['value'] = $row['current_time'] ? NV_CURRENTTIME : $row['value'];
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			$row['value'] = $row['question_choices']['current_time'] ? NV_CURRENTTIME : $row['value'];
 			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'H:i', $row['value'] );
 			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.time' );
@@ -94,53 +95,30 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		{
 			if( defined( 'NV_EDITOR' ) )
 			{
-				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php' ;
+				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 			}
-			elseif( ! nv_function_exists( 'nv_aleditor' ) and file_exists( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor_php5.php' ) )
+			elseif( ! nv_function_exists( 'nv_aleditor' ) and file_exists( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor.js' ) )
 			{
 				define( 'NV_EDITOR', true );
 				define( 'NV_IS_CKEDITOR', true );
-				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor_php5.php' ;
+				$my_head .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . NV_EDITORSDIR . '/ckeditor/ckeditor.js"></script>';
 
-				function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '' )
+				function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '' )
 				{
-					// Create class instance.
-					$editortoolbar = array( array( 'Link', 'Unlink', 'Image', 'Table', 'Font', 'FontSize', 'RemoveFormat' ), array( 'Bold', 'Italic', 'Underline', 'StrikeThrough', '-', 'Subscript', 'Superscript', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'OrderedList', 'UnorderedList', '-', 'Outdent', 'Indent', 'TextColor', 'BGColor', 'Source' ) );
-					$CKEditor = new CKEditor();
-
-					// Do not print the code directly to the browser, return it instead
-					$CKEditor->returnOutput = true;
-					$CKEditor->config['skin'] = 'kama';
-					$CKEditor->config['entities'] = false;
-					// $CKEditor->config['enterMode'] = 2;
-					$CKEditor->config['language'] = NV_LANG_INTERFACE;
-					$CKEditor->config['toolbar'] = $editortoolbar;
-					// Path to CKEditor directory, ideally instead of relative dir, use an
-					// absolute path:
-					// $CKEditor->basePath = '/ckeditor/'
-					// If not set, CKEditor will try to detect the correct path.
-					$CKEditor->basePath = NV_BASE_SITEURL . NV_EDITORSDIR . '/ckeditor/';
-					// Set global configuration (will be used by all instances of CKEditor).
-					if( ! empty( $width ) )
-					{
-						$CKEditor->config['width'] = strpos( $width, '%' ) ? $width : intval( $width );
-					}
-					if( ! empty( $height ) )
-					{
-						$CKEditor->config['height'] = strpos( $height, '%' ) ? $height : intval( $height );
-					}
-					// Change default textarea attributes
-					$CKEditor->textareaAttributes = array( 'cols' => 80, 'rows' => 10 );
-					$val = nv_unhtmlspecialchars( $val );
-					return $CKEditor->editor( $textareaname, $val );
+					$return = '<textarea style="width: ' . $width . '; height:' . $height . ';" id="' . $module_data . '_' . $textareaname . '" name="' . $textareaname . '">' . $val . '</textarea>';
+					$return .= "<script type=\"text/javascript\">
+					CKEDITOR.replace( '" . $module_data . "_" . $textareaname . "', {" . ( ! empty( $customtoolbar ) ? 'toolbar : "' . $customtoolbar . '",' : '' ) . " width: '" . $width . "',height: '" . $height . "',});
+					</script>";
+					return $return;
 				}
 			}
 
 			if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 			{
+				$row['question_choices'] = unserialize( $row['question_choices'] );
 				$row['value'] = nv_htmlspecialchars( nv_editor_br2nl( $row['value'] ) );
 
-				$edits = nv_aleditor( 'question[' . $row['qid'] . ']', '100%', '350px' , $row['value'] );
+				$edits = nv_aleditor( 'question[' . $row['qid'] . ']', '100%', '350px' , $row['value'], !$row['question_choices']['editor_mode'] ? 'Basic' : '' );
 				$xtpl->assign( 'EDITOR', $edits );
 				$xtpl->parse( 'main.loop.editor' );
 			}

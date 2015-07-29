@@ -71,6 +71,9 @@ $lang_module['question_type_checkbox'] = 'Nhiều lựa chọn (checkbox)';
 $lang_module['question_type_multiselect'] = 'Nhiều lựa chọn thả xuống (multi selectbox)';
 $lang_module['question_class'] = 'Thuộc tính class html';
 $lang_module['question_editor_size'] = 'Kích thước ô nhập liệu';
+$lang_module['question_editor_mode'] = 'Loại trình soạn thảo';
+$lang_module['question_editor_mode_basic'] = 'Trình soạn thảo cơ bản';
+$lang_module['question_editor_mode_advance'] = 'Trình soạn thảo trù phú';
 $lang_module['question_options_text'] = 'Các tùy chọn khác';
 $lang_module['question_match_type'] = 'Yêu cầu kiểm tra với giá trị:';
 $lang_module['question_match_type_none'] = 'Không kiểm tra';
@@ -118,5 +121,3 @@ $lang_module['error_groups_choice'] = 'Chọn ít nhất một nhóm thành viê
 $lang_module['error_formtitle'] = 'Nhập tiêu đề biểu mẫu';
 $lang_module['error_formtime'] = 'Thời gian bắt đầu phải trước thời gian kết thúc';
 $lang_module['error_save'] = 'Có lỗi xảy ra trong quá trình lưu dữ liệu';
-
-?>
