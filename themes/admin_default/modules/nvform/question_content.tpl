@@ -100,10 +100,10 @@
 					<td>{LANG.question_min_length}:</td>
 					<td><input class="w100 number form-control pull-left" type="text" value="{DATAFORM.min_length}" name="min_length"><span style="margin-left: 30px;" class="text-middle pull-left">{LANG.question_max_length}:</span><input class="w100 number form-control" type="text" value="{DATAFORM.max_length}" name="max_length"></td>
 				</tr>
-				<tr id="editor_mode">
+				<tr id="editor_mode" {DATAFORM.display_editorquestions}>
 					<td>{LANG.question_editor_mode}:</td>
 					<td>
-						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>
+						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>&nbsp;&nbsp;
 						<label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
 					</td>
 				</tr>
@@ -347,7 +347,11 @@
 				$("#li_alphanumeric").show();
 				$("#li_email").show();
 				$("#li_url").show();
+			}
+			else if( question_type == 'editor' ){
+				$('#editor_mode').show();
 			} else {
+				$('#editor_mode').hide();
 				$("#li_alphanumeric").hide();
 				$("#li_email").hide();
 				$("#li_url").hide();

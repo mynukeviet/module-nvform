@@ -35,7 +35,7 @@ $fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
 $error = '';
-$text_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = 0;
+$text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = 0;
 
 if( $qid )
 {
@@ -300,15 +300,16 @@ else
 	$xtpl->assign( 'FORM_TEXT', $ftitle );
 }
 
-if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
+if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' )
 {
 	$text_questions = 1;
-
-	if( $question['question_type'] == 'editor' )
-	{
-		$question['editor_mode_0'] = ( $question_choices['editor_mode'] == 0 ) ? ' checked="checked"' : '';
-		$question['editor_mode_1'] = ( $question_choices['editor_mode'] == 1 ) ? ' checked="checked"' : '';
-	}
+}
+elseif( $question['question_type'] == 'editor' )
+{
+	$editor_questions = 1;
+	$text_questions = 1;
+	$question['editor_mode_0'] = ( $question_choices['editor_mode'] == 0 ) ? ' checked="checked"' : '';
+	$question['editor_mode_1'] = ( $question_choices['editor_mode'] == 1 ) ? ' checked="checked"' : '';
 }
 elseif( $question['question_type'] == 'number' )
 {
@@ -365,6 +366,7 @@ $xtpl->parse( 'main.loop_field_choice' );
 $xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 
 // Hien thi tuy chon theo kieu cau hoi
+$question['display_editorquestions'] = ( $editor_questions ) ? '' : 'style="display: none;"';
 $question['display_textquestions'] = ( $text_questions ) ? '' : 'style="display: none;"';
 $question['display_numberquestions'] = ( $number_questions ) ? '' : 'style="display: none;"';
 $question['display_datequestions'] = ( $date_questions ) ? '' : 'style="display: none;"';
