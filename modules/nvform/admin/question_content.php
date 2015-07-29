@@ -35,7 +35,7 @@ $fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
 $error = '';
-$text_questions = $number_questions = $date_questions = $choice_questions = $choice_type_text = 0;
+$text_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = 0;
 
 if( $qid )
 {
@@ -48,18 +48,18 @@ if( $qid )
 		Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question' );
 		die();
 	}
-	
+
 	if( ! empty( $question['question_choices'] ) )
 	{
 		$question_choices = unserialize( $question['question_choices'] );
 	}
-	
+
 	$question['question_form'] = $question['fid'];
 	$question['default_value_number'] = $question['default_value'];
-	
+
 	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;qid=' . $qid;
 }
-else 
+else
 {
 	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
 	$lang_submit = $lang_module['question_add'];
@@ -76,7 +76,8 @@ else
 	$question['min_number'] = 0;
 	$question['max_number'] = 1000;
 	$question['number_type_1'] = ' checked="checked"';
-	$question['current_date_0'] = ' checked="checked"';	
+	$question['current_date_0'] = ' checked="checked"';
+	$question['current_time_0'] = ' checked="checked"';
 }
 
 if( $nv_Request->isset_request( 'submit', 'post' ) )
@@ -87,19 +88,19 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 	$question['required'] = $nv_Request->get_int( 'required', 'post', 0 );
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['class'] = nv_substr( $nv_Request->get_title( 'class', 'post', '', 0, $preg_replace ), 0, 50);
-	
+
 	if( $qid )
 	{
 		$data_old = $db->query( 'SELECT fid, question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid )->fetch();
 		$question['question_form'] = $data_old['fid'];
 		$question['question_type'] = $data_old['question_type'];
 	}
-	else 
+	else
 	{
 		$question['question_form'] = $nv_Request->get_int( 'question_form', 'post', 0 );
 		$question['question_type'] = nv_substr( $nv_Request->get_title( 'question_type', 'post', '', 0, $preg_replace ), 0, 50);
 	}
-	
+
 	if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
 	{
 		$text_questions = 1;
@@ -186,6 +187,25 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$question['question_choices'] = serialize( array( 'current_date' => $question['current_date'] ) );
 		}
 	}
+	elseif( $question['question_type'] == 'time' )
+	{
+		$time_questions = 1;
+
+		$question['current_time'] = $nv_Request->get_int( 'current_time', 'post', 0 );
+		if( ! $question['current_time'] and preg_match( '/^([0-9]{1,2})\:([0-9]{1,2})$/', $nv_Request->get_string( 'default_time', 'post' ), $m ) )
+		{
+			$question['default_value'] = mktime( $m[1], $m[2], 0, 0, 0, 0 );
+		}
+		else
+		{
+			$question['default_value'] = 0;
+		}
+		$question['match_type'] = 'none';
+		$question['match_regex'] = $question['func_callback'] = '';
+		$question_choices['current_time'] = $question['current_time'];
+		$question['min_length'] = $question['max_length'] = 0;
+		$question['question_choices'] = serialize( array( 'current_time' => $question['current_time'] ) );
+	}
 	else
 	{
 		$choice_type_text = 1;
@@ -198,7 +218,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		$question_choice_value = $nv_Request->get_array( 'question_choice', 'post' );
 		$question_choice_text = $nv_Request->get_array( 'question_choice_text', 'post' );
 		$question_choices = array_combine( array_map( 'strip_punctuation', $question_choice_value ), array_map( 'strip_punctuation', $question_choice_text ) );
-		
+
 		if( ! empty( $question_choices ) )
 		{
 			unset( $question_choices[''] );
@@ -242,7 +262,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 				class = :class,
 				default_value= :default_value
 				WHERE qid = " . $qid;
-				
+
 			$stmt = $db->prepare( $query ) ;
             $stmt->bindParam( ':class', $question['class'], PDO::PARAM_STR );
 			$stmt->bindParam( ':default_value', $question['default_value'], PDO::PARAM_STR, strlen( $question['default_value'] ) );
@@ -298,6 +318,13 @@ elseif( $question['question_type'] == 'date' )
 	$question['min_date'] = empty( $question['min_length'] ) ? '' : date( 'd/m/Y', $question['min_length'] );
 	$question['max_date'] = empty( $question['max_length'] ) ? '' : date( 'd/m/Y', $question['max_length'] );
 }
+elseif( $question['question_type'] == 'time' )
+{
+	$time_questions = 1;
+	$question['current_time_1'] = ( $question_choices['current_time'] == 1 ) ? ' checked="checked"' : '';
+	$question['current_time_0'] = ( $question_choices['current_time'] == 0 ) ? ' checked="checked"' : '';
+	$question['default_time'] = empty( $question['default_value'] ) ? '' : date( 'H:i', $question['default_value'] );
+}
 else
 {
 	$choice_type_text = 1;
@@ -319,7 +346,7 @@ if( ! empty( $question_choices ) )
 		$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 	}
 }
-	
+
 $xtpl->assign( 'FIELD_CHOICES', array(
 	'number' => $number,
 	'key' => '',
@@ -332,6 +359,7 @@ $xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 $question['display_textquestions'] = ( $text_questions ) ? '' : 'style="display: none;"';
 $question['display_numberquestions'] = ( $number_questions ) ? '' : 'style="display: none;"';
 $question['display_datequestions'] = ( $date_questions ) ? '' : 'style="display: none;"';
+$question['display_timequestions'] = ( $time_questions ) ? '' : 'style="display: none;"';
 $question['display_choiceitems'] = ( $choice_type_text ) ? '' : 'style="display: none;"';
 
 $question['editordisabled'] = ( $question['question_type'] != 'editor' ) ? ' style="display: none;"' : '';
@@ -341,7 +369,7 @@ $question['checked_required'] = ( $question['required'] ) ? ' checked="checked"'
 $question['checked_user_editable'] = ( $question['user_editable'] ) ? ' checked="checked"' : '';
 
 if( ! $qid ) // Neu sua thi khong cho phep thay doi kieu cau hoi
-{	
+{
 	foreach( $array_field_type as $key => $value )
 	{
 		$xtpl->assign( 'FIELD_TYPE', array(
@@ -350,9 +378,9 @@ if( ! $qid ) // Neu sua thi khong cho phep thay doi kieu cau hoi
 			'checked' => ( $question['question_type'] == $key ) ? ' checked="checked"' : ''
 		) );
 		$xtpl->parse( 'main.question_type' );
-	}	
+	}
 }
-else 
+else
 {
 	$xtpl->assign( 'FIELD_TYPE_TEXT', $array_field_type[$question['question_type']] );
 }

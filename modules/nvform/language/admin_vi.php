@@ -61,6 +61,7 @@ $lang_module['question_user_edit_note'] = 'Cho phép thành viên thay đổi c�
 $lang_module['question_type'] = 'Loại dữ liệu';
 $lang_module['question_type_number'] = 'Số';
 $lang_module['question_type_date'] = 'Ngày';
+$lang_module['question_type_time'] = 'Thời gian';
 $lang_module['question_type_textbox'] = 'Một dòng (textbox)';
 $lang_module['question_type_textarea'] = 'Nhiều dòng (textarea)';
 $lang_module['question_type_editor'] = 'Trình soạn thảo';
@@ -84,11 +85,19 @@ $lang_module['question_options_number'] = 'Các tùy chọn cho dữ liệu';
 $lang_module['question_number_type'] = 'Kiểu số';
 $lang_module['question_integer'] = 'Số nguyên';
 $lang_module['question_real'] = 'Số thực';
+
+// Date field
 $lang_module['question_options_date'] = 'Các tùy chọn dữ liệu ngày tháng';
 $lang_module['question_current_date'] = 'Sử dụng ngày hiện tại';
 $lang_module['question_default_date'] = 'Sử dụng ngày';
 $lang_module['question_min_date'] = 'Từ ngày';
 $lang_module['question_max_date'] = 'Tới ngày';
+
+// Time field
+$lang_module['question_options_time'] = 'Các tùy chọn dữ liệu thời gian';
+$lang_module['question_current_time'] = 'Sử dụng thời gian hiện tại';
+$lang_module['question_default_time'] = 'Chỉ định thời gian';
+
 $lang_module['question_options_choice'] = 'Các tùy chọn';
 $lang_module['question_choices_empty'] = 'Các giá trị lựa chọn rỗng';
 $lang_module['question_number'] = 'STT';

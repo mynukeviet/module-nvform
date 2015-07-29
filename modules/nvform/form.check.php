@@ -56,6 +56,17 @@ foreach( $question_info as $row_f )
 				$error = sprintf( $lang_module['field_match_type_error'], $row_f['title'] );
 			}
 		}
+		elseif( $row_f['question_type'] == 'time' )
+		{
+			if( preg_match( "/^([0-9]{1,2})\:([0-9]{1,2})$/", $value, $m ) )
+			{
+				$value = mktime( $m[1], $m[2], 0, 0, 0, 0 );
+			}
+			else
+			{
+				$error = sprintf( $lang_module['field_match_type_error'], $row_f['title'] );
+			}
+		}
 		elseif( $row_f['question_type'] == 'textbox' )
 		{
 			if( $row_f['match_type'] == 'alphanumeric' )

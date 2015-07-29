@@ -23,19 +23,23 @@
 			<!-- BEGIN: textbox -->
 				<input class="{QUESTION.required} {QUESTION.class} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />
 			<!-- END: textbox -->
-	
+
 			<!-- BEGIN: date -->
 				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
 			<!-- END: date -->
-			
+
+			<!-- BEGIN: time -->
+				<input type="time" class="form-control {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}">
+			<!-- END: time -->
+
 			<!-- BEGIN: textarea -->
 			<textarea name="question[{QUESTION.qid}]" class="{QUESTION.class} form-control" {QUESTION.readonly}>{QUESTION.value}</textarea>
 			<!-- END: textarea -->
-			
+
 			<!-- BEGIN: editor -->
 			{EDITOR}
 			<!-- END: editor -->
-			
+
 			<!-- BEGIN: select -->
 			<select name="question[{QUESTION.qid}]" class="{QUESTION.class} form-control" {QUESTION.readonly}>
 				<!-- BEGIN: loop -->
@@ -43,15 +47,15 @@
 				<!-- END: loop -->
 			</select>
 			<!-- END: select -->
-			
+
 			<!-- BEGIN: radio -->
 			<label for="lb_{QUESTION_CHOICES.id}"> <input type="radio" name="question[{QUESTION.qid}]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
 			<!-- END: radio -->
-			
+
 			<!-- BEGIN: checkbox -->
 			<label for="lb_{QUESTION_CHOICES.id}"> <input type="checkbox" name="question[{QUESTION.qid}][]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
 			<!-- END: checkbox -->
-			
+
 			<!-- BEGIN: multiselect -->
 			<select name="question[{QUESTION.qid}][]" multiple="multiple" class="{QUESTION.class} form-control" {QUESTION.readonly}>
 				<!-- BEGIN: loop -->
@@ -69,7 +73,7 @@
 	</div>
 </form>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
 $(document).ready(function() {
 	$(".datepicker").datepicker({
 		dateFormat : "dd/mm/yy",

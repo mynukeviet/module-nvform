@@ -22,6 +22,7 @@ define( 'NV_IS_FILE_ADMIN', true );
 $array_field_type = array(
 	'number' => $lang_module['question_type_number'],
 	'date' => $lang_module['question_type_date'],
+	'time' => $lang_module['question_type_time'],
 	'textbox' => $lang_module['question_type_textbox'],
 	'textarea' => $lang_module['question_type_textarea'],
 	'editor' => $lang_module['question_type_editor'],

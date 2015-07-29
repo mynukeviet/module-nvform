@@ -19,12 +19,12 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
 
 	$aid = $nv_Request->get_int( 'aid', 'post', 0 );
-	
+
 	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid;
 	$db->exec( $sql );
 
 	nv_del_moduleCache( $module_name );
-	
+
 	die('OK');
 }
 
@@ -75,21 +75,29 @@ foreach( $answer_data as $answer )
 					$ans = $data[$ans];
 				}
 			}
+			elseif( $question_type == 'date' and !empty( $ans ) )
+			{
+				$ans = nv_date( 'd/m/Y', $ans );
+			}
+			elseif( $question_type == 'time' and !empty( $ans ) )
+			{
+				$ans = nv_date( 'H:i', $ans );
+			}
 		}
 		else
 		{
-			$ans = '';		
+			$ans = '';
 		}
-		
+
 		$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
-		
+
 		$xtpl->assign( 'ANSWER', $ans );
 		$xtpl->parse( 'main.tr.td' );
 	}
 
 	$answer['answer_time'] = nv_date( 'd/m/Y H:i', $answer['answer_time'] );
 	$answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date( 'd/m/Y H:i', $answer['answer_edit_time'] );
-	
+
 	$answer['no'] = $i;
 	$xtpl->assign( 'ANSWER', $answer );
 	$xtpl->parse( 'main.tr' );

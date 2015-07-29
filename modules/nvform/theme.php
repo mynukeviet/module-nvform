@@ -48,7 +48,8 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 	foreach( $question_info as $row )
 	{
-		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
+		// Giá trị mặc định
+		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : $row['default_value'];
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
 
@@ -71,6 +72,13 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			$row['datepicker'] = ( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) ) ? '' : 'datepicker';
 			$xtpl->assign( 'QUESTION', $row );
 			$xtpl->parse( 'main.loop.date' );
+		}
+		elseif( $row['question_type'] == 'time' )
+		{
+			$row['value'] = $row['current_time'] ? NV_CURRENTTIME : $row['value'];
+			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'H:i', $row['value'] );
+			$xtpl->assign( 'QUESTION', $row );
+			$xtpl->parse( 'main.loop.time' );
 		}
 		elseif( $row['question_type'] == 'textarea' )
 		{

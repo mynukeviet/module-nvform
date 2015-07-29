@@ -10,7 +10,9 @@
 
 <!-- BEGIN: error -->
 <div class="quote">
-	<blockquote class="error"><span>{ERROR}</span></blockquote>
+	<blockquote class="error">
+		<span>{ERROR}</span>
+	</blockquote>
 </div>
 <!-- END: error -->
 
@@ -28,16 +30,12 @@
 				</tr>
 				<tr>
 					<td>{LANG.question_form}</td>
-					<td>
-						<!-- BEGIN: form -->
-						<select name="question_form" class="form-control w350">
-							<!-- BEGIN: flist -->
-							<option value="{FLIST.id}" {FLIST.selected}>{FLIST.title}</option>
-							<!-- END: flist -->
-						</select>
-						<!-- END: form -->
-						{FORM_TEXT}
-					</td>
+					<td><!-- BEGIN: form -->
+					<select name="question_form" class="form-control w350">
+						<!-- BEGIN: flist -->
+						<option value="{FLIST.id}" {FLIST.selected}>{FLIST.title}</option>
+						<!-- END: flist -->
+					</select><!-- END: form --> {FORM_TEXT} </td>
 				</tr>
 				<tr>
 					<td>{LANG.question_required}</td>
@@ -50,14 +48,13 @@
 				<tr>
 					<td>{LANG.question_type}:</td>
 					<td>
-						<ul style="list-style: none; padding: 0">
-							<!-- BEGIN: question_type -->
-							<li>
-								<label for="f_{FIELD_TYPE.key}"> <input type="radio" {FIELD_TYPE.checked} id="f_{FIELD_TYPE.key}" value="{FIELD_TYPE.key}" name="question_type"> {FIELD_TYPE.value}</label>
-							</li>
-							<!-- END: question_type -->
-						</ul>{FIELD_TYPE_TEXT}
-					</td>
+					<ul style="list-style: none; padding: 0">
+						<!-- BEGIN: question_type -->
+						<li>
+							<label for="f_{FIELD_TYPE.key}"> <input type="radio" {FIELD_TYPE.checked} id="f_{FIELD_TYPE.key}" value="{FIELD_TYPE.key}" name="question_type"> {FIELD_TYPE.value}</label>
+						</li>
+						<!-- END: question_type -->
+					</ul>{FIELD_TYPE_TEXT} </td>
 				</tr>
 				<tr id="classfields" {DATAFORM.classdisabled}>
 					<td>{LANG.question_class}</td>
@@ -66,10 +63,12 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div class="table-responsive">
 		<table class="table table-striped table-bordered table-hover" id="textfields" {DATAFORM.display_textquestions}>
-			<caption>{LANG.question_options_text}</caption>
+			<caption>
+				{LANG.question_options_text}
+			</caption>
 			<colgroup>
 				<col class="w250" />
 				<col />
@@ -78,17 +77,16 @@
 				<tr>
 					<td>{LANG.question_match_type}</td>
 					<td>
-						<ul style="list-style: none; padding: 0">
-							<!-- BEGIN: match_type -->
-							<li id="li_{MATCH_TYPE.key}">
-								<label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}</label>
-								<!-- BEGIN: match_input -->
-								<input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}" {MATCH_TYPE.match_disabled}>
-								<!-- END: match_input -->
-							</li>
-							<!-- END: match_type -->
-						</ul>
-					</td>
+					<ul style="list-style: none; padding: 0">
+						<!-- BEGIN: match_type -->
+						<li id="li_{MATCH_TYPE.key}">
+							<label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}</label>
+							<!-- BEGIN: match_input -->
+							<input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}" {MATCH_TYPE.match_disabled}>
+							<!-- END: match_input -->
+						</li>
+						<!-- END: match_type -->
+					</ul></td>
 				</tr>
 				<tr>
 					<td>{LANG.question_default_value}:</td>
@@ -104,7 +102,9 @@
 
 	<div class="table-responsive">
 		<table class="table table-striped table-bordered table-hover" id="numberfields" {DATAFORM.display_numberquestions}>
-			<caption>{LANG.question_options_number}</caption>
+			<caption>
+				{LANG.question_options_number}
+			</caption>
 			<colgroup>
 				<col class="w250" />
 				<col />
@@ -128,7 +128,9 @@
 
 	<div class="table-responsive">
 		<table class="table table-striped table-bordered table-hover" id="datefields" {DATAFORM.display_datequestions}>
-			<caption>{LANG.question_options_date}</caption>
+			<caption>
+				{LANG.question_options_date}
+			</caption>
 			<colgroup>
 				<col class="w250" />
 				<col />
@@ -136,49 +138,84 @@
 			<tbody>
 				<tr>
 					<td>{LANG.question_default_value}:</td>
-					<td>
-						<label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>
-						<br />
-						<table>
+					<td><label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>
+					<br />
+					<table>
 						<tr>
 							<td><input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.question_default_date}</td>
 							<td>
-								<div class="input-group">
-									<input class="date form-control" style="width:100px" type="text" value="{DATAFORM.default_date}" name="default_date" id="default_date">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" id="default_date-btn"> <em class="fa fa-calendar fa-fix">&nbsp;</em></button>
-									</span>
-								</div>
-							</td>
+							<div class="input-group">
+								<input class="date form-control" style="width:100px" type="text" value="{DATAFORM.default_date}" name="default_date" id="default_date">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" id="default_date-btn">
+										<em class="fa fa-calendar fa-fix">&nbsp;</em>
+									</button> </span>
+							</div></td>
 						</tr>
-						</table>
-					</td>
+					</table></td>
 				</tr>
 				<tr>
 					<td>{LANG.question_min_date}:</td>
 					<td>
-						<div class="input-group pull-left">
-							<input class="datepicker required date form-control pull-left" style="width:100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10">
-							<span class="input-group-btn pull-left">
-								<button class="btn btn-default" type="button" id="min_date-btn"> <em class="fa fa-calendar fa-fix">&nbsp;</em></button>
-							</span>
-						</div>
-						<span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_date}:</span>
-						<div class="input-group pull-left">
-							<input class="datepicker required date form-control" style="width:100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10">
-							<span class="input-group-btn pull-left">
-								<button class="btn btn-default" type="button" id="max_date-btn"> <em class="fa fa-calendar fa-fix">&nbsp;</em></button>
-							</span>
-						</div>
-					</td>
+					<div class="input-group pull-left">
+						<input class="datepicker required date form-control pull-left" style="width:100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10">
+						<span class="input-group-btn pull-left">
+							<button class="btn btn-default" type="button" id="min_date-btn">
+								<em class="fa fa-calendar fa-fix">&nbsp;</em>
+							</button> </span>
+					</div><span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_date}:</span>
+					<div class="input-group pull-left">
+						<input class="datepicker required date form-control" style="width:100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10">
+						<span class="input-group-btn pull-left">
+							<button class="btn btn-default" type="button" id="max_date-btn">
+								<em class="fa fa-calendar fa-fix">&nbsp;</em>
+							</button> </span>
+					</div></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	
+
+	<div class="table-responsive">
+		<table class="table table-striped table-bordered table-hover" id="timefields" {DATAFORM.display_timequestions}>
+			<caption>
+				{LANG.question_options_time}
+			</caption>
+			<colgroup>
+				<col class="w250" />
+				<col />
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>{LANG.question_default_value}:</td>
+					<td><label><input type="radio" value="1" name="current_time" {DATAFORM.current_time_1}>{LANG.question_current_time}</label>
+					<br />
+					<table>
+						<tr>
+							<td>
+								<label><input type="radio" value="0" name="current_time" {DATAFORM.current_time_0}> {LANG.question_default_time}</label>
+							</td>
+							<td>
+							<div class="input-group">
+								<input class="form-control" type="time" value="{DATAFORM.default_time}" name="default_time">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button">
+										<em class="fa fa-clock-o fa-fix">&nbsp;</em>
+									</button> </span>
+							</div>
+							</td>
+						</tr>
+					</table></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 	<div class="table-responsive">
 		<table class="table table-striped table-bordered table-hover" id="choiceitems" {DATAFORM.display_choiceitems}>
-		<caption>{LANG.field_options_choice}</caption>
+			<caption>
+				{LANG.field_options_choice}
+			</caption>
 			<colgroup>
 				<col class="w250" />
 				<col span="3"/>
@@ -226,22 +263,23 @@
 		newitem += '	</tr>';
 		$('#choiceitems').append(newitem);
 	}
-	
+
+
 	$(document).ready(function() {
 		nv_load_current_date();
-		
-		$('#default_date-btn').click(function(){
+
+		$('#default_date-btn').click(function() {
 			$("#default_date").datepicker('show');
 		});
-		
-		$('#min_date-btn').click(function(){
+
+		$('#min_date-btn').click(function() {
 			$("#min_date").datepicker('show');
 		});
-		
-		$('#max_date-btn').click(function(){
+
+		$('#max_date-btn').click(function() {
 			$("#max_date").datepicker('show');
 		});
-		
+
 		$('#fquestion').validate({
 			rules : {
 				question : {
@@ -258,7 +296,7 @@
 			return (fieldCheck_rule.test(str) ) ? true : false;
 		}, ' required a-z, 0-9, and _ only');
 	});
-	
+
 	function nv_load_current_date() {
 		if ($("input[name=current_date]:checked").val() == 1) {
 			$("input[name=default_date]").attr('disabled', 'disabled');
@@ -269,26 +307,28 @@
 				changeMonth : true,
 				changeYear : true,
 				showOtherMonths : true,
-				showOn: 'focus'
+				showOn : 'focus'
 			});
 			$("input[name=default_date]").removeAttr("disabled");
 			$("input[name=default_date]").focus();
 		}
 	}
-	
+
+
 	$(".datepicker").datepicker({
 		dateFormat : "dd/mm/yy",
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn: 'focus'
+		showOn : 'focus'
 	});
-	
+
 	$("input[name=question_type]").click(function() {
 		var question_type = $("input[name='question_type']:checked").val();
 		$("#textfields").hide();
 		$("#numberfields").hide();
 		$("#datefields").hide();
+		$("#timefields").hide();
 		$("#choicetypes").hide();
 		$("#choiceitems").hide();
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
@@ -306,11 +346,13 @@
 			$("#numberfields").show();
 		} else if (question_type == 'date') {
 			$("#datefields").show();
+		} else if (question_type == 'time') {
+			$("#timefields").show();
 		} else {
 			$("#choiceitems").show();
 		}
 	});
-	
+
 	$("input[name=match_type]").click(function() {
 		$("input[name=match_regex]").attr('disabled', 'disabled');
 		$("input[name=match_callback]").attr('disabled', 'disabled');
