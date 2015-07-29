@@ -60,24 +60,24 @@ if( $step == 1 )
 	$objWorksheet->getPageSetup()->setPaperSize( PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4 );
 	$objWorksheet->getPageSetup()->setHorizontalCentered( true );
 	$objWorksheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd( 1, 3 );
-	
+
 	$columnIndex = 3; // Cot bat dau ghi du lieu
 	$rowIndex = 3; // Dong bat dau ghi du lieu
 
 	$sql = 'SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
 	$result = $db->query( $sql );
 	$answer_data = $result->fetchAll();
-	
+
 	$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid;
 	$result = $db->query( $sql );
-	
+
 	$TextColumnIndex = PHPExcel_Cell::stringFromColumnIndex( 0 );
 	$objWorksheet->setCellValue( $TextColumnIndex . $rowIndex, $lang_module['report_who_answer'] );
 	$TextColumnIndex = PHPExcel_Cell::stringFromColumnIndex( 1 );
 	$objWorksheet->setCellValue( $TextColumnIndex . $rowIndex, $lang_module['report_answer_time'] );
 	$TextColumnIndex = PHPExcel_Cell::stringFromColumnIndex( 2 );
 	$objWorksheet->setCellValue( $TextColumnIndex . $rowIndex, $lang_module['report_answer_edit_time'] );
-	
+
 	while( $row = $result->fetch() )
 	{
 		$question_data[$row['qid']] = $row;
@@ -85,7 +85,7 @@ if( $step == 1 )
 		$objWorksheet->setCellValue( $TextColumnIndex . $rowIndex, $row['title'] );
 		$columnIndex++;
 	}
-	
+
 	$i = $rowIndex + 1;
 	foreach( $answer_data as $answer )
 	{
@@ -94,21 +94,21 @@ if( $step == 1 )
 		$answer['username'] = ! $answer['username'] ? $lang_module['report_guest'] : $answer['username'];
 		$answer['answer_time'] = nv_date( 'd/m/Y H:i', $answer['answer_time'] );
 		$answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? 'N/A' : nv_date( 'd/m/Y H:i', $answer['answer_edit_time'] );
-		
+
 		$col = PHPExcel_Cell::stringFromColumnIndex( 0 );
 		$CellValue = nv_unhtmlspecialchars( $answer['username'] );
 		$objWorksheet->setCellValue( $col . $i, $CellValue );
-		
+
 		$col = PHPExcel_Cell::stringFromColumnIndex( 1 );
 		$CellValue = nv_unhtmlspecialchars( $answer['answer_time'] );
 		$objWorksheet->setCellValue( $col . $i, $CellValue );
-		
+
 		$col = PHPExcel_Cell::stringFromColumnIndex( 2 );
 		$CellValue = nv_unhtmlspecialchars( $answer['answer_edit_time'] );
 		$objWorksheet->setCellValue( $col . $i, $CellValue );
-		
+
 		$answer['answer'] = unserialize( $answer['answer'] );
-	
+
 		foreach( $answer['answer'] as $qid => $ans )
 		{
 			if( isset( $question_data[$qid] ) )
@@ -134,11 +134,11 @@ if( $step == 1 )
 			}
 			else
 			{
-				$ans = '';		
+				$ans = '';
 			}
-			
+
 			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
-			
+
 			$col = PHPExcel_Cell::stringFromColumnIndex( $j );
 			$CellValue = nv_unhtmlspecialchars( $ans );
 			$objWorksheet->setCellValue( $col . $i, $CellValue );
@@ -162,7 +162,7 @@ if( $step == 1 )
 		)
 	);
 	$objWorksheet->getStyle( 'A3' . ':' . $highestColumn . $highestRow )->applyFromArray( $styleArray );
-	
+
 	$styleArray = array(
         'fill' => array(
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -216,7 +216,6 @@ elseif( $step == 2 and $nv_Request->isset_request( $module_data . '_export_filen
 	}
 
 	$file_src = NV_ROOTDIR . '/' . NV_TEMP_DIR . '/' . NV_TEMPNAM_PREFIX . change_alias( $lang_module['export'] ) . '_' . md5( nv_genpass( 10 ) . session_id() ) . '.zip';
-	require_once NV_ROOTDIR . '/includes/class/pclzip.class.php';
 	$zip = new PclZip( $file_src );
 	$zip->create( $arry_file_zip, PCLZIP_OPT_REMOVE_PATH, NV_ROOTDIR . "/" . NV_CACHEDIR );
 	$filesize = @filesize( $file_src );
@@ -229,7 +228,6 @@ elseif( $step == 2 and $nv_Request->isset_request( $module_data . '_export_filen
 	}
 
 	//Download file
-	require_once NV_ROOTDIR . '/includes/class/download.class.php' ;
 	$download = new download( $file_src, NV_ROOTDIR . "/" . NV_TEMP_DIR, basename( change_alias( $lang_module['export'] ) . ".zip" ) );
 	$download->download_file();
 	exit();
