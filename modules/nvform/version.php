@@ -16,11 +16,9 @@ $module_version = array(
 		'submenu' => 'main',
 		'is_sysmod' => 0,
 		'virtual' => 1,
-		'version' => '4.0.0',
+		'version' => '4.0.10',
 		'date' => 'Tue, 8 Apr 2014 15:13:44 GMT',
-		'author' => 'VINADES (contact@vinades.vn)',
+		'author' => 'hongoctrien (hongoctrien@2mit.org)',
 		'uploads_dir' => array($module_name),
 		'note' => ''
 	);
-
-?>

@@ -12,7 +12,7 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
 
 /**
  * nv_theme_nvform_main()
- * 
+ *
  * @param mixed $form_info
  * @param mixed $question
  * @return
@@ -20,7 +20,7 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
 function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info )
 {
     global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $op, $my_head;
-	
+
 	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
 	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
 
@@ -30,7 +30,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 					});
 				 });";
 	$my_head .= " </script>\n";
-	
+
 	if( ! empty( $form_info['end_time'] ) )
 	{
 		$form_info['close_info'] = sprintf( $lang_module['form_close_info'], date( 'd/m/Y H:i' ) );
@@ -40,18 +40,18 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
     $xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'FORM', $form_info );
 	$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
-	
+
 	if( $form_info['question_display'] == 'question_display_left' )
 	{
 		$xtpl->assign( 'FORM_LEFT', 'class="form-horizontal"' );
 	}
-	
+
 	foreach( $question_info as $row )
 	{
 		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
 		$xtpl->assign( 'QUESTION', $row );
-		
+
 		if( $row['required'] )
 		{
 			$xtpl->parse( 'main.loop.required' );
@@ -93,7 +93,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 				define( 'NV_EDITOR', true );
 				define( 'NV_IS_CKEDITOR', true );
 				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor_php5.php' ;
-			
+
 				function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '' )
 				{
 					// Create class instance.
@@ -131,7 +131,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 			{
 				$row['value'] = nv_htmlspecialchars( nv_editor_br2nl( $row['value'] ) );
-				
+
 				$edits = nv_aleditor( 'question[' . $row['qid'] . ']', '100%', '350px' , $row['value'] );
 				$xtpl->assign( 'EDITOR', $edits );
 				$xtpl->parse( 'main.loop.editor' );
@@ -156,13 +156,13 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 				) );
 				$xtpl->parse( 'main.loop.select.loop' );
 			}
-			
+
 			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
 			{
 				$row['readonly'] = 'readonly="readonly"';
 			}
 			$xtpl->assign( 'QUESTION', $row );
-			
+
 			$xtpl->parse( 'main.loop.select' );
 		}
 		elseif( $row['question_type'] == 'radio' )
@@ -193,7 +193,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			{
 				$row['readonly'] = 'onclick="return false;"';
 			}
-				
+
 			$number = 0;
 			$row['question_choices'] = unserialize( $row['question_choices'] );
 			$valuecheckbox = ( ! empty( $row['value'] ) ) ? explode( ',', $row['value'] ) : array();
@@ -227,17 +227,17 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			{
 				$row['readonly'] = 'readonly="readonly"';
 			}
-			
+
 			$xtpl->assign( 'QUESTION', $row );
-		
+
 			$xtpl->parse( 'main.loop.multiselect' );
 		}
-		
+
 		if( $form_info['question_display'] == 'question_display_left' )
 		{
-			$xtpl->assign( 'LEFT', array( 'label' => 'class="col-sm-3 control-label"', 'div' => 'class="col-sm-9"' ) );
+			$xtpl->assign( 'LEFT', array( 'label' => 'class="col-sm-6 control-label"', 'div' => 'class="col-sm-18"' ) );
 		}
-		
+
 		$xtpl->parse( 'main.loop' );
 	}
 
@@ -253,7 +253,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 /**
  * nv_theme_nvform_alert()
- * 
+ *
  * @param mixed $message
  * @param mixed $type
  * @return
@@ -261,7 +261,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 function nv_theme_nvform_alert( $message_title, $message_content, $type = 'info', $link_back = '', $time_back = 0 )
 {
     global $module_file, $module_info, $page_title;
-	
+
     $xtpl = new XTemplate( 'info.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
 
 	if( $type == 'success' )
@@ -280,14 +280,14 @@ function nv_theme_nvform_alert( $message_title, $message_content, $type = 'info'
 	{
 		$class = 'class="alert alert-info"';
 	}
-	
+
 	if( ! empty( $message_title ) )
 	{
 		$page_title = $message_title;
 		$xtpl->assign( 'TITLE', $message_title );
 		$xtpl->parse( 'main.title' );
 	}
-	else 
+	else
 	{
 		$page_title = $module_info['custom_title'];
 	}
@@ -295,7 +295,7 @@ function nv_theme_nvform_alert( $message_title, $message_content, $type = 'info'
 	$xtpl->assign( 'CLASS', $class );
     $xtpl->parse( 'main' );
     $contents = $xtpl->text( 'main' );
-	
+
 	include ( NV_ROOTDIR . "/includes/header.php" );
 	echo nv_site_theme( $contents );
 	include ( NV_ROOTDIR . "/includes/footer.php" );

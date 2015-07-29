@@ -8,7 +8,7 @@
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
 
-if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' ); 
+if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
 
 if( ! empty( $array_op ) )
 {
@@ -16,10 +16,10 @@ if( ! empty( $array_op ) )
 	$fid = explode( '-', $fid );
 	$fid = intval( $fid[0] );
 }
-else 
+else
 {
 	Header( 'Location: ' . $global_config['site_url'] );
-	die();	
+	die();
 }
 
 $form_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . " WHERE id = " . $fid )->fetch();
@@ -57,11 +57,7 @@ if( ! nv_user_in_groups( $form_info['groups_view'] ) )
 }
 
 // Lấy thông tin câu hỏi
-$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1 ORDER BY `weight`" )->fetchAll();
-if( ! empty( $question_info ) )
-{
-	//var_dump($question_info); exit;
-}
+$question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_question WHERE fid = " . $fid . " AND status = 1 ORDER BY weight" )->fetchAll();
 
 $info = '';
 $filled = false;
@@ -84,20 +80,20 @@ if( defined( 'NV_IS_USER' ) )
 if( $nv_Request->isset_request( 'submit', 'post') )
 {
 	$error = '';
-	
+
 	if( $filled )
 	{
 		$old_answer_info = $answer_info;
 	}
-	
+
 	$answer_info = $nv_Request->get_array( 'question', 'post' );
-	require NV_ROOTDIR . '/modules/' . $module_name . '/form.check.php';
-	
+	require NV_ROOTDIR . '/modules/' . $module_file . '/form.check.php';
+
 	if( empty( $error ) )
 	{
 		$answer_info = serialize( $answer_info );
-		if( ! isset( $user_info['userid'] ) ) $user_info['userid'] = 0;	
-		
+		if( ! isset( $user_info['userid'] ) ) $user_info['userid'] = 0;
+
 		if ( $filled )
 		{
 			$sth = $db->prepare( "UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_edit_time = " . NV_CURRENTTIME . " WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'] );
@@ -106,7 +102,7 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 		{
 			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, who_answer, answer_time) VALUES (" . $fid . ", :answer, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
 		}
-		
+
 		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
 		if( $sth->execute() )
 		{

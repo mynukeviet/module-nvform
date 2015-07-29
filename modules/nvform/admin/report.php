@@ -61,7 +61,19 @@ foreach( $answer_data as $answer )
 			if( $question_type == 'multiselect' OR $question_type == 'select' OR $question_type == 'radio' OR $question_type == 'checkbox' )
 			{
 				$data = unserialize( $question_data[$qid]['question_choices'] );
-				$ans = $data[$ans];
+				if( $question_type == 'checkbox' )
+				{
+					$result = explode( ',', $ans );
+					$ans = '';
+					foreach( $result as $key )
+					{
+						$ans .= $data[$key] . "<br />";
+					}
+				}
+				else
+				{
+					$ans = $data[$ans];
+				}
 			}
 		}
 		else
