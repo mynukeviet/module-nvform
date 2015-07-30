@@ -69,6 +69,7 @@ $lang_module['question_type_select'] = 'Lựa chọn thả xuống (selectbox)';
 $lang_module['question_type_radio'] = 'Một lựa chọn (radio)';
 $lang_module['question_type_checkbox'] = 'Nhiều lựa chọn (checkbox)';
 $lang_module['question_type_multiselect'] = 'Nhiều lựa chọn thả xuống (multi selectbox)';
+$lang_module['question_type_gird'] = 'Lưới';
 $lang_module['question_class'] = 'Thuộc tính class html';
 $lang_module['question_editor_size'] = 'Kích thước ô nhập liệu';
 $lang_module['question_editor_mode'] = 'Loại trình soạn thảo';
@@ -101,12 +102,19 @@ $lang_module['question_options_time'] = 'Các tùy chọn dữ liệu thời gia
 $lang_module['question_current_time'] = 'Sử dụng thời gian hiện tại';
 $lang_module['question_default_time'] = 'Chỉ định thời gian';
 
+// Grid field
+$lang_module['question_options_grid'] = 'Các tùy chọn dữ liệu lưới';
+$lang_module['question_options_grid_col'] = 'Cột dữ liệu';
+$lang_module['question_options_grid_row'] = 'Hàng dữ liệu';
+
 $lang_module['question_options_choice'] = 'Các tùy chọn';
 $lang_module['question_choices_empty'] = 'Các giá trị lựa chọn rỗng';
 $lang_module['question_number'] = 'STT';
 $lang_module['question_value'] = 'Giá trị';
 $lang_module['question_text'] = 'Miêu tả';
 $lang_module['question_add_choice'] = 'Thêm lựa chọn';
+$lang_module['question_add_col'] = 'Thêm cột';
+$lang_module['question_add_row'] = 'Thêm hàng';
 $lang_module['question_date_error'] = 'Giá trị của Min Date cần nhỏ hơn Max Date';
 $lang_module['question_number_error'] = 'Giá trị của Min Value cần nhỏ hơn Max Value';
 $lang_module['question_match_type_error'] = '%s không đúng quy tắc';
