@@ -35,7 +35,7 @@ $fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
 $error = '';
-$text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = 0;
+$text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = $grid_questions = 0;
 
 if( $qid )
 {
@@ -102,6 +102,14 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		$question['question_type'] = nv_substr( $nv_Request->get_title( 'question_type', 'post', '', 0, $preg_replace ), 0, 50);
 	}
 
+	// Set default value
+	$question['default_value'] = '';
+	$question['min_length'] = 0;
+	$question['max_length'] = 0;
+	$question['match_type'] = 'none';
+	$question['func_callback'] = '';
+	$question['match_regex'] = '';
+
 	if( $question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor' )
 	{
 		$text_questions = 1;
@@ -134,8 +142,6 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		}
 		$question['min_length'] = $nv_Request->get_int( 'min_number_length', 'post', 0 );
 		$question['max_length'] = $nv_Request->get_int( 'max_number_length', 'post', 0 );
-		$question['match_type'] = 'none';
-		$question['match_regex'] = $question['func_callback'] = '';
 
 		$question_choices['number_type'] = $question['number_type'];
 		$question['default_value'] = $question['default_value_number'];
@@ -156,17 +162,10 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		{
 			$question['min_length'] = mktime( 0, 0, 0, $m[2], $m[1], $m[3] );
 		}
-		else
-		{
-			$question['min_length'] = 0;
-		}
+
 		if( preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string( 'max_date', 'post' ), $m ) )
 		{
 			$question['max_length'] = mktime( 0, 0, 0, $m[2], $m[1], $m[3] );
-		}
-		else
-		{
-			$question['max_length'] = 0;
 		}
 
 		$question['current_date'] = $nv_Request->get_int( 'current_date', 'post', 0 );
@@ -178,8 +177,6 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		{
 			$question['default_value'] = 0;
 		}
-		$question['match_type'] = 'none';
-		$question['match_regex'] = $question['func_callback'] = '';
 		$question_choices['current_date'] = $question['current_date'];
 		if( $question['min_length'] >= $question['max_length'] )
 		{
@@ -203,18 +200,23 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		{
 			$question['default_value'] = 0;
 		}
-		$question['match_type'] = 'none';
-		$question['match_regex'] = $question['func_callback'] = '';
 		$question_choices['current_time'] = $question['current_time'];
-		$question['min_length'] = $question['max_length'] = 0;
 		$question['question_choices'] = serialize( array( 'current_time' => $question['current_time'] ) );
+	}
+	elseif( $question['question_type'] == 'grid' )
+	{
+		$grid_questions = 1;
+
+		$question_grid = array(
+			'col' => $nv_Request->get_array( 'question_grid_col', 'post', array() ),
+			'row' => $nv_Request->get_array( 'question_grid_row', 'post', array() )
+		);
+
+		$question['question_choices'] = serialize( $question_grid );
 	}
 	else
 	{
 		$choice_type_text = 1;
-		$question['match_type'] = 'none';
-		$question['match_regex'] = $question['func_callback'] = '';
-		$question['min_length'] = 0;
 		$question['max_length'] = 255;
 		$question['default_value'] = $nv_Request->get_int( 'default_value_choice', 'post', 0 );
 
@@ -335,6 +337,34 @@ elseif( $question['question_type'] == 'time' )
 	$question['current_time_0'] = ( $question_choices['current_time'] == 0 ) ? ' checked="checked"' : '';
 	$question['default_time'] = empty( $question['default_value'] ) ? '' : date( 'H:i', $question['default_value'] );
 }
+elseif( $question['question_type'] == 'grid' )
+{
+	$grid_questions = 1;
+	if( !empty( $question_choices ) )
+	{
+		// Loop collumn
+		if( !empty( $question_choices['col'] ) )
+		{
+			foreach( $question_choices['col'] as $key => $value )
+			{
+				$xtpl->assign( 'COL', array( 'key' => $key, 'value' => $value ) );
+				$xtpl->parse( 'main.loop_question_grid_col' );
+			}
+			$xtpl->assign( 'COL_NUMFIELD', sizeof( $question_choices['col'] ) - 1 );
+		}
+
+		// Loop row
+		if( !empty( $question_choices['row'] ) )
+		{
+			foreach( $question_choices['row'] as $key => $value )
+			{
+				$xtpl->assign( 'ROW', array( 'key' => $key, 'value' => $value ) );
+				$xtpl->parse( 'main.loop_question_grid_row' );
+			}
+			$xtpl->assign( 'ROW_NUMFIELD', sizeof( $question_choices['row'] ) - 1 );
+		}
+	}
+}
 else
 {
 	$choice_type_text = 1;
@@ -365,6 +395,9 @@ $xtpl->assign( 'FIELD_CHOICES', array(
 $xtpl->parse( 'main.loop_field_choice' );
 $xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 
+// Load loai du lieu grid
+
+
 // Hien thi tuy chon theo kieu cau hoi
 $question['display_editorquestions'] = ( $editor_questions ) ? '' : 'style="display: none;"';
 $question['display_textquestions'] = ( $text_questions ) ? '' : 'style="display: none;"';
@@ -372,6 +405,7 @@ $question['display_numberquestions'] = ( $number_questions ) ? '' : 'style="disp
 $question['display_datequestions'] = ( $date_questions ) ? '' : 'style="display: none;"';
 $question['display_timequestions'] = ( $time_questions ) ? '' : 'style="display: none;"';
 $question['display_choiceitems'] = ( $choice_type_text ) ? '' : 'style="display: none;"';
+$question['display_gridfields'] = ( $grid_questions ) ? '' : 'style="display: none;"';
 
 $question['editordisabled'] = ( $question['question_type'] != 'editor' ) ? ' style="display: none;"' : '';
 $question['classdisabled'] = ( $question['question_type'] == 'editor' ) ? ' style="display: none;"' : '';

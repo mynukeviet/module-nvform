@@ -33,8 +33,9 @@
 						<!-- BEGIN: flist -->
 						<option value="{FLIST.id}" {FLIST.selected}>{FLIST.title}</option>
 						<!-- END: flist -->
-					</select><!-- END: form -->
-					{FORM_TEXT}
+					</select>
+					<!-- END: form -->
+					<span style="margin-top: 6px; display: block;">{FORM_TEXT}</span>
 				</div>
 			</div>
 			<div class="form-group">
@@ -71,42 +72,44 @@
 		</div>
 	</div>
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			{LANG.question_options_text}
-		</div>
-		<div class="panel-body">
-			<div class="form-group">
-				<label class="col-sm-3 control-label"><strong>{LANG.question_match_type}</strong></label>
-				<div class="col-sm-21">
-					<ul style="list-style: none; padding: 0">
-						<!-- BEGIN: match_type -->
-						<li id="li_{MATCH_TYPE.key}">
-							<label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}</label>
-							<!-- BEGIN: match_input -->
-							<input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}" {MATCH_TYPE.match_disabled}>
-							<!-- END: match_input -->
-						</li>
-						<!-- END: match_type -->
-					</ul>
-				</div>
+	<div id="textfields" {DATAFORM.display_textquestions}>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{LANG.question_options_text}
 			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label"><strong>{LANG.question_default_value}</strong></label>
-				<div class="col-sm-21">
-					<input class="form-control" maxlength="255" type="text" value="{DATAFORM.default_value}" name="default_value">
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-sm-3 control-label"><strong>{LANG.question_match_type}</strong></label>
+					<div class="col-sm-21">
+						<ul style="list-style: none; padding: 0">
+							<!-- BEGIN: match_type -->
+							<li id="li_{MATCH_TYPE.key}">
+								<label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}</label>
+								<!-- BEGIN: match_input -->
+								<input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}" {MATCH_TYPE.match_disabled}>
+								<!-- END: match_input -->
+							</li>
+							<!-- END: match_type -->
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div class="form-group" id="max_length">
-				<label class="col-sm-3 control-label"><strong>{LANG.question_min_length}</strong></label>
-				<div class="col-sm-21">
-					<input class="w100 number form-control pull-left" type="text" value="{DATAFORM.min_length}" name="min_length"><span style="margin-left: 30px;" class="text-middle pull-left">{LANG.question_max_length}:</span><input class="w100 number form-control" type="text" value="{DATAFORM.max_length}" name="max_length">
+				<div class="form-group">
+					<label class="col-sm-3 control-label"><strong>{LANG.question_default_value}</strong></label>
+					<div class="col-sm-21">
+						<input class="form-control" maxlength="255" type="text" value="{DATAFORM.default_value}" name="default_value">
+					</div>
 				</div>
-			</div>
-			<div class="form-group" id="editor_mode" {DATAFORM.display_editorquestions}>
-				<label class="col-sm-3 control-label"><strong>{LANG.question_editor_mode}</strong></label>
-				<div class="col-sm-21">
-					<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>&nbsp;&nbsp; <label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
+				<div class="form-group" id="max_length">
+					<label class="col-sm-3 control-label"><strong>{LANG.question_min_length}</strong></label>
+					<div class="col-sm-21">
+						<input class="w100 number form-control pull-left" type="text" value="{DATAFORM.min_length}" name="min_length"><span style="margin-left: 30px;" class="text-middle pull-left">{LANG.question_max_length}:</span><input class="w100 number form-control" type="text" value="{DATAFORM.max_length}" name="max_length">
+					</div>
+				</div>
+				<div class="form-group" id="editor_mode" {DATAFORM.display_editorquestions}>
+					<label class="col-sm-3 control-label"><strong>{LANG.question_editor_mode}</strong></label>
+					<div class="col-sm-21">
+						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>&nbsp;&nbsp; <label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -244,7 +247,7 @@
 		</div>
 	</div>
 
-	<div id="girdfields" {DATAFORM.display_girdfields1}>
+	<div id="gridfields" {DATAFORM.display_gridfields}>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				{LANG.question_options_grid}
@@ -253,15 +256,23 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label"><strong>{LANG.question_options_grid_col}</strong></label>
 					<div class="col-sm-21">
-						<input type="text" class="form-control" name="question_grid_col[{FIELD_GRID.col}]" />
-						<a href="javascript:void(0)">{LANG.question_add_col}</a>
+						<div id="question_grid_col">
+							<!-- BEGIN: loop_question_grid_col -->
+							<input type="text" class="form-control m-bottom" name="question_grid_col[{COL.key}]" value="{COL.value}" />
+							<!-- END: loop_question_grid_col -->
+						</div>
+						<a href="javascript:void(0)" onclick="nv_question_grid_col_additem()">{LANG.question_add_col}</a>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-3 control-label"><strong>{LANG.question_options_grid_row}</strong></label>
 					<div class="col-sm-21">
-						<input type="text" class="form-control" name="question_grid_row[{FIELD_GRID.row}]" />
-						<a href="javascript:void(0)">{LANG.question_add_row}</a>
+						<div id="question_grid_row">
+							<!-- BEGIN: loop_question_grid_row -->
+							<input type="text" class="form-control m-bottom" name="question_grid_row[{ROW.key}]" value="{ROW.value}" />
+							<!-- END: loop_question_grid_row -->
+						</div>
+						<a href="javascript:void(0)" onclick="nv_question_grid_row_additem()">{LANG.question_add_row}</a>
 					</div>
 				</div>
 			</div>
@@ -286,6 +297,19 @@
 		$('#choiceitems').append(newitem);
 	}
 
+	var col_numfield = '{COL_NUMFIELD}';
+	function nv_question_grid_col_additem() {
+		col_numfield++;
+		var newitem = '<input type="text" class="form-control m-bottom" name="question_grid_col[' + col_numfield + ']" value="" />';
+		$('#question_grid_col').append(newitem);
+	}
+
+	var row_numfield = '{ROW_NUMFIELD}';
+	function nv_question_grid_row_additem() {
+		row_numfield++;
+		var newitem = '<input type="text" class="form-control m-bottom" name="question_grid_row[' + row_numfield + ']" value="" />';
+		$('#question_grid_row').append(newitem);
+	}
 
 	$(document).ready(function() {
 		nv_load_current_date();
@@ -353,6 +377,7 @@
 		$("#timefields").hide();
 		$("#choicetypes").hide();
 		$("#choiceitems").hide();
+		$("#gridfields").hide();
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
 				$("#li_alphanumeric").show();
@@ -373,6 +398,8 @@
 			$("#datefields").show();
 		} else if (question_type == 'time') {
 			$("#timefields").show();
+		} else if (question_type == 'grid') {
+			$("#gridfields").show();
 		} else {
 			$("#choiceitems").show();
 		}

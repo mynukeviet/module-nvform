@@ -20,7 +20,7 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 	if( ! defined( 'NV_IS_AJAX' ) ) die( 'Wrong URL' );
 
 	$qid = $nv_Request->get_int( 'qid', 'post', 0 );
-	
+
 	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
 	$db->exec( $sql );
 
@@ -57,7 +57,7 @@ else
 {
 	$max_fid = $db->query( "SELECT MAX(id) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 	$max_fid = intval( $max_fid );
-	
+
 	Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question&fid=' . $max_fid );
 	die();
 }
