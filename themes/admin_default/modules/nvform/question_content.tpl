@@ -247,7 +247,7 @@
 		</div>
 	</div>
 
-	<div id="gridfields" {DATAFORM.display_gridfields1}>
+	<div id="gridfields" {DATAFORM.display_gridfields}>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				{LANG.question_options_grid}
