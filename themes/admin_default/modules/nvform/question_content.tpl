@@ -2,11 +2,6 @@
 <link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.core.css" rel="stylesheet" />
 <link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.theme.css" rel="stylesheet" />
 <link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/jquery/jquery.validate.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.validator-{NV_LANG_INTERFACE}.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 
 <!-- BEGIN: error -->
 <div class="quote">
@@ -20,14 +15,14 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><strong>{LANG.question}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 control-label"><strong>{LANG.question}</strong></label>
+				<div class="col-sm-20">
 					<textarea id="question" name="question" class="form-control">{DATAFORM.title}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><strong>{LANG.question_form}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 control-label"><strong>{LANG.question_form}</strong></label>
+				<div class="col-sm-20">
 					<!-- BEGIN: form -->
 					<select name="question_form" class="form-control">
 						<!-- BEGIN: flist -->
@@ -39,20 +34,20 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 text-right"><strong>{LANG.question_required}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 text-right"><strong>{LANG.question_required}</strong></label>
+				<div class="col-sm-20">
 					<label><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 text-right"><strong>{LANG.question_user_edit}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 text-right"><strong>{LANG.question_user_edit}</strong></label>
+				<div class="col-sm-20">
 					<label><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</label>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 text-right"><strong>{LANG.question_type}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 text-right"><strong>{LANG.question_type}</strong></label>
+				<div class="col-sm-20">
 					<div class="row">
 						<!-- BEGIN: question_type -->
 						<div class="col-sm-8">
@@ -64,8 +59,8 @@
 				</div>
 			</div>
 			<div class="form-group" id="classfields" {DATAFORM.classdisabled}>
-				<label class="col-sm-3 control-label"><strong>{LANG.question_class}</strong></label>
-				<div class="col-sm-21">
+				<label class="col-sm-4 control-label"><strong>{LANG.question_class}</strong></label>
+				<div class="col-sm-20">
 					<input class="validalphanumeric form-control" type="text" value="{DATAFORM.class}" name="class" maxlength="50">
 				</div>
 			</div>
@@ -79,8 +74,8 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_match_type}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_match_type}</strong></label>
+					<div class="col-sm-20">
 						<ul style="list-style: none; padding: 0">
 							<!-- BEGIN: match_type -->
 							<li id="li_{MATCH_TYPE.key}">
@@ -94,20 +89,28 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_default_value}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_default_value}</strong></label>
+					<div class="col-sm-20">
 						<input class="form-control" maxlength="255" type="text" value="{DATAFORM.default_value}" name="default_value">
 					</div>
 				</div>
-				<div class="form-group" id="max_length">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_min_length}</strong></label>
-					<div class="col-sm-21">
-						<input class="w100 number form-control pull-left" type="text" value="{DATAFORM.min_length}" name="min_length"><span style="margin-left: 30px;" class="text-middle pull-left">{LANG.question_max_length}:</span><input class="w100 number form-control" type="text" value="{DATAFORM.max_length}" name="max_length">
+				<div id="max_length">
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><strong>{LANG.question_min_length}</strong></label>
+						<div class="col-sm-20">
+							<input class="number form-control" type="text" value="{DATAFORM.min_length}" name="min_length">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><strong>{LANG.question_max_length}</strong></label>
+						<div class="col-sm-20">
+							<input class="number form-control" type="text" value="{DATAFORM.max_length}" name="max_length">
+						</div>
 					</div>
 				</div>
 				<div class="form-group" id="editor_mode" {DATAFORM.display_editorquestions}>
-					<label class="col-sm-3 control-label"><strong>{LANG.question_editor_mode}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_editor_mode}</strong></label>
+					<div class="col-sm-20">
 						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>&nbsp;&nbsp; <label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
 					</div>
 				</div>
@@ -122,20 +125,20 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-sm-3 text-right"><strong>{LANG.question_number_type}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 text-right"><strong>{LANG.question_number_type}</strong></label>
+					<div class="col-sm-20">
 						<input type="radio" value="1" name="number_type" {DATAFORM.number_type_1}>{LANG.question_integer} <input type="radio" value="2" name="number_type" {DATAFORM.number_type_2}> {LANG.question_real}
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_default_value}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_default_value}</strong></label>
+					<div class="col-sm-20">
 						<input class="required number form-control" maxlength="255" type="text" value="{DATAFORM.default_value_number}" name="default_value_number">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_min_length}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_min_length}</strong></label>
+					<div class="col-sm-20">
 						<input class="w150 required number form-control pull-left" type="text" value="{DATAFORM.min_number}" name="min_number_length" maxlength="11"><span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_length}:</span><input class="w100 required number form-control" type="text" value="{DATAFORM.max_number}" name="max_number_length" maxlength="11">
 					</div>
 				</div>
@@ -150,8 +153,8 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-sm-3 text-right"><strong>{LANG.question_default_value}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 text-right"><strong>{LANG.question_default_value}</strong></label>
+					<div class="col-sm-20">
 						<label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>
 						<label><input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.question_default_date}</label>
 						<div class="input-group">
@@ -164,8 +167,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 text-right"><strong>{LANG.question_min_date}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 text-right"><strong>{LANG.question_min_date}</strong></label>
+					<div class="col-sm-20">
 						<div class="input-group pull-left">
 							<input class="datepicker required date form-control pull-left" style="width:100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10">
 							<span class="input-group-btn pull-left">
@@ -193,8 +196,8 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-sm-3 text-right"><strong>{LANG.question_default_value}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 text-right"><strong>{LANG.question_default_value}</strong></label>
+					<div class="col-sm-20">
 						<label><input type="radio" value="1" name="current_time" {DATAFORM.current_time_1}>{LANG.question_current_time}</label>
 						<label><input type="radio" value="0" name="current_time" {DATAFORM.current_time_0}> {LANG.question_default_time}</label>
 						<div class="input-group">
@@ -256,12 +259,12 @@
 			</div>
 			<div class="panel-body">
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_options_grid_col}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_options_grid_col}</strong></label>
+					<div class="col-sm-20">
 						<div id="question_grid_col">
 							<!-- BEGIN: loop_question_grid_col -->
 							<div class="row">
-								<div class="col-sm-3">
+								<div class="col-sm-4">
 									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[{COL.number}][key]" value="{COL.key}" placeholder="{LANG.question_value}" />
 								</div>
 								<div class="col-sm-20">
@@ -278,12 +281,12 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-sm-3 control-label"><strong>{LANG.question_options_grid_row}</strong></label>
-					<div class="col-sm-21">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_options_grid_row}</strong></label>
+					<div class="col-sm-20">
 						<div id="question_grid_row">
 							<!-- BEGIN: loop_question_grid_row -->
 							<div class="row">
-								<div class="col-sm-3">
+								<div class="col-sm-4">
 									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[{ROW.number}][key]" value="{ROW.key}" placeholder="{LANG.question_value}" />
 								</div>
 								<div class="col-sm-20">
@@ -307,6 +310,12 @@
 	</div>
 </form>
 
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.validator-{NV_LANG_INTERFACE}.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
+
 <script type="text/javascript">
 	var items = '{FIELD_CHOICES_NUMBER}';
 	function nv_choice_fields_additem() {
@@ -325,7 +334,7 @@
 		col_numfield++;
 		var newitem = '';
 		newitem += '<div class="row">';
-		newitem += '<div class="col-sm-3">';
+		newitem += '<div class="col-sm-4">';
 		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[' + col_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
 		newitem += '</div>';
 		newitem += '<div class="col-sm-20">';
@@ -343,7 +352,7 @@
 		row_numfield++;
 		var newitem = '';
 		newitem += '<div class="row">';
-		newitem += '<div class="col-sm-3">';
+		newitem += '<div class="col-sm-4">';
 		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[' + row_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
 		newitem += '</div>';
 		newitem += '<div class="col-sm-20">';
