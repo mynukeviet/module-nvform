@@ -267,7 +267,7 @@
 								<div class="col-sm-4">
 									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[{COL.number}][key]" value="{COL.key}" placeholder="{LANG.question_value}" />
 								</div>
-								<div class="col-sm-20">
+								<div class="col-sm-19">
 									<input type="text" class="form-control m-bottom" name="question_grid_col[{COL.number}][value]" value="{COL.value}" placeholder="{LANG.question_text}" />
 								</div>
 								<div class="col-sm-1 text-middle">
@@ -289,7 +289,7 @@
 								<div class="col-sm-4">
 									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[{ROW.number}][key]" value="{ROW.key}" placeholder="{LANG.question_value}" />
 								</div>
-								<div class="col-sm-20">
+								<div class="col-sm-19">
 									<input type="text" class="form-control m-bottom" name="question_grid_row[{ROW.number}][value]" value="{ROW.value}" placeholder="{LANG.question_text}" />
 								</div>
 								<div class="col-sm-1 text-middle">
@@ -337,7 +337,7 @@
 		newitem += '<div class="col-sm-4">';
 		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[' + col_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
 		newitem += '</div>';
-		newitem += '<div class="col-sm-20">';
+		newitem += '<div class="col-sm-19">';
 		newitem += '	<input type="text" class="form-control m-bottom" name="question_grid_col[' + col_numfield + '][value]" value="" placeholder="{LANG.question_text}" />';
 		newitem += '</div>';
 		newitem += '<div class="col-sm-1 text-middle">';
@@ -355,7 +355,7 @@
 		newitem += '<div class="col-sm-4">';
 		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[' + row_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
 		newitem += '</div>';
-		newitem += '<div class="col-sm-20">';
+		newitem += '<div class="col-sm-19">';
 		newitem += '	<input type="text" class="form-control m-bottom" name="question_grid_row[' + row_numfield + '][value]" value="" placeholder="{LANG.question_text}" />';
 		newitem += '</div>';
 		newitem += '<div class="col-sm-1 text-middle">';
