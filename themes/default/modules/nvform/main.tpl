@@ -82,6 +82,26 @@
 				<!-- END: row -->
 			</table>
 			<!-- END: grid -->
+
+			<!-- BEGIN: table -->
+			<table class="table table-striped table-bordered table-hover">
+				<tr>
+					<td>&nbsp;</td>
+					<!-- BEGIN: col -->
+					<td>{COL.value}</td>
+					<!-- END: col -->
+				</tr>
+				<!-- BEGIN: row -->
+				<tr>
+					<td>{ROW.value}</td>
+					<!-- BEGIN: td -->
+					<td><input type="text" class="form-control" name="question[{QUESTION.qid}][{NAME.col}][{NAME.row}]" value="{VALUE}" /></td>
+					<!-- END: td -->
+				</tr>
+				<!-- END: row -->
+			</table>
+			<!-- END: table -->
+
 			</div>
 		</div>
 

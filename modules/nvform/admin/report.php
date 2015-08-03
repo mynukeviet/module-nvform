@@ -104,6 +104,10 @@ foreach( $answer_data as $answer )
 					}
 				}
 			}
+			else
+			{
+				$ans = '';
+			}
 		}
 		else
 		{

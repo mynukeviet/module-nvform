@@ -266,7 +266,7 @@
 									<input type="text" class="form-control m-bottom" name="question_grid_col[{COL.number}][value]" value="{COL.value}" placeholder="{LANG.question_text}" />
 								</div>
 								<div class="col-sm-1 text-middle">
-									<input type="radio" name="question_grid_col_default" value="{COL.key}" {COL.checked} />
+									<input type="radio" name="question_grid_col_default" value="{COL.number}" {COL.checked} />
 								</div>
 							</div>
 							<!-- END: loop_question_grid_col -->
@@ -288,7 +288,7 @@
 									<input type="text" class="form-control m-bottom" name="question_grid_row[{ROW.number}][value]" value="{ROW.value}" placeholder="{LANG.question_text}" />
 								</div>
 								<div class="col-sm-1 text-middle">
-									<input type="radio" name="question_grid_row_default" value="{ROW.key}" {ROW.checked} />
+									<input type="radio" name="question_grid_row_default" value="{ROW.number}" {ROW.checked} />
 								</div>
 							</div>
 							<!-- END: loop_question_grid_row -->
@@ -404,7 +404,6 @@
 		}
 	}
 
-
 	$(".datepicker").datepicker({
 		dateFormat : "dd/mm/yy",
 		changeMonth : true,
@@ -442,7 +441,7 @@
 			$("#datefields").show();
 		} else if (question_type == 'time') {
 			$("#timefields").show();
-		} else if (question_type == 'grid') {
+		} else if (question_type == 'grid' || question_type == 'table') {
 			$("#gridfields").show();
 		} else {
 			$("#choiceitems").show();

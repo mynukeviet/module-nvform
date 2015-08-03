@@ -30,5 +30,6 @@ $array_field_type = array(
 	'radio' => $lang_module['question_type_radio'],
 	'checkbox' => $lang_module['question_type_checkbox'],
 	'multiselect' => $lang_module['question_type_multiselect'],
-	'grid' => $lang_module['question_type_grid']
+	'grid' => $lang_module['question_type_grid'],
+	'table' => $lang_module['question_type_table']
 );

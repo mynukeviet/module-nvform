@@ -256,6 +256,44 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 			$xtpl->parse( 'main.loop.grid' );
 		}
+		elseif( $row['question_type'] == 'table' )
+		{
+			$question_choices = unserialize( $row['question_choices'] );
+			$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
+
+			// Loop collumn
+			if( !empty( $question_choices['col'] ) )
+			{
+				foreach( $question_choices['col'] as $choices )
+				{
+					$xtpl->assign( 'COL', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+					$xtpl->parse( 'main.loop.table.col' );
+				}
+			}
+
+			// Loop row
+			if( !empty( $question_choices['row'] ) )
+			{
+				foreach( $question_choices['row'] as $choices )
+				{
+					$xtpl->assign( 'ROW', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+
+					if( !empty( $question_choices['col'] ) )
+					{
+						foreach( $question_choices['col'] as $col )
+						{
+							$xtpl->assign( 'NAME', array( 'col' => $col['key'], 'row' => $choices['key'] ) );
+							$xtpl->assign( 'VALUE', isset( $row['value'][$col['key']][$choices['key']] ) ? $row['value'][$col['key']][$choices['key']] : '' );
+							$xtpl->parse( 'main.loop.table.row.td' );
+						}
+					}
+
+					$xtpl->parse( 'main.loop.table.row' );
+				}
+			}
+
+			$xtpl->parse( 'main.loop.table' );
+		}
 
 		if( $form_info['question_display'] == 'question_display_left' )
 		{

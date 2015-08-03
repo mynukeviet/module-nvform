@@ -203,7 +203,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		$question_choices['current_time'] = $question['current_time'];
 		$question['question_choices'] = serialize( array( 'current_time' => $question['current_time'] ) );
 	}
-	elseif( $question['question_type'] == 'grid' )
+	elseif( $question['question_type'] == 'grid' OR $question['question_type'] == 'table' )
 	{
 		$grid_questions = 1;
 
@@ -234,8 +234,11 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			}
 		}
 
+		// Thiet dat gia tri mac dinh
 		$default_col = $nv_Request->get_title( 'question_grid_col_default', 'post' );
+		$default_col = $question_grid['col'][$default_col]['key'];
 		$default_row = $nv_Request->get_title( 'question_grid_row_default', 'post' );
+		$default_row = $question_grid['row'][$default_row]['key'];
 		$question['default_value'] = $default_col . '||' . $default_row;
 
 		$question['question_choices'] = serialize( $question_grid );
@@ -363,7 +366,7 @@ elseif( $question['question_type'] == 'time' )
 	$question['current_time_0'] = ( $question_choices['current_time'] == 0 ) ? ' checked="checked"' : '';
 	$question['default_time'] = empty( $question['default_value'] ) ? '' : date( 'H:i', $question['default_value'] );
 }
-elseif( $question['question_type'] == 'grid' )
+elseif( $question['question_type'] == 'grid' OR $question['question_type'] == 'table' )
 {
 	$grid_questions = 1;
 }
@@ -375,7 +378,7 @@ else
 $number = $number_grid_col = $number_grid_row = 1;
 if( ! empty( $question_choices ) )
 {
-	if( $question['question_type'] == 'grid' )
+	if( $question['question_type'] == 'grid' OR $question['question_type'] == 'table' )
 	{
 		$default_value = explode( '||', $question['default_value_number'] );
 
