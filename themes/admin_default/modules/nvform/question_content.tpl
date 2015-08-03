@@ -210,36 +210,38 @@
 		</div>
 	</div>
 
-	<div id="choiceitems" {DATAFORM.display_choiceitems}>
+	<div id="choicefields" {DATAFORM.display_choiceitems}>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				{LANG.field_options_choice}
+				{LANG.question_options_choice}
 			</div>
 			<table class="table table-striped table-bordered table-hover">
 				<colgroup>
-					<col class="w250" />
-					<col span="3"/>
+					<col class="w50" />
+					<col class="w150" />
+					<col />
+					<col class="w100" />
 				</colgroup>
 				<thead>
-					<tr class="center">
-						<th>{LANG.question_number}</th>
+					<tr>
+						<th class="text-center">{LANG.question_number}</th>
 						<th>{LANG.question_value}</th>
 						<th>{LANG.question_text}</th>
-						<th>{LANG.question_default_value}</th>
+						<th class="text-center">{LANG.question_default_value}</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="4" ><input style="margin-left: 50px;" type="button" class="btn btn-success" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
+						<td colspan="4" ><input type="button" class="btn btn-success btn-xs" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody id="choiceitems">
 					<!-- BEGIN: loop_field_choice -->
-					<tr class="center">
-						<td>{FIELD_CHOICES.number}</td>
-						<td><input class="w100 validalphanumeric form-control" type="text" value="{FIELD_CHOICES.key}" name="question_choice[{FIELD_CHOICES.number}]" /></td>
-						<td><input class="w350 form-control" type="text" value="{FIELD_CHOICES.value}" name="question_choice_text[{FIELD_CHOICES.number}]" /></td>
-						<td><input type="radio" {FIELD_CHOICES.checked} value="{FIELD_CHOICES.number}" name="default_value_choice"></td>
+					<tr>
+						<td class="text-center">{FIELD_CHOICES.number}</td>
+						<td><input class="validalphanumeric form-control" type="text" value="{FIELD_CHOICES.key}" name="question_choice[{FIELD_CHOICES.number}]" /></td>
+						<td><input class="form-control" type="text" value="{FIELD_CHOICES.value}" name="question_choice_text[{FIELD_CHOICES.number}]" /></td>
+						<td class="text-center"><input type="radio" {FIELD_CHOICES.checked} value="{FIELD_CHOICES.number}" name="default_value_choice"></td>
 					</tr>
 					<!-- END: loop_field_choice -->
 				</tbody>
@@ -419,7 +421,7 @@
 		$("#datefields").hide();
 		$("#timefields").hide();
 		$("#choicetypes").hide();
-		$("#choiceitems").hide();
+		$("#choicefields").hide();
 		$("#gridfields").hide();
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
@@ -444,7 +446,7 @@
 		} else if (question_type == 'grid' || question_type == 'table') {
 			$("#gridfields").show();
 		} else {
-			$("#choiceitems").show();
+			$("#choicefields").show();
 		}
 	});
 
