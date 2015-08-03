@@ -212,6 +212,32 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			'row' => $nv_Request->get_array( 'question_grid_row', 'post', array() )
 		);
 
+		// Loai bo gia tri rong
+		if( !empty( $question_grid['col'] ) )
+		{
+			foreach( $question_grid['col'] as $key => $choices )
+			{
+				if( empty( $choices['key'] ) OR empty( $choices['value'] ) )
+				{
+					unset( $question_grid['col'][$key] );
+				}
+			}
+		}
+		if( !empty( $question_grid['row'] ) )
+		{
+			foreach( $question_grid['row'] as $key => $choices )
+			{
+				if( empty( $choices['key'] ) OR empty( $choices['value'] ) )
+				{
+					unset( $question_grid['row'][$key] );
+				}
+			}
+		}
+
+		$default_col = $nv_Request->get_title( 'question_grid_col_default', 'post' );
+		$default_row = $nv_Request->get_title( 'question_grid_row_default', 'post' );
+		$question['default_value'] = $default_col . '||' . $default_row;
+
 		$question['question_choices'] = serialize( $question_grid );
 	}
 	else
@@ -340,53 +366,78 @@ elseif( $question['question_type'] == 'time' )
 elseif( $question['question_type'] == 'grid' )
 {
 	$grid_questions = 1;
-	if( !empty( $question_choices ) )
-	{
-		// Loop collumn
-		if( !empty( $question_choices['col'] ) )
-		{
-			foreach( $question_choices['col'] as $key => $value )
-			{
-				$xtpl->assign( 'COL', array( 'key' => $key, 'value' => $value ) );
-				$xtpl->parse( 'main.loop_question_grid_col' );
-			}
-			$xtpl->assign( 'COL_NUMFIELD', sizeof( $question_choices['col'] ) - 1 );
-		}
-
-		// Loop row
-		if( !empty( $question_choices['row'] ) )
-		{
-			foreach( $question_choices['row'] as $key => $value )
-			{
-				$xtpl->assign( 'ROW', array( 'key' => $key, 'value' => $value ) );
-				$xtpl->parse( 'main.loop_question_grid_row' );
-			}
-			$xtpl->assign( 'ROW_NUMFIELD', sizeof( $question_choices['row'] ) - 1 );
-		}
-	}
 }
 else
 {
 	$choice_type_text = 1;
 }
 
-// Load các lựa chọn cho select, radio,...
-$number = 1;
+$number = $number_grid_col = $number_grid_row = 1;
 if( ! empty( $question_choices ) )
 {
-	foreach( $question_choices as $key => $value )
+	if( $question['question_type'] == 'grid' )
 	{
-		$xtpl->assign( 'FIELD_CHOICES', array(
-			'checked' => ( $number == $question['default_value'] ) ? ' checked="checked"' : '',
-			"number" => $number++,
-			'key' => $key,
-			'value' => $value
-		) );
-		$xtpl->parse( 'main.loop_field_choice' );
-		$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
+		$default_value = explode( '||', $question['default_value_number'] );
+
+		// Loop collumn
+		if( !empty( $question_choices['col'] ) )
+		{
+			foreach( $question_choices['col'] as $choices )
+			{
+				if( !empty( $choices['value'] ) )
+				{
+					$ck = $default_value[0] == $choices['key'] ? 'checked="checked"' : '';
+					$xtpl->assign( 'COL', array( 'number' => $number_grid_col, 'key' => $choices['key'], 'value' => $choices['value'], 'checked' => $ck ) );
+					$xtpl->parse( 'main.loop_question_grid_col' );
+					$number_grid_col++;
+				}
+			}
+			$xtpl->assign( 'COL_NUMFIELD', $number_grid_col );
+		}
+
+		// Loop row
+		if( !empty( $question_choices['row'] ) )
+		{
+			foreach( $question_choices['row'] as $key => $choices )
+			{
+				if( !empty( $choices['value'] ) )
+				{
+					$ck = $default_value[1] == $choices['key'] ? 'checked="checked"' : '';
+					$xtpl->assign( 'ROW', array( 'number' => $number_grid_row, 'key' => $choices['key'], 'value' => $choices['value'], 'checked' => $ck ) );
+					$xtpl->parse( 'main.loop_question_grid_row' );
+					$number_grid_row++;
+				}
+			}
+			$xtpl->assign( 'ROW_NUMFIELD', $number_grid_row );
+		}
+	}
+	else
+	{
+		// Load các lựa chọn cho select, radio,...
+		foreach( $question_choices as $key => $value )
+		{
+			$xtpl->assign( 'FIELD_CHOICES', array(
+				'checked' => ( $number == $question['default_value'] ) ? ' checked="checked"' : '',
+				"number" => $number++,
+				'key' => $key,
+				'value' => $value
+			) );
+			$xtpl->parse( 'main.loop_field_choice' );
+			$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
+		}
 	}
 }
 
+// grid default
+$xtpl->assign( 'COL', array( 'number' => $number_grid_col, 'key' => '', 'value' => '', 'checked' => $number_grid_col == 1 ? 'checked="checked"' : '' ) );
+$xtpl->parse( 'main.loop_question_grid_col' );
+$xtpl->assign( 'COL_NUMFIELD', $number_grid_col );
+
+$xtpl->assign( 'ROW', array( 'number' => $number_grid_row, 'key' => '', 'value' => '', 'checked' => $number_grid_row == 1 ? 'checked="checked"' : '' ) );
+$xtpl->parse( 'main.loop_question_grid_row' );
+$xtpl->assign( 'ROW_NUMFIELD', $number_grid_row );
+
+// field choices default
 $xtpl->assign( 'FIELD_CHOICES', array(
 	'number' => $number,
 	'key' => '',
@@ -394,9 +445,6 @@ $xtpl->assign( 'FIELD_CHOICES', array(
 ) );
 $xtpl->parse( 'main.loop_field_choice' );
 $xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
-
-// Load loai du lieu grid
-
 
 // Hien thi tuy chon theo kieu cau hoi
 $question['display_editorquestions'] = ( $editor_questions ) ? '' : 'style="display: none;"';
@@ -464,10 +512,12 @@ if( ! empty( $error ) )
 	$xtpl->parse( 'main.error' );
 }
 
-$page_title = $lang_submit;
 $xtpl->assign( 'LANG_SUBMIT', $lang_submit );
 $xtpl->assign( 'DATAFORM', $question );
 $xtpl->assign( 'FORM_ACTION', $action );
+
+$page_title = $lang_submit;
+
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );
 

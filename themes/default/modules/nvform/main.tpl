@@ -63,6 +63,25 @@
 				<!-- END: loop -->
 			</select>
 			<!-- END: multiselect -->
+
+			<!-- BEGIN: grid -->
+			<table class="table">
+				<tr>
+					<td>&nbsp;</td>
+					<!-- BEGIN: col -->
+					<td>{COL.value}</td>
+					<!-- END: col -->
+				</tr>
+				<!-- BEGIN: row -->
+				<tr>
+					<td>{ROW.value}</td>
+					<!-- BEGIN: td -->
+					<td><input type="radio" name="question[{QUESTION.qid}]" value="{GRID.value}" {GRID.checked} /></td>
+					<!-- END: td -->
+				</tr>
+				<!-- END: row -->
+			</table>
+			<!-- END: grid -->
 			</div>
 		</div>
 

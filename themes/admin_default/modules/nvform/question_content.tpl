@@ -247,7 +247,7 @@
 		</div>
 	</div>
 
-	<div id="gridfields" {DATAFORM.display_gridfields}>
+	<div id="gridfields" {DATAFORM.display_gridfields1}>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				{LANG.question_options_grid}
@@ -258,21 +258,42 @@
 					<div class="col-sm-21">
 						<div id="question_grid_col">
 							<!-- BEGIN: loop_question_grid_col -->
-							<input type="text" class="form-control m-bottom" name="question_grid_col[{COL.key}]" value="{COL.value}" />
+							<div class="row">
+								<div class="col-sm-3">
+									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[{COL.number}][key]" value="{COL.key}" placeholder="{LANG.question_value}" />
+								</div>
+								<div class="col-sm-20">
+									<input type="text" class="form-control m-bottom" name="question_grid_col[{COL.number}][value]" value="{COL.value}" placeholder="{LANG.question_text}" />
+								</div>
+								<div class="col-sm-1 text-middle">
+									<input type="radio" name="question_grid_col_default" value="{COL.key}" {COL.checked} />
+								</div>
+							</div>
 							<!-- END: loop_question_grid_col -->
 						</div>
-						<a href="javascript:void(0)" onclick="nv_question_grid_col_additem()">{LANG.question_add_col}</a>
+						<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="nv_question_grid_col_additem()">{LANG.question_add_col}</a>
 					</div>
 				</div>
+
 				<div class="form-group">
 					<label class="col-sm-3 control-label"><strong>{LANG.question_options_grid_row}</strong></label>
 					<div class="col-sm-21">
 						<div id="question_grid_row">
 							<!-- BEGIN: loop_question_grid_row -->
-							<input type="text" class="form-control m-bottom" name="question_grid_row[{ROW.key}]" value="{ROW.value}" />
+							<div class="row">
+								<div class="col-sm-3">
+									<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[{ROW.number}][key]" value="{ROW.key}" placeholder="{LANG.question_value}" />
+								</div>
+								<div class="col-sm-20">
+									<input type="text" class="form-control m-bottom" name="question_grid_row[{ROW.number}][value]" value="{ROW.value}" placeholder="{LANG.question_text}" />
+								</div>
+								<div class="col-sm-1 text-middle">
+									<input type="radio" name="question_grid_row_default" value="{ROW.key}" {ROW.checked} />
+								</div>
+							</div>
 							<!-- END: loop_question_grid_row -->
 						</div>
-						<a href="javascript:void(0)" onclick="nv_question_grid_row_additem()">{LANG.question_add_row}</a>
+						<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="nv_question_grid_row_additem()">{LANG.question_add_row}</a>
 					</div>
 				</div>
 			</div>
@@ -300,16 +321,39 @@
 	var col_numfield = '{COL_NUMFIELD}';
 	function nv_question_grid_col_additem() {
 		col_numfield++;
-		var newitem = '<input type="text" class="form-control m-bottom" name="question_grid_col[' + col_numfield + ']" value="" />';
+		var newitem = '';
+		newitem += '<div class="row">';
+		newitem += '<div class="col-sm-3">';
+		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_col[' + col_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
+		newitem += '</div>';
+		newitem += '<div class="col-sm-20">';
+		newitem += '	<input type="text" class="form-control m-bottom" name="question_grid_col[' + col_numfield + '][value]" value="" placeholder="{LANG.question_text}" />';
+		newitem += '</div>';
+		newitem += '<div class="col-sm-1 text-middle">';
+		newitem += '	<input type="radio" name="question_grid_col_default" value="" />';
+		newitem += '</div>';
+		newitem += '</div>';
 		$('#question_grid_col').append(newitem);
 	}
 
 	var row_numfield = '{ROW_NUMFIELD}';
 	function nv_question_grid_row_additem() {
 		row_numfield++;
-		var newitem = '<input type="text" class="form-control m-bottom" name="question_grid_row[' + row_numfield + ']" value="" />';
+		var newitem = '';
+		newitem += '<div class="row">';
+		newitem += '<div class="col-sm-3">';
+		newitem += '	<input type="text" class="form-control m-bottom validalphanumeric" name="question_grid_row[' + row_numfield + '][key]" value="" placeholder="{LANG.question_value}" />';
+		newitem += '</div>';
+		newitem += '<div class="col-sm-20">';
+		newitem += '	<input type="text" class="form-control m-bottom" name="question_grid_row[' + row_numfield + '][value]" value="" placeholder="{LANG.question_text}" />';
+		newitem += '</div>';
+		newitem += '<div class="col-sm-1 text-middle">';
+		newitem += '	<input type="radio" name="question_grid_row_default" value="" />';
+		newitem += '</div>';
+		newitem += '</div>';
 		$('#question_grid_row').append(newitem);
 	}
+
 
 	$(document).ready(function() {
 		nv_load_current_date();

@@ -83,6 +83,27 @@ foreach( $answer_data as $answer )
 			{
 				$ans = nv_date( 'H:i', $ans );
 			}
+			elseif( $question_type == 'grid' )
+			{
+				$data = unserialize( $question_data[$qid]['question_choices'] );
+				$result = explode( '||', $ans );
+				foreach( $data['col'] as $col )
+				{
+					if( $result[0] == $col['key'] )
+					{
+						$ans = $col['value'];
+						break;
+					}
+				}
+				foreach( $data['row'] as $row )
+				{
+					if( $result[1] == $row['key'] )
+					{
+						$ans .= ' - ' . $col['value'];
+						break;
+					}
+				}
+			}
 		}
 		else
 		{

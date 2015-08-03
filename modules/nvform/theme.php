@@ -218,6 +218,44 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 			$xtpl->parse( 'main.loop.multiselect' );
 		}
+		elseif( $row['question_type'] == 'grid' )
+		{
+			$question_choices = unserialize( $row['question_choices'] );
+
+			// Loop collumn
+			if( !empty( $question_choices['col'] ) )
+			{
+				foreach( $question_choices['col'] as $choices )
+				{
+					$xtpl->assign( 'COL', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+					$xtpl->parse( 'main.loop.grid.col' );
+				}
+			}
+
+			// Loop row
+			if( !empty( $question_choices['row'] ) )
+			{
+				foreach( $question_choices['row'] as $choices )
+				{
+					$xtpl->assign( 'ROW', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+
+					if( !empty( $question_choices['col'] ) )
+					{
+						foreach( $question_choices['col'] as $col )
+						{
+							$value = $col['key'] . '||' . $choices['key'];
+							$ck = $row['value'] == $value ? 'checked' : '';
+							$xtpl->assign( 'GRID', array( 'value' => $value, 'checked' => $ck ) );
+							$xtpl->parse( 'main.loop.grid.row.td' );
+						}
+					}
+
+					$xtpl->parse( 'main.loop.grid.row' );
+				}
+			}
+
+			$xtpl->parse( 'main.loop.grid' );
+		}
 
 		if( $form_info['question_display'] == 'question_display_left' )
 		{
