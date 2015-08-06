@@ -15,7 +15,7 @@
 <!-- BEGIN: info -->
 <div class="alert alert-danger">{INFO}</div>
 <!-- END: info -->
-<form action="" {FORM_LEFT} method="post" id="question">
+<form action="" {FORM_LEFT} method="post" id="question" <!-- BEGIN: enctype -->enctype="multipart/form-data"<!-- END: enctype -->>
 	<!-- BEGIN: loop -->
 		<div class="form-group">
 		<label {LEFT.label}>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
@@ -102,6 +102,17 @@
 			</table>
 			<!-- END: table -->
 
+			<!-- BEGIN: file -->
+			<div class="input-group">
+				<input type="text" class="form-control" id="photo_name" value="{QUESTION.value}" disabled>
+				<span class="input-group-btn">
+				<button class="btn btn-default" onclick="$('#upload_fileimage').click();" type="button"><em class="fa fa-folder-open-o fa-fix">&nbsp;</em> {LANG.file_selectfile}</button>
+				</span>
+			</div>
+			<em class="help-block"><strong>{LANG.field_upload_ext_note}:</strong> {QUESTION.file_type}</em>
+			<input type="file" name="question_file_{QUESTION.qid}" id="upload_fileimage" style="visibility: hidden;" />
+			<!-- END: file -->
+
 			</div>
 		</div>
 
@@ -121,6 +132,15 @@ $(document).ready(function() {
 		showOtherMonths : true,
 		showOn: 'focus'
 	});
+
+	$('#upload_fileupload').change(function(){
+	     $('#file_name').val($(this).val().match(/[-_\w]+[.][\w]+$/i)[0]);
+	});
+
+	$('#upload_fileimage').change(function(){
+	     $('#photo_name').val($(this).val().match(/[-_\w]+[.][\w]+$/i)[0]);
+	});
+
 });
 </script>
 <!-- END: main -->

@@ -10,6 +10,38 @@
 
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
+$ini = nv_parse_ini_file( NV_ROOTDIR . '/includes/ini/mime.ini', true );
+$myini = array(
+	'types' => array( '' ),
+	'exts' => array( '' ),
+	'mimes' => array( '' )
+);
+
+foreach( $ini as $type => $extmime )
+{
+	$myini['types'][] = $type;
+	$myini['exts'] = array_merge( $myini['exts'], array_keys( $extmime ) );
+	$m = array_values( $extmime );
+
+	if( is_string( $m ) )
+	{
+		$myini['mimes'] = array_merge( $myini['mimes'], $m );
+	}
+	else
+	{
+		foreach( $m as $m2 )
+		{
+			if( ! is_array( $m2 ) ) $m2 = array( $m2 );
+			$myini['mimes'] = array_merge( $myini['mimes'], $m2 );
+		}
+	}
+}
+
+sort( $myini['types'] );
+unset( $myini['types'][0] );
+sort( $myini['exts'] );
+unset( $myini['exts'][0] );
+
 $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
@@ -35,7 +67,7 @@ $fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
 $question_choices = array();
 $error = '';
-$text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = $grid_questions = 0;
+$text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = $grid_questions = $file_questions = 0;
 
 if( $qid )
 {
@@ -243,6 +275,32 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 
 		$question['question_choices'] = serialize( $question_grid );
 	}
+	elseif( $question['question_type'] == 'file' )
+	{
+		$file_questions = 1;
+
+		$question['max_length'] = $nv_Request->get_float( 'nv_max_size', 'post' );
+		$question['max_length'] = min( nv_converttoBytes( ini_get( 'upload_max_filesize' ) ), nv_converttoBytes( ini_get( 'post_max_size' ) ), $question['max_length'] );
+
+		$question_file['type'] = $nv_Request->get_typed_array( 'type', 'post', 'int' );
+		$question_file['type'] = array_flip( $question_file['type'] );
+		$question_file['type'] = array_intersect_key( $myini['types'], $question_file['type'] );
+		$question_file['type'] = implode( ',', $question_file['type'] );
+
+		$question_file['ext'] = $nv_Request->get_typed_array( 'ext', 'post', 'int' );
+		$question_file['ext'] = array_flip( $question_file['ext'] );
+		$question_file['ext'] = array_intersect_key( $myini['exts'], $question_file['ext'] );
+		$question_file['ext'][] = 'php';
+		$question_file['ext'][] = 'php3';
+		$question_file['ext'][] = 'php4';
+		$question_file['ext'][] = 'php5';
+		$question_file['ext'][] = 'phtml';
+		$question_file['ext'][] = 'inc';
+		$question_file['ext'] = array_unique( $question_file['ext'] );
+		$question_file['ext'] = implode( ',', $question_file['ext'] );
+
+		$question['question_choices'] = serialize( $question_file );
+	}
 	else
 	{
 		$choice_type_text = 1;
@@ -370,6 +428,10 @@ elseif( $question['question_type'] == 'grid' OR $question['question_type'] == 't
 {
 	$grid_questions = 1;
 }
+elseif( $question['question_type'] == 'file' )
+{
+	$file_questions = 1;
+}
 else
 {
 	$choice_type_text = 1;
@@ -457,6 +519,7 @@ $question['display_datequestions'] = ( $date_questions ) ? '' : 'style="display:
 $question['display_timequestions'] = ( $time_questions ) ? '' : 'style="display: none;"';
 $question['display_choiceitems'] = ( $choice_type_text ) ? '' : 'style="display: none;"';
 $question['display_gridfields'] = ( $grid_questions ) ? '' : 'style="display: none;"';
+$question['display_filefields'] = ( $file_questions ) ? '' : 'style="display: none;"';
 
 $question['editordisabled'] = ( $question['question_type'] != 'editor' ) ? ' style="display: none;"' : '';
 $question['classdisabled'] = ( $question['question_type'] == 'editor' ) ? ' style="display: none;"' : '';
@@ -507,6 +570,43 @@ foreach( $array_match_type as $key => $value )
 		$xtpl->parse( 'main.match_type.match_input' );
 	}
 	$xtpl->parse( 'main.match_type' );
+}
+
+$sys_max_size = min( nv_converttoBytes( ini_get( 'upload_max_filesize' ) ), nv_converttoBytes( ini_get( 'post_max_size' ) ) );
+$p_size = $sys_max_size / 100;
+for( $index = 1; $index <= 100; ++$index )
+{
+	$size = floor( $index * $p_size );
+
+	$xtpl->assign( 'SIZE', array(
+		'key' => $size,
+		'title' => nv_convertfromBytes( $size ),
+		'selected' => ( $size == $question['max_length'] ) ? ' selected="selected"' : ''
+	) );
+
+	$xtpl->parse( 'main.size' );
+}
+
+$question_choices['type'] = !empty( $question_choices['type'] ) ? explode( ',', $question_choices['type'] ) : array();
+foreach( $myini['types'] as $key => $name )
+{
+	$xtpl->assign( 'TYPES', array(
+		'key' => $key,
+		'title' => $name,
+		'checked' => in_array( $name, $question_choices['type'] ) ? ' checked="checked"' : ''
+	) );
+	$xtpl->parse( 'main.types' );
+}
+
+$question_choices['ext'] = !empty( $question_choices['ext'] ) ? explode( ',', $question_choices['ext'] ) : array();
+foreach( $myini['exts'] as $key => $name )
+{
+	$xtpl->assign( 'EXTS', array(
+		'key' => $key,
+		'title' => $name,
+		'checked' => in_array( $name, $question_choices['ext'] ) ? ' checked="checked"' : ''
+	) );
+	$xtpl->parse( 'main.exts' );
 }
 
 if( ! empty( $error ) )

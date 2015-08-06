@@ -31,5 +31,6 @@ $array_field_type = array(
 	'checkbox' => $lang_module['question_type_checkbox'],
 	'multiselect' => $lang_module['question_type_multiselect'],
 	'grid' => $lang_module['question_type_grid'],
-	'table' => $lang_module['question_type_table']
+	'table' => $lang_module['question_type_table'],
+	'file' => $lang_module['question_type_file']
 );

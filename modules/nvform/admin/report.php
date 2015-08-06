@@ -104,6 +104,10 @@ foreach( $answer_data as $answer )
 					}
 				}
 			}
+			elseif( $question_type == 'file' )
+			{
+				$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
+			}
 			else
 			{
 				$ans = '';
@@ -117,6 +121,7 @@ foreach( $answer_data as $answer )
 		$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
 
 		$xtpl->assign( 'ANSWER', $ans );
+
 		$xtpl->parse( 'main.tr.td' );
 	}
 

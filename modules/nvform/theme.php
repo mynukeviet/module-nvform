@@ -294,6 +294,16 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 			$xtpl->parse( 'main.loop.table' );
 		}
+		elseif( $row['question_type'] == 'file' )
+		{
+			$row['value'] = str_replace( 'form_' . $row['qid'] . '/', '', $row['value'] );
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			$row['file_type'] = str_replace( ',', ', ', $row['question_choices']['type'] );
+			$xtpl->assign( 'QUESTION', $row );
+
+			$xtpl->parse( 'main.loop.file' );
+			$xtpl->parse( 'main.enctype' );
+		}
 
 		if( $form_info['question_display'] == 'question_display_left' )
 		{

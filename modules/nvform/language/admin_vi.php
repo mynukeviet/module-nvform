@@ -71,6 +71,7 @@ $lang_module['question_type_checkbox'] = 'Nhiều lựa chọn (checkbox)';
 $lang_module['question_type_multiselect'] = 'Nhiều lựa chọn thả xuống (multi selectbox)';
 $lang_module['question_type_grid'] = 'Lưới dữ liệu';
 $lang_module['question_type_table'] = 'Bảng dữ liệu';
+$lang_module['question_type_file'] = 'Tập tin đính kèm';
 $lang_module['question_class'] = 'Thuộc tính class html';
 $lang_module['question_editor_size'] = 'Kích thước ô nhập liệu';
 $lang_module['question_editor_mode'] = 'Loại trình soạn thảo';
@@ -107,6 +108,13 @@ $lang_module['question_default_time'] = 'Chỉ định thời gian';
 $lang_module['question_options_grid'] = 'Các tùy chọn dữ liệu lưới';
 $lang_module['question_options_grid_col'] = 'Cột dữ liệu';
 $lang_module['question_options_grid_row'] = 'Hàng dữ liệu';
+
+// File field
+$lang_module['question_options_file'] = 'Cấu hình upload';
+$lang_module['question_options_file_max_size'] = 'Dung lượng tối đa';
+$lang_module['question_options_file_allow'] = 'Loại files cho phép';
+$lang_module['question_options_file_ext_ban'] = 'Phần mở rộng bị cấm';
+$lang_module['question_options_file_dowload'] = 'Tải về đính kèm';
 
 $lang_module['question_options_choice'] = 'Các tùy chọn';
 $lang_module['question_choices_empty'] = 'Các giá trị lựa chọn rỗng';

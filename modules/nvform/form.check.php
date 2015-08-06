@@ -12,11 +12,72 @@ if( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 foreach( $question_info as $row_f )
 {
+	$old_value = '';
 	$value = ( isset( $answer_info[$row_f['qid']] ) ) ? $answer_info[$row_f['qid']] : '';
 
 	if( $filled )
 	{
 		$old_value = ( isset( $old_answer_info[$row_f['qid']] ) ) ? $old_answer_info[$row_f['qid']] : '';
+	}
+
+	if( $row_f['question_type'] == 'file' )
+	{
+		$input_file = $_FILES['question_file_' . $row_f['qid']];
+		if( isset( $input_file ) and is_uploaded_file( $input_file['tmp_name'] ) )
+		{
+			$folder = 'form_' . $row_f['qid'];
+			$question_choices = unserialize( $row_f['question_choices'] );
+			if( !empty( $question_choices ) )
+			{
+				if( !file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $folder ) )
+				{
+					nv_mkdir( NV_UPLOADS_REAL_DIR . '/' . $module_upload, $folder );
+				}
+				$upload = new upload( explode( ',', $question_choices['type'] ), $question_choices['ext'], $global_config['forbid_mimes'], $row_f['max_length'], NV_MAX_WIDTH, NV_MAX_HEIGHT );
+				$upload_info = $upload->save_file( $input_file, NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $folder, false );
+
+				@unlink( $input_file['tmp_name'] );
+
+				if( empty( $upload_info['error'] ) )
+				{
+					mt_srand( ( double )microtime() * 1000000 );
+					$maxran = 1000000;
+					$random_num = mt_rand( 0, $maxran );
+					$random_num = md5( $random_num );
+					$nv_pathinfo_filename = nv_pathinfo_filename( $upload_info['name'] );
+					$new_name = NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $folder . '/' . $nv_pathinfo_filename . '.' . $random_num . '.' . $upload_info['ext'];
+
+					$rename = nv_renamefile( $upload_info['name'], $new_name );
+
+					if( $rename[0] == 1 )
+					{
+						$value = $new_name;
+					}
+					else
+					{
+						$value = $upload_info['name'];
+					}
+
+					@chmod( $value, 0644 );
+					$value = str_replace( NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload . '/', '', $value );
+
+					// Xoa file cu (neu co)
+					if( !empty( $old_value ) and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $old_value ) )
+					{
+						@nv_deletefile( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $old_value );
+					}
+				}
+				else
+				{
+					$error = $upload_info['error'];
+				}
+			}
+		}
+		else
+		{
+			$value = $old_value;
+		}
+		$lang_module['field_match_type_required'] = $lang_module['field_file_required'];
 	}
 
 	if( $value != '' )

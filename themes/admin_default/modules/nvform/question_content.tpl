@@ -304,6 +304,43 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="filefields" {DATAFORM.display_filefields}>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{LANG.question_options_file}
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_max_size}</strong></label>
+					<div class="col-sm-20">
+						<select class="form-control" name="nv_max_size">
+						<!-- BEGIN: size -->
+						<option value="{SIZE.key}" {SIZE.selected}>{SIZE.title}</option>
+						<!-- END: size -->
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_allow}</strong></label>
+					<div class="col-sm-20">
+						<!-- BEGIN: types -->
+						<label style="display:inline-block;width:100px"><input type="checkbox" name="type[]" value="{TYPES.key}"{TYPES.checked}/> {TYPES.title}&nbsp;&nbsp;</label>
+						<!-- END: types -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_ext_ban}</strong></label>
+					<div class="col-sm-20">
+						<!-- BEGIN: exts -->
+						<label style="display:inline-block;width:100px"><input type="checkbox" name="ext[]" value="{EXTS.key}"{EXTS.checked} /> {EXTS.title}&nbsp;&nbsp;</label>
+						<!-- END: exts -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="text-center">
 		<input type="hidden" value="{DATAFORM.fid}" name="fid">
 		<input class="w150 btn btn-primary" type="submit" value="{LANG_SUBMIT}" name="submit">
@@ -432,6 +469,7 @@
 		$("#choicetypes").hide();
 		$("#choicefields").hide();
 		$("#gridfields").hide();
+		$("#filefields").hide();
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
 				$("#li_alphanumeric").show();
@@ -454,6 +492,8 @@
 			$("#timefields").show();
 		} else if (question_type == 'grid' || question_type == 'table') {
 			$("#gridfields").show();
+		} else if (question_type == 'file') {
+			$("#filefields").show();
 		} else {
 			$("#choicefields").show();
 		}
