@@ -25,7 +25,7 @@ foreach( $question_info as $row_f )
 		$input_file = $_FILES['question_file_' . $row_f['qid']];
 		if( isset( $input_file ) and is_uploaded_file( $input_file['tmp_name'] ) )
 		{
-			$folder = 'form_' . $row_f['qid'];
+			$folder = 'form_' . $row_f['fid'];
 			$question_choices = unserialize( $row_f['question_choices'] );
 			if( !empty( $question_choices ) )
 			{

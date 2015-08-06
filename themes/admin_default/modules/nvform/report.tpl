@@ -43,7 +43,7 @@
         $("[rel='tooltip']").tooltip();
         $("#export").hide();
     });
-    
+
 	function nv_data_export(set_export, fid) {
 		$.ajax({
 			type : "POST",

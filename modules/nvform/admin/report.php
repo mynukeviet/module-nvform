@@ -20,11 +20,27 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 
 	$aid = $nv_Request->get_int( 'aid', 'post', 0 );
 
+	if( empty( $aid ) ) die( 'NO' );
+
+	$answer = $db->query( 'SELECT answer FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid )->fetchColumn();
+
 	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid;
-	$db->exec( $sql );
-
+	if( $db->exec( $sql ) )
+	{
+		if( !empty( $answer ) )
+		{
+			$answer = unserialize( $answer );
+			foreach( $answer as $qid => $ans )
+			{
+				$question_type = $db->query( 'SELECT question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid )->fetchColumn();
+				if( $question_type == 'file' AND file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans ) )
+				{
+					@nv_deletefile( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans );
+				}
+			}
+		}
+	}
 	nv_del_moduleCache( $module_name );
-
 	die('OK');
 }
 
@@ -104,7 +120,7 @@ foreach( $answer_data as $answer )
 					}
 				}
 			}
-			elseif( $question_type == 'file' )
+			elseif( $question_type == 'file' and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans ) )
 			{
 				$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
 			}

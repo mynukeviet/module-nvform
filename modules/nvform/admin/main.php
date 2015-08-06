@@ -29,6 +29,12 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
 	$db->exec( $sql );
 
+	// Xoa thu muc upload neu co
+	if( file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/form_' . $fid ) )
+	{
+		@nv_deletefile( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/form_' . $fid, true );
+	}
+
 	$sql = 'SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . ' ORDER BY weight ASC';
 	$result = $db->query( $sql );
 	$weight = 0;
@@ -38,6 +44,7 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 		$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET weight=' . $weight . ' WHERE id = ' . $row['id'];
 		$db->query( $sql );
 	}
+
 	nv_del_moduleCache( $module_name );
 	die('OK');
 }
