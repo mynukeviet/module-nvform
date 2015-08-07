@@ -32,5 +32,6 @@ $array_field_type = array(
 	'multiselect' => $lang_module['question_type_multiselect'],
 	'grid' => $lang_module['question_type_grid'],
 	'table' => $lang_module['question_type_table'],
-	'file' => $lang_module['question_type_file']
+	'file' => $lang_module['question_type_file'],
+	'plaintext' => $lang_module['question_type_plaintext']
 );

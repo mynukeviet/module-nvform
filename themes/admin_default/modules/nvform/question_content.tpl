@@ -15,7 +15,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="form-group">
-				<label class="col-sm-4 control-label"><strong>{LANG.question}</strong></label>
+				<label class="col-sm-4 control-label"><strong id="question_title">{LANG.question}</strong></label>
 				<div class="col-sm-20">
 					<textarea id="question" name="question" class="form-control">{DATAFORM.title}</textarea>
 				</div>
@@ -33,13 +33,13 @@
 					<span style="margin-top: 6px; display: block;">{FORM_TEXT}</span>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="question_required">
 				<label class="col-sm-4 text-right"><strong>{LANG.question_required}</strong></label>
 				<div class="col-sm-20">
 					<label><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</label>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="question_user_edit">
 				<label class="col-sm-4 text-right"><strong>{LANG.question_user_edit}</strong></label>
 				<div class="col-sm-20">
 					<label><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</label>
@@ -470,6 +470,9 @@
 		$("#choicefields").hide();
 		$("#gridfields").hide();
 		$("#filefields").hide();
+		$("#question_required").show();
+		$("#question_user_edit").show();
+		$("#question_title").html( '{LANG.question}' );
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
 				$("#li_alphanumeric").show();
@@ -494,6 +497,11 @@
 			$("#gridfields").show();
 		} else if (question_type == 'file') {
 			$("#filefields").show();
+		} else if (question_type == 'plaintext') {
+			$("#textfields").hide();
+			$("#question_required").hide();
+			$("#question_user_edit").hide();
+			$("#question_title").html( '{LANG.question_type_plaintext_content}' );
 		} else {
 			$("#choicefields").show();
 		}

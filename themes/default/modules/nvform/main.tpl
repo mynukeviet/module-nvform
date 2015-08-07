@@ -19,7 +19,7 @@
 	<!-- BEGIN: loop -->
 	<div <!-- BEGIN: display_two_column -->class="col-xs-12"<!-- END: display_two_column -->>
 		<div class="form-group">
-		<label <!-- BEGIN: display_left_label -->class="col-xs-24 col-sm-6 control-label"<!-- END: display_left_label -->>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
+		<label <!-- BEGIN: display_left_label -->class="col-xs-24 col-sm-6 control-label"<!-- END: display_left_label -->>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required --></label>
 		<div <!-- BEGIN: display_left_div -->class="col-xs-24 col-sm-18"<!-- END: display_left_div -->>
 			<!-- BEGIN: textbox -->
 				<input class="{QUESTION.required} {QUESTION.class} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />
