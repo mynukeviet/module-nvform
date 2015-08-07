@@ -35,6 +35,7 @@ $lang_module['form_report'] = 'Thống kê';
 $lang_module['form_question_display'] = 'Kiểu hiển thị câu hỏi';
 $lang_module['form_question_display_top'] = 'Câu hỏi nằm trên';
 $lang_module['form_question_display_left'] = 'Câu hỏi nằm bên trái';
+$lang_module['form_question_display_two_column'] = 'Hai cột';
 
 $lang_module['report_who_answer'] = 'Người trả lời';
 $lang_module['report_guest'] = 'Khách';

@@ -12,10 +12,6 @@ if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $page_title = $lang_module['form_content'];
 
-$xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
-$xtpl->assign( 'LANG', $lang_module );
-$xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload );
-
 $id = $nv_Request->get_int( 'id', 'get, post', 0 );
 $error = '';
 $phour = $pmin = $ehour = $emin = 0;
@@ -143,6 +139,10 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	}
 }
 
+$xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
+$xtpl->assign( 'LANG', $lang_module );
+$xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload );
+
 // Thời gian
 if( ! empty( $form_data['start_time'] ) )
 {
@@ -207,7 +207,8 @@ foreach( $groups_list as $_group_id => $_title )
 // Kieu hien thi
 $style_list = array(
 	'question_display_top' => $lang_module['form_question_display_top'],
-	'question_display_left' => $lang_module['form_question_display_left']
+	'question_display_left' => $lang_module['form_question_display_left'],
+	'question_display_two_column' => $lang_module['form_question_display_two_column']
 );
 
 foreach( $style_list as $key => $_title )

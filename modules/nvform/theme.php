@@ -43,9 +43,10 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 	if( $form_info['question_display'] == 'question_display_left' )
 	{
-		$xtpl->assign( 'FORM_LEFT', 'class="form-horizontal"' );
+		$xtpl->parse( 'main.display_left_form' );
 	}
 
+	$i = 1;
 	foreach( $question_info as $row )
 	{
 		// Giá trị mặc định
@@ -307,12 +308,16 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 		if( $form_info['question_display'] == 'question_display_left' )
 		{
-			//$xtpl->assign( 'LEFT', array( 'label' => 'class="col-xs-24 col-sm-6 control-label"', 'div' => 'class="col-xs-24 col-sm-18"' ) );
 			$xtpl->parse( 'main.loop.display_left_label' );
 			$xtpl->parse( 'main.loop.display_left_div' );
 		}
+		elseif( $form_info['question_display'] == 'question_display_two_column' )
+		{
+			$xtpl->parse( 'main.loop.display_two_column' );
+		}
 
 		$xtpl->parse( 'main.loop' );
+		$i++;
 	}
 
 	if( !empty( $info ) )
