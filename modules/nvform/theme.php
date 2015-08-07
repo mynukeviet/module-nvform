@@ -307,7 +307,9 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 
 		if( $form_info['question_display'] == 'question_display_left' )
 		{
-			$xtpl->assign( 'LEFT', array( 'label' => 'class="col-sm-6 control-label"', 'div' => 'class="col-sm-18"' ) );
+			//$xtpl->assign( 'LEFT', array( 'label' => 'class="col-xs-24 col-sm-6 control-label"', 'div' => 'class="col-xs-24 col-sm-18"' ) );
+			$xtpl->parse( 'main.loop.display_left_label' );
+			$xtpl->parse( 'main.loop.display_left_div' );
 		}
 
 		$xtpl->parse( 'main.loop' );

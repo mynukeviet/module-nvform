@@ -18,8 +18,8 @@
 <form action="" {FORM_LEFT} method="post" id="question" <!-- BEGIN: enctype -->enctype="multipart/form-data"<!-- END: enctype -->>
 	<!-- BEGIN: loop -->
 		<div class="form-group">
-		<label {LEFT.label}>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
-		<div {LEFT.div}>
+		<label <!-- BEGIN: display_left_label -->class="col-xs-24 col-sm-6"<!-- END: display_left_label -->>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required -->:</label>
+		<div <!-- BEGIN: display_left_div -->class="col-xs-24 col-sm-18"<!-- END: display_left_div -->>
 			<!-- BEGIN: textbox -->
 				<input class="{QUESTION.required} {QUESTION.class} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />
 			<!-- END: textbox -->
