@@ -137,9 +137,15 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-4 control-label"><strong>{LANG.question_min_length}</strong></label>
+					<label class="col-sm-4 control-label"><strong>{LANG.question_min_value}</strong></label>
 					<div class="col-sm-20">
-						<input class="w150 required number form-control pull-left" type="text" value="{DATAFORM.min_number}" name="min_number_length" maxlength="11"><span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_length}:</span><input class="w100 required number form-control" type="text" value="{DATAFORM.max_number}" name="max_number_length" maxlength="11">
+						<input class="required number form-control" type="text" value="{DATAFORM.min_number}" name="min_number_length" maxlength="11">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label"><strong>{LANG.question_min_value}</strong></label>
+					<div class="col-sm-20">
+						<input class="required number form-control" type="text" value="{DATAFORM.max_number}" name="max_number_length" maxlength="11">
 					</div>
 				</div>
 			</div>
