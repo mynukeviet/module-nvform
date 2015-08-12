@@ -16,8 +16,10 @@
 <div class="alert alert-danger">{INFO}</div>
 <!-- END: info -->
 <form action="" method="post" id="question" <!-- BEGIN: display_left_form -->class="form-horizontal"<!-- END: display_left_form --> <!-- BEGIN: enctype -->enctype="multipart/form-data"<!-- END: enctype -->>
+	<input type="hidden" id="page" value="1" />
+	<input type="hidden" id="max_page" value="{MAX_PAGE}" />
 	<!-- BEGIN: loop -->
-	<div <!-- BEGIN: display_two_column -->class="col-xs-12"<!-- END: display_two_column -->>
+	<div class="question_row <!-- BEGIN: display_two_column -->col-xs-12<!-- END: display_two_column -->" data-page="{PAGE}">
 		<div class="form-group">
 		<label <!-- BEGIN: display_left_label -->class="col-xs-24 col-sm-6 control-label"<!-- END: display_left_label -->>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required --></label>
 		<div <!-- BEGIN: display_left_div -->class="col-xs-24 col-sm-18"<!-- END: display_left_div -->>
@@ -118,31 +120,15 @@
 		</div>
 	</div>
 	<!-- END: loop -->
-	<div class="clear"></div>
-	<div class="text-center m-bottom">
-		<input type="submit" value="{LANG.success}" name="submit" class="btn btn-success" />
-		<input type="reset" value="{LANG.reset}" class="btn btn-danger" />
+	<div class="m-bottom">
+		<div class="pull-left">
+			<button class="btn btn-danger btn-sm" id="btn-prev">Quay lai</button>
+		</div>
+		<div class="pull-right">
+			<button class="btn btn-danger btn-sm" id="btn-next">Tiep tuc</button>
+			<input type="submit" value="{LANG.success}" name="submit" class="btn btn-success" id="btn-submit" style="display: none" />
+		</div>
+		<div class="clearfix"></div>
 	</div>
 </form>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$(".datepicker").datepicker({
-		dateFormat : "dd/mm/yy",
-		changeMonth : true,
-		changeYear : true,
-		showOtherMonths : true,
-		showOn: 'focus'
-	});
-
-	$('#upload_fileupload').change(function(){
-	     $('#file_name').val($(this).val().match(/[-_\w]+[.][\w]+$/i)[0]);
-	});
-
-	$('#upload_fileimage').change(function(){
-	     $('#photo_name').val($(this).val().match(/[-_\w]+[.][\w]+$/i)[0]);
-	});
-
-});
-</script>
 <!-- END: main -->

@@ -58,6 +58,8 @@ $lang_module['question_form'] = 'Thuộc biểu mẫu';
 $lang_module['question_required'] = 'Câu hỏi bắt buộc';
 $lang_module['question_required_note'] = 'Người dùng buộc phải trả lời câu hỏi này';
 $lang_module['question_user_edit'] = 'Thay đổi câu trả lời';
+$lang_module['question_break'] = 'Ngắt trang từ câu hỏi này';
+$lang_module['question_break_note'] = 'Chuyển sang trang mới bắt đầu từ câu hỏi này';
 $lang_module['question_user_edit_note'] = 'Cho phép thành viên thay đổi câu trả lời trong thời gian hiệu lực';
 $lang_module['question_type'] = 'Loại dữ liệu';
 $lang_module['question_type_number'] = 'Số';
@@ -135,7 +137,7 @@ $lang_module['question_match_type_error'] = '%s không đúng quy tắc';
 $lang_module['question_match_type_required'] = '%s bắt buộc nhập';
 $lang_module['question_min_max_error'] = '%1$s cần nhập từ %2$s đến %3$s ký tự';
 $lang_module['question_min_max_value'] = '%1$s cần nhập từ %2$s đến %3$s';
-
+$lang_module['page'] = 'Trang';
 $lang_module['order'] = 'Sắp xếp';
 $lang_module['status'] = 'Trạng thái';
 

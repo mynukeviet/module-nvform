@@ -80,6 +80,7 @@ $xtpl->assign( 'GLANG', $lang_global );
 $xtpl->assign( 'ADD_QUESTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=question_content&amp;fid=' . $fid );
 
 $i = 0;
+$page = 1;
 foreach ( $_rows as $row )
 {
 	$row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=question_content&amp;qid=' . $row['qid'];
@@ -106,6 +107,9 @@ foreach ( $_rows as $row )
 	}
 
 	$xtpl->assign( 'FIELD_TYPE_TEXT', $array_field_type[$row['question_type']] );
+
+	if( $row['break'] ) $page++;
+	$row['page'] = $page;
 
 	$xtpl->assign( 'ROW', $row );
 	$xtpl->parse( 'main.row' );

@@ -46,6 +46,12 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.question_break}</strong></label>
+				<div class="col-sm-20">
+					<label><input name="break" value="1" type="checkbox" {DATAFORM.checked_break}/> {LANG.question_break_note}</label>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-4 text-right"><strong>{LANG.question_type}</strong></label>
 				<div class="col-sm-20">
 					<div class="row">

@@ -47,6 +47,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 	}
 
 	$i = 1;
+	$page = 1;
 	foreach( $question_info as $row )
 	{
 		// Giá trị mặc định
@@ -316,9 +317,14 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 			$xtpl->parse( 'main.loop.display_two_column' );
 		}
 
+		if( $row['break'] ) $page++;
+		$xtpl->assign( 'PAGE', $page );
+
 		$xtpl->parse( 'main.loop' );
 		$i++;
 	}
+
+	$xtpl->assign( 'MAX_PAGE', $page );
 
 	if( !empty( $info ) )
 	{

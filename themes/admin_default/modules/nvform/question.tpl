@@ -28,7 +28,10 @@
 						<!-- END: weight -->
 					</select>
 				</td>
-				<td><a href="{ROW.url_view}" title="{ROW.title}" target="_blank">{ROW.title}</a></td>
+				<td>
+					<a href="{ROW.url_view}" title="{ROW.title}" target="_blank">{ROW.title}</a>
+					<small class="help-block">{LANG.page} {ROW.page}</small>
+				</td>
 				<td>{FIELD_TYPE_TEXT}</td>
 				<td class="center">
 					<select id="change_status_{ROW.qid}" onchange="nv_chang_status('{ROW.qid}', 'question');" class="form-control w150">
