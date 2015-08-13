@@ -1,10 +1,10 @@
 <!-- BEGIN: main -->
-<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.core.css" rel="stylesheet" />
-<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.theme.css" rel="stylesheet" />
-<link type="text/css" href="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/ui/jquery.ui.datepicker.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
+<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.css" rel="stylesheet" />
+<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.theme.css" rel="stylesheet" />
+<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 
 <div class="nvform">
 	<h2 class="text-center">{FORM.title}</h2>
@@ -122,10 +122,10 @@
 	<!-- END: loop -->
 	<div class="m-bottom">
 		<div class="pull-left">
-			<button class="btn btn-danger btn-sm" id="btn-prev">Quay lai</button>
+			<button class="btn btn-danger btn-sm" id="btn-prev">{LANG.prev}</button>
 		</div>
 		<div class="pull-right">
-			<button class="btn btn-danger btn-sm" id="btn-next">Tiep tuc</button>
+			<button class="btn btn-danger btn-sm" id="btn-next">{LANG.next}</button>
 			<input type="submit" value="{LANG.success}" name="submit" class="btn btn-success" id="btn-submit" style="display: none" />
 		</div>
 		<div class="clearfix"></div>

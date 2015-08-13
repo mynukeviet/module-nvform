@@ -142,6 +142,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 $xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload );
+$xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
 
 // Thời gian
 if( ! empty( $form_data['start_time'] ) )

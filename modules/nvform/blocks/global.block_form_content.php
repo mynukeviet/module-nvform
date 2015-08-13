@@ -107,8 +107,8 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 
 				if( $module != $module_name )
 				{
-					$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
-					$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
+					$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR .  "/js/jquery/jquery.validate.min.js\"></script>\n";
+					$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR . "/js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
 
 					$my_head .= "<script type=\"text/javascript\">\n";
 					$my_head .= "$(document).ready(function(){
@@ -131,6 +131,7 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 				$xtpl->assign( 'LANG', $lang_module );
 				$xtpl->assign( 'FORM', $form_info );
 				$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
+				$xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
 				$xtpl->assign( 'FORM_ACTION', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '/' . $form_info['id'] . '-' . $form_info['alias'] );
 
 				if( $block_config['dis_form_info'] )

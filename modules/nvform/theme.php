@@ -40,6 +40,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
     $xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'FORM', $form_info );
 	$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
+	$xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
 
 	if( $form_info['question_display'] == 'question_display_left' )
 	{

@@ -50,6 +50,7 @@ $xtpl->assign( 'NV_NAME_VARIABLE', NV_NAME_VARIABLE );
 $xtpl->assign( 'MODULE_NAME', $module_name );
 $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
+$xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
 
 // Danh sach cac bieu mau hien co
 $sql = 'SELECT id, title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE status = 1 ORDER BY weight ASC';
