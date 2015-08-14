@@ -23,9 +23,16 @@ $form_data = array(
 	'description' => '',
 	'start_time' => NV_CURRENTTIME,
 	'end_time' => '',
-	'question_display' => '');
+	'question_display' => '',
+	'template' => array(
+		'background_color' => '',
+		'background_image' => '',
+		'background_imgage_repeat' => '',
+		'background_imgage_position' => ''
+	)
+);
 
-if( $id )
+if( $id > 0 )
 {
 	$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $id;
 	$form_data = $db->query( $sql )->fetch();
@@ -35,6 +42,7 @@ if( $id )
 		Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name );
 		die();
 	}
+	$form_data['template'] = unserialize( $form_data['template'] );
 
 	$page_title = $lang_module['form_edit'] . ': ' . $form_data['title'];
 	$lang_summit = $lang_module['form_edit'];
@@ -55,6 +63,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
 	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
 	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
+	$form_data['template'] = $nv_Request->get_array( 'template', 'post', array() );
 
 	if( ! empty( $form_data['start_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m ) )
 	{
@@ -93,19 +102,26 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		}
 	}
 
+	if( !empty( $form_data['template']['background_image'] ) )
+	{
+		$path = strlen( NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' );
+		$form_data['template']['background_image'] = substr( $form_data['template']['background_image'], $path );
+	}
+
 	if( empty( $error ) )
 	{
+		$form_data['template'] = serialize( $form_data['template'] );
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, question_display = :question_display WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, question_display = :question_display, template = :template WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -116,6 +132,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
 		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
+		$query->bindParam( ':template', $form_data['template'], PDO::PARAM_STR );
 
 		if( $query->execute() )
 		{
@@ -139,10 +156,13 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	}
 }
 
+$form_data['template']['background_image'] = !empty( $form_data['template']['background_image'] ) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['template']['background_image'] : '';
+
 $xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload );
 $xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
+$xtpl->assign( 'NV_ADMIN_THEME', $global_config['admin_theme'] );
 
 // Thời gian
 if( ! empty( $form_data['start_time'] ) )
@@ -238,6 +258,37 @@ else
 	$form_data['description'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $form_data['description'] . '</textarea>';
 }
 
+$array_background_repeat = array(
+	'repeat' => $lang_module['form_template_background_image_repeat_repeat'],
+	'repeat-x' => $lang_module['form_template_background_image_repeat_x'],
+	'repeat-y' => $lang_module['form_template_background_image_repeat_y'],
+	'no-repeat' => $lang_module['form_template_background_image_no_repeat']
+);
+foreach( $array_background_repeat as $key => $value )
+{
+	$sl = $key == $form_data['template']['background_imgage_repeat'] ? 'selected="selected"' : '';
+	$xtpl->assign( 'REPEAT', array( 'key' => $key, 'value' => $value, 'selected' => $sl ) );
+	$xtpl->parse( 'main.background_repeat' );
+}
+
+$array_background_position = array(
+	'left_top' => $lang_module['form_template_background_image_position_left_top'],
+	'left_center' => $lang_module['form_template_background_image_position_left_center'],
+	'left_bottom' => $lang_module['form_template_background_image_position_left_bottom'],
+	'right_top' => $lang_module['form_template_background_image_position_right_top'],
+	'right_center' => $lang_module['form_template_background_image_position_right_center'],
+	'right_bottom' => $lang_module['form_template_background_image_position_right_bottom'],
+	'center_top' => $lang_module['form_template_background_image_position_center_top'],
+	'center_center' => $lang_module['form_template_background_image_position_center_center'],
+	'center_bottom' => $lang_module['form_template_background_image_position_center_bottom'],
+);
+foreach( $array_background_position as $key => $value )
+{
+	$sl = $key == $form_data['template']['background_imgage_position'] ? 'selected="selected"' : '';
+	$xtpl->assign( 'POSITION', array( 'key' => $key, 'value' => $value, 'selected' => $sl ) );
+	$xtpl->parse( 'main.background_position' );
+}
+
 if( $error )
 {
 	$xtpl->assign( 'ERROR', $error );
@@ -250,6 +301,7 @@ $xtpl->assign( 'DATA', $form_data );
 $xtpl->assign( 'FORM_ACTION', $action );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
 $xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
+
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );
 

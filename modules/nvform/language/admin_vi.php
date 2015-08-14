@@ -18,6 +18,7 @@ $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
 $lang_module['config'] = 'Cấu hình';
+$lang_module['form_info'] = 'Thông tin biểu mẫu';
 $lang_module['form_list'] = 'Danh sách biểu mẫu';
 $lang_module['form_add'] = 'Thêm biểu mẫu';
 $lang_module['form_content'] = 'Quản lý biểu mẫu';
@@ -36,6 +37,29 @@ $lang_module['form_question_display'] = 'Kiểu hiển thị câu hỏi';
 $lang_module['form_question_display_top'] = 'Câu hỏi nằm trên';
 $lang_module['form_question_display_left'] = 'Câu hỏi nằm bên trái';
 $lang_module['form_question_display_two_column'] = 'Hai cột';
+
+$lang_module['form_template'] = 'Giao diện biểu mẫu';
+$lang_module['form_template_background'] = 'Nền trang';
+$lang_module['form_template_background_color'] = 'Màu nền';
+$lang_module['form_template_background_image'] = 'Đường dẫn ảnh';
+$lang_module['form_template_background_image_clear'] = 'Xóa ảnh';
+$lang_module['form_template_background_image_chosen'] = 'Chọn ảnh';
+$lang_module['form_template_background_image_repeat'] = 'Hướng lặp ảnh';
+$lang_module['form_template_background_image_repeat_repeat'] = 'Chiều dọc và chiều ngang';
+$lang_module['form_template_background_image_repeat_y'] = 'Chiều dọc';
+$lang_module['form_template_background_image_repeat_x'] = 'Chiều ngang';
+$lang_module['form_template_background_image_no_repeat'] = 'Không lặp';
+$lang_module['form_template_background_image_position'] = 'Vị trí ảnh';
+$lang_module['form_template_background_image_position_left_top'] = 'Trái - Trên';
+$lang_module['form_template_background_image_position_left_center'] = 'Trái - Giữa';
+$lang_module['form_template_background_image_position_left_bottom'] = 'Trái - Dưới';
+$lang_module['form_template_background_image_position_right_top'] = 'Phải - Trên';
+$lang_module['form_template_background_image_position_right_center'] = 'Phải - Giữa';
+$lang_module['form_template_background_image_position_right_bottom'] = 'Phải - Dưới';
+$lang_module['form_template_background_image_position_center_top'] = 'Giữa - Trên';
+$lang_module['form_template_background_image_position_center_center'] = 'Giữa - Giữa';
+$lang_module['form_template_background_image_position_center_bottom'] = 'Giữa - Dưới';
+
 
 $lang_module['report_who_answer'] = 'Người trả lời';
 $lang_module['report_guest'] = 'Khách';
@@ -58,7 +82,7 @@ $lang_module['question_form'] = 'Thuộc biểu mẫu';
 $lang_module['question_required'] = 'Câu hỏi bắt buộc';
 $lang_module['question_required_note'] = 'Người dùng buộc phải trả lời câu hỏi này';
 $lang_module['question_user_edit'] = 'Thay đổi câu trả lời';
-$lang_module['question_break'] = 'Ngắt trang từ câu hỏi này';
+$lang_module['question_break'] = 'Ngắt trang';
 $lang_module['question_break_note'] = 'Chuyển sang trang mới bắt đầu từ câu hỏi này';
 $lang_module['question_user_edit_note'] = 'Cho phép thành viên thay đổi câu trả lời trong thời gian hiệu lực';
 $lang_module['question_type'] = 'Loại dữ liệu';

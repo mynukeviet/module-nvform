@@ -19,22 +19,24 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
  */
 function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info )
 {
-    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $op, $my_head;
+    global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
 
-	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
-	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
+	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
+	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
 
-	$my_head .= "<script type=\"text/javascript\">\n";
-	$my_head .= "$(document).ready(function(){
+	$my_footer .= "<script type=\"text/javascript\">\n";
+	$my_footer .= "$(document).ready(function(){
 					$('#question').validate({
 					});
 				 });";
-	$my_head .= " </script>\n";
+	$my_footer .= " </script>\n";
 
 	if( ! empty( $form_info['end_time'] ) )
 	{
 		$form_info['close_info'] = sprintf( $lang_module['form_close_info'], date( 'd/m/Y H:i' ) );
 	}
+
+	$form_info['template'] = unserialize( $form_info['template'] );
 
     $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
@@ -324,6 +326,36 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		$xtpl->parse( 'main.loop' );
 		$i++;
 	}
+
+	$tem = $form_info['template'];
+	$style = "<style>\n";
+	$style .= "#question{\n";
+
+	if( !empty( $tem['background_color'] ) )
+	{
+		$style .= "\tbackground-color: " . $tem['background_color'] . ";\n";
+	}
+
+	if( !empty( $tem['background_image'] ) )
+	{
+		$tem['background_image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $tem['background_image'];
+		$style .= "\tbackground-image: url('" . $tem['background_image'] . "');\n";
+	}
+
+	if( !empty( $tem['background_imgage_repeat'] ) )
+	{
+		$style .= "\tbackground-repeat: " . $tem['background_imgage_repeat'] . ";\n";
+	}
+
+	if( !empty( $tem['background_imgage_position'] ) )
+	{
+		$tem['background_imgage_position'] = str_replace( '_', ' ', $tem['background_imgage_position'] );
+		$style .= "\tbackground-position: " . $tem['background_imgage_position'] . ";\n";
+	}
+
+	$style .= "}\n";
+	$style .= "</style>\n";
+	$my_head .= $style;
 
 	$xtpl->assign( 'MAX_PAGE', $page );
 
