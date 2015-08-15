@@ -15,17 +15,17 @@
 
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="">
+		<li role="presentation" class="active">
 			<a href="#form_info" aria-controls="form_info" role="tab" data-toggle="tab"> <em class="fa fa-info-circle fa-lg">&nbsp;</em>{LANG.form_info} </a>
 		</li>
-		<li role="presentation" class="active">
+		<li role="presentation">
 			<a href="#form_template" aria-controls="form_template" role="tab" data-toggle="tab"> <em class="fa fa-picture-o fa-lg">&nbsp;</em>{LANG.form_template} </a>
 		</li>
 	</ul>
 
 	<!-- Tab panes -->
 	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane " id="form_info">
+		<div role="tabpanel" class="tab-pane active" id="form_info">
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
@@ -116,7 +116,7 @@
 				</div>
 			</div>
 		</div>
-		<div role="tabpanel" class="tab-pane active" id="form_template">
+		<div role="tabpanel" class="tab-pane" id="form_template">
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
