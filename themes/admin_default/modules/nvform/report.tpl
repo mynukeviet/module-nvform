@@ -1,6 +1,29 @@
 <!-- BEGIN: main -->
-<input type="button" name="export_excel" class="btn btn-success" style="margin-bottom: 10px" value="{LANG.report_ex_excel}">
+<div class="pull-left m-bottom">{COUNT}</div>
+<div class="pull-right m-bottom">
+	<div class="btn-group">
+		<button type="button" class="btn btn-primary btn-xs">
+			<em class="fa fa-clone">&nbsp;</em>{LANG.report_ex}
+		</button>
+		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu pull-right">
+			<li><a href="#"><em class="fa fa-file-excel-o">&nbsp;</em>{LANG.report_ex_excel}</a></li>
+			<li>
+				<a href="#"><em class="fa fa-calculator">&nbsp;</em>{LANG.report_ex_calc}</a>
+			</li>
+			<li>
+				<a href="#"><em class="fa fa-file-pdf-o">&nbsp;</em>{LANG.report_ex_pdf}</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="clearfix">&nbsp;</div>
+
 <p id="export" class="text-center">&nbsp;</p>
+
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
 	<table class="table table-striped table-bordered table-hover" id="table_report">
 		<colgroup>
@@ -26,7 +49,7 @@
 			<!-- BEGIN: tr -->
 			<tr>
 				<td class="danger"><a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="bottom" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
-				<td class="success">{ANSWER.no}</td>
+				<td class="success text-center">{ANSWER.no}</td>
 				<td class="success">{ANSWER.username}</td>
 				<td class="success">{ANSWER.answer_time}</td>
 				<td class="success">{ANSWER.answer_edit_time}</td>
@@ -39,10 +62,10 @@
 	</table>
 </div>
 <script type="text/javascript">
-    $(function () {
-        $("[rel='tooltip']").tooltip();
-        $("#export").hide();
-    });
+	$(function() {
+		$("[rel='tooltip']").tooltip();
+		$("#export").hide();
+	});
 
 	function nv_data_export(set_export, fid) {
 		$.ajax({
@@ -66,11 +89,12 @@
 		});
 	}
 
+
 	$("input[name=export_excel]").click(function() {
 		$("input[name=export_excel]").attr("disabled", "disabled");
 		$("#export").show();
 		$('#export').html('<div class="text-center well">{LANG.report_export_note}<br /><br /><em class="fa fa-spinner fa-spin fa-3x"></em></div>');
-		nv_data_export(1, '{FID}' );
+		nv_data_export(1, '{FID}');
 	});
 </script>
 <!-- END: main -->

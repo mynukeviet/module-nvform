@@ -49,7 +49,7 @@ $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
 
-$sql = 'SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
+$sql = 'SELECT t1.*, t2.username, t2.last_name, t2.first_name FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
 $result = $db->query( $sql );
 $answer_data = $result->fetchAll();
 
@@ -128,7 +128,7 @@ foreach( $answer_data as $answer )
 				$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
 			}
 
-			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
+			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : nv_show_name_user( $answer['first_name'], $answer['last_name'], $answer['username'] );
 
 			$xtpl->assign( 'ANSWER', $ans );
 			$xtpl->parse( 'main.tr.td' );
@@ -149,9 +149,10 @@ $result = $db->query( $sql );
 list( $title ) = $result->fetch( 3 );
 $page_title = sprintf( $lang_module['report_page_title'], $title );
 
-unset( $answer_data, $question_data );
-
 $xtpl->assign( 'FID', $fid );
+$xtpl->assign( 'COUNT', sprintf( $lang_module['report_count'], count( $answer_data ) ) );
+
+unset( $answer_data, $question_data );
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );
