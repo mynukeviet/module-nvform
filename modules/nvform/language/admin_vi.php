@@ -85,6 +85,8 @@ $lang_module['question_user_edit'] = 'Thay đổi câu trả lời';
 $lang_module['question_break'] = 'Ngắt trang';
 $lang_module['question_break_note'] = 'Chuyển sang trang mới bắt đầu từ câu hỏi này';
 $lang_module['question_user_edit_note'] = 'Cho phép thành viên thay đổi câu trả lời trong thời gian hiệu lực';
+$lang_module['question_report'] = '<span class="red">KHÔNG</span> hiển thị trong báo cáo';
+$lang_module['question_report_note'] = 'Nếu chọn, kết quả của câu hỏi này sẽ không hiển thị trong báo cáo';
 $lang_module['question_type'] = 'Loại dữ liệu';
 $lang_module['question_type_number'] = 'Số';
 $lang_module['question_type_date'] = 'Ngày';

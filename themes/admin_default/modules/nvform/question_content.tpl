@@ -33,13 +33,13 @@
 					<span style="margin-top: 6px; display: block;">{FORM_TEXT}</span>
 				</div>
 			</div>
-			<div class="form-group" id="question_required">
+			<div class="form-group" id="question_required" {DATAFORM.requireddisabled}>
 				<label class="col-sm-4 text-right"><strong>{LANG.question_required}</strong></label>
 				<div class="col-sm-20">
 					<label><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</label>
 				</div>
 			</div>
-			<div class="form-group" id="question_user_edit">
+			<div class="form-group" id="question_user_edit" {DATAFORM.user_editdisabled}>
 				<label class="col-sm-4 text-right"><strong>{LANG.question_user_edit}</strong></label>
 				<div class="col-sm-20">
 					<label><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</label>
@@ -49,6 +49,12 @@
 				<label class="col-sm-4 text-right"><strong>{LANG.question_break}</strong></label>
 				<div class="col-sm-20">
 					<label><input name="break" value="1" type="checkbox" {DATAFORM.checked_break}/> {LANG.question_break_note}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.question_report}</strong></label>
+				<div class="col-sm-20">
+					<label><input name="report" id="report" value="0" type="checkbox" {DATAFORM.checked_report} {DATAFORM.reportdisabled} /> {LANG.question_report_note}</label>
 				</div>
 			</div>
 			<div class="form-group">
@@ -484,6 +490,8 @@
 		$("#filefields").hide();
 		$("#question_required").show();
 		$("#question_user_edit").show();
+		$("#report").prop( 'checked', false );
+		$("#report").prop( 'disabled', false );
 		$("#question_title").html( '{LANG.question}' );
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
@@ -513,6 +521,8 @@
 			$("#textfields").hide();
 			$("#question_required").hide();
 			$("#question_user_edit").hide();
+			$("#report").prop( 'checked', true );
+			$("#report").prop( 'disabled', true );
 			$("#question_title").html( '{LANG.question_type_plaintext_content}' );
 		} else {
 			$("#choicefields").show();

@@ -53,15 +53,18 @@ $sql = 'SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '
 $result = $db->query( $sql );
 $answer_data = $result->fetchAll();
 
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid;
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid . ' AND status=1 ORDER BY weight';
 $result = $db->query( $sql );
 
 while( $row = $result->fetch() )
 {
-	$question_data[$row['qid']] = $row;
-	$row['title_cut'] = nv_clean60( $row['title'], 40 );
-	$xtpl->assign( 'QUESTION', $row );
-	$xtpl->parse( 'main.thead' );
+	if( $row['report'] )
+	{
+		$question_data[$row['qid']] = $row;
+		$row['title_cut'] = nv_clean60( $row['title'], 40 );
+		$xtpl->assign( 'QUESTION', $row );
+		$xtpl->parse( 'main.thead' );
+	}
 }
 
 $i = 1;
@@ -71,7 +74,7 @@ foreach( $answer_data as $answer )
 
 	foreach( $answer['answer'] as $qid => $ans )
 	{
-		if( isset( $question_data[$qid] ) )
+		if( isset( $question_data[$qid] ) and $question_data[$qid]['report'] )
 		{
 			$question_type = $question_data[$qid]['question_type'];
 			if( $question_type == 'multiselect' OR $question_type == 'select' OR $question_type == 'radio' OR $question_type == 'checkbox' )
@@ -124,21 +127,12 @@ foreach( $answer_data as $answer )
 			{
 				$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
 			}
-			else
-			{
-				$ans = '';
-			}
+
+			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
+
+			$xtpl->assign( 'ANSWER', $ans );
+			$xtpl->parse( 'main.tr.td' );
 		}
-		else
-		{
-			$ans = '';
-		}
-
-		$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
-
-		$xtpl->assign( 'ANSWER', $ans );
-
-		$xtpl->parse( 'main.tr.td' );
 	}
 
 	$answer['answer_time'] = nv_date( 'd/m/Y H:i', $answer['answer_time'] );
