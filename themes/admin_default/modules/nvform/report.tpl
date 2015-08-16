@@ -2,9 +2,9 @@
 <div class="pull-left m-bottom">{COUNT}</div>
 <div class="pull-right m-bottom">
 	<div class="btn-group">
-		<button type="button" class="btn btn-primary btn-xs">
-			<em class="fa fa-clone">&nbsp;</em>{LANG.report_ex}
-		</button>
+		<a href="{URL_ANALYTICS}" class="btn btn-primary btn-xs">
+			<em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart}
+		</a>
 		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<span class="caret"></span>
 			<span class="sr-only">Toggle Dropdown</span>

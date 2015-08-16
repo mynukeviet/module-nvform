@@ -10,21 +10,8 @@
 
 if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
 
-if( ! empty( $array_op ) )
-{
-	$fid = $array_op[0];
-	$fid = explode( '-', $fid );
-	$fid = intval( $fid[0] );
-}
-else
-{
-	Header( 'Location: ' . $global_config['site_url'] );
-	die();
-}
-
 $form_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . " WHERE id = " . $fid )->fetch();
-
-if( ! $form_info )
+if( empty( $form_info ) )
 {
 	nv_theme_nvform_alert( $form_info['title'], $lang_module['error_form_not_found_detail'] );
 }

@@ -419,3 +419,65 @@ function nv_theme_nvform_alert( $message_title, $message_content, $type = 'info'
 	include ( NV_ROOTDIR . "/includes/footer.php" );
 	exit();
 }
+
+/**
+ * nv_theme_nvform_viewanalytics()
+ *
+ * @param mixed $form_info
+ * @param mixed $question_info
+ * @param mixed $answer_info
+ * @return
+ */
+function nv_theme_nvform_viewanalytics ( $form_info, $question_info, $answer_info )
+{
+	global $module_info, $module_file;
+
+	$xtpl = new XTemplate( 'viewanalytics.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
+	$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
+	$xtpl->assign( 'MODULE_FILE', $module_file );
+	$xtpl->assign( 'TEMPLATE', $module_info['template'] );
+
+	if( !empty( $question_info ) )
+	{
+		foreach( $question_info as $row )
+		{
+			if( $row['report'] )
+			{
+				if( $row['question_type'] == 'radio' or $row['question_type'] == 'select' or $row['question_type'] == 'checkbox' or $row['question_type'] == 'multiselect' )
+				{
+					$row['question_choices'] = unserialize( $row['question_choices'] );
+					foreach( $row['question_choices'] as $key => $value )
+					{
+						$count = 0;
+						foreach( $answer_info as $answer )
+						{
+							if( isset( $answer[$row['qid']] ) and $key == $answer[$row['qid']] )
+							{
+								$count++;
+							}
+						}
+						$row['data'][] = array(
+							'label' => $value,
+							'value' => $count,
+							'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+							'highlight' => 'red'
+						);
+					}
+					$row['data'] = json_encode( $row['data'] );
+					$xtpl->assign( 'QUESTION', $row );
+					$xtpl->parse( 'main.loop.radio' );
+				}
+				$xtpl->assign( 'QUESTION', $row );
+				$xtpl->parse( 'main.loop' );
+			}
+		}
+	}
+
+    $xtpl->parse( 'main' );
+    $contents = $xtpl->text( 'main' );
+
+	include ( NV_ROOTDIR . "/includes/header.php" );
+	echo nv_site_theme( $contents );
+	include ( NV_ROOTDIR . "/includes/footer.php" );
+	exit();
+}

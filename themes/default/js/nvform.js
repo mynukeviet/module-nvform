@@ -7,14 +7,6 @@
  */
 
 $(document).ready(function() {
-	$(".datepicker").datepicker({
-		dateFormat : "dd/mm/yy",
-		changeMonth : true,
-		changeYear : true,
-		showOtherMonths : true,
-		showOn: 'focus'
-	});
-
 	$('#upload_fileupload').change(function(){
 	     $('#file_name').val($(this).val().match(/[-_\w]+[.][\w]+$/i)[0]);
 	});

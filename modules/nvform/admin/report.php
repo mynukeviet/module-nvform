@@ -44,10 +44,13 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 	die('OK');
 }
 
+$form_info = $db->query( 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid )->fetch();
+
 $xtpl = new XTemplate( 'report.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
+$xtpl->assign( 'URL_ANALYTICS', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' . $fid . '-' . $form_info['alias'] );
 
 $sql = 'SELECT t1.*, t2.username, t2.last_name, t2.first_name FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
 $result = $db->query( $sql );
@@ -144,15 +147,11 @@ foreach( $answer_data as $answer )
 	$i++;
 }
 
-$sql = 'SELECT title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id = ' . $fid;
-$result = $db->query( $sql );
-list( $title ) = $result->fetch( 3 );
-$page_title = sprintf( $lang_module['report_page_title'], $title );
-
 $xtpl->assign( 'FID', $fid );
 $xtpl->assign( 'COUNT', sprintf( $lang_module['report_count'], count( $answer_data ) ) );
 
 unset( $answer_data, $question_data );
+$page_title = sprintf( $lang_module['report_page_title'], $form_info['title'] );
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

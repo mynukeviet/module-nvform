@@ -131,4 +131,15 @@
 		<div class="clearfix"></div>
 	</div>
 </form>
+<script>
+$(document).ready(function() {
+	$(".datepicker").datepicker({
+		dateFormat : "dd/mm/yy",
+		changeMonth : true,
+		changeYear : true,
+		showOtherMonths : true,
+		showOn: 'focus'
+	});
+});
+</script>
 <!-- END: main -->

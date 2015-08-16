@@ -12,7 +12,8 @@ if ( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 $module_version = array(
 		'name' => 'Nvform',
-		'modfuncs' => 'main',
+		'modfuncs' => 'main, viewanalytics',
+		'change_alias' => 'viewanalytics',
 		'submenu' => 'main',
 		'is_sysmod' => 0,
 		'virtual' => 1,

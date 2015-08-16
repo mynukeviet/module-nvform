@@ -67,6 +67,7 @@ $lang_module['report_answer_time'] = 'Thời gian trả lời';
 $lang_module['report_answer_edit_time'] = 'Cập nhật lần cuối';
 $lang_module['report_page_title'] = 'Danh sách câu trả lời thuộc biểu mẫu "%s"';
 $lang_module['report_count'] = 'Có <strong>%s</strong> người trả lời';
+$lang_module['report_chart'] = 'Xem tóm tắt';
 $lang_module['report_ex'] = 'Xuất dữ liệu';
 $lang_module['report_ex_excel'] = 'Xuất MS Excel';
 $lang_module['report_ex_calc'] = 'Xuất Libreoffice Calc';
