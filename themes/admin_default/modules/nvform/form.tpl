@@ -113,6 +113,12 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 text-right"><strong>{LANG.form_question_report}</strong></label>
+						<div class="col-sm-21">
+							<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -21,8 +21,8 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 {
     global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
 
-	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/jquery/jquery.validate.min.js\"></script>\n";
-	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
+	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR .  "/js/jquery/jquery.validate.min.js\"></script>\n";
+	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR .  "/js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
 
 	$my_footer .= "<script type=\"text/javascript\">\n";
 	$my_footer .= "$(document).ready(function(){
@@ -443,10 +443,22 @@ function nv_theme_nvform_viewanalytics ( $form_info, $question_info, $answer_inf
 		{
 			if( $row['report'] )
 			{
-				if( $row['question_type'] == 'radio' or $row['question_type'] == 'select' or $row['question_type'] == 'checkbox' or $row['question_type'] == 'multiselect' )
+				if( $row['question_type'] == 'textbox' or $row['question_type'] == 'number' or $row['question_type'] == 'date' or $row['question_type'] == 'time' )
 				{
-					$row['question_choices'] = unserialize( $row['question_choices'] );
-					foreach( $row['question_choices'] as $key => $value )
+					foreach( $answer_info as $answer )
+					{
+						if( isset( $answer[$row['qid']] ) )
+						{
+							$xtpl->assign( 'ANSWER', $answer[$row['qid']] );
+							$xtpl->parse( 'main.loop.textbox.loop' );
+						}
+					}
+					$xtpl->parse( 'main.loop.textbox' );
+				}
+				elseif( $row['question_type'] == 'radio' or $row['question_type'] == 'select' or $row['question_type'] == 'checkbox' or $row['question_type'] == 'multiselect' )
+				{
+					$question_choices = unserialize( $row['question_choices'] );
+					foreach( $question_choices as $key => $value )
 					{
 						$count = 0;
 						foreach( $answer_info as $answer )
@@ -467,6 +479,51 @@ function nv_theme_nvform_viewanalytics ( $form_info, $question_info, $answer_inf
 					$xtpl->assign( 'QUESTION', $row );
 					$xtpl->parse( 'main.loop.radio' );
 				}
+				elseif( $row['question_type'] == 'grid' )
+				{
+					$question_choices = unserialize( $row['question_choices'] );
+
+					// Loop collumn
+					if( !empty( $question_choices['col'] ) )
+					{
+						foreach( $question_choices['col'] as $choices )
+						{
+							$xtpl->assign( 'COL', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+							$xtpl->parse( 'main.loop.grid.col' );
+						}
+					}
+
+					// Loop row
+					if( !empty( $question_choices['row'] ) )
+					{
+						foreach( $question_choices['row'] as $choices )
+						{
+							$xtpl->assign( 'ROW', array( 'key' => $choices['key'], 'value' => $choices['value'] ) );
+
+							if( !empty( $question_choices['col'] ) )
+							{
+								foreach( $question_choices['col'] as $col )
+								{
+									$count = 0;
+									$value = $col['key'] . '||' . $choices['key'];
+									foreach( $answer_info as $answer )
+									{
+										if( $answer[$row['qid']] == $value )
+										{
+											$count++;
+										}
+									}
+								$xtpl->assign( 'COUNT', $count );
+								$xtpl->parse( 'main.loop.grid.row.td' );
+								}
+							}
+							$xtpl->parse( 'main.loop.grid.row' );
+						}
+					}
+
+					$xtpl->parse( 'main.loop.grid' );
+				}
+
 				$xtpl->assign( 'QUESTION', $row );
 				$xtpl->parse( 'main.loop' );
 			}

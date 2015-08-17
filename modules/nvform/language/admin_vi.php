@@ -37,6 +37,8 @@ $lang_module['form_question_display'] = 'Kiểu hiển thị câu hỏi';
 $lang_module['form_question_display_top'] = 'Câu hỏi nằm trên';
 $lang_module['form_question_display_left'] = 'Câu hỏi nằm bên trái';
 $lang_module['form_question_display_two_column'] = 'Hai cột';
+$lang_module['form_question_report'] = 'Công khai kết quả';
+$lang_module['form_question_report_note'] = 'Hiển thị liên kết đến trang thống kê kết quả sau khi người dùng hoàn tất biểu mẫu';
 
 $lang_module['form_template'] = 'Giao diện biểu mẫu';
 $lang_module['form_template_background'] = 'Nền trang';

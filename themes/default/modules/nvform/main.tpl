@@ -52,11 +52,11 @@
 			<!-- END: select -->
 
 			<!-- BEGIN: radio -->
-			<label for="lb_{QUESTION_CHOICES.id}"> <input type="radio" name="question[{QUESTION.qid}]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
+			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show"> <input type="radio" name="question[{QUESTION.qid}]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
 			<!-- END: radio -->
 
 			<!-- BEGIN: checkbox -->
-			<label for="lb_{QUESTION_CHOICES.id}"> <input type="checkbox" name="question[{QUESTION.qid}][]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
+			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show"> <input type="checkbox" name="question[{QUESTION.qid}][]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
 			<!-- END: checkbox -->
 
 			<!-- BEGIN: multiselect -->
@@ -72,12 +72,12 @@
 				<tr>
 					<td>&nbsp;</td>
 					<!-- BEGIN: col -->
-					<td>{COL.value}</td>
+					<th>{COL.value}</th>
 					<!-- END: col -->
 				</tr>
 				<!-- BEGIN: row -->
 				<tr>
-					<td>{ROW.value}</td>
+					<th>{ROW.value}</th>
 					<!-- BEGIN: td -->
 					<td><input type="radio" name="question[{QUESTION.qid}]" value="{GRID.value}" {GRID.checked} /></td>
 					<!-- END: td -->
@@ -91,12 +91,12 @@
 				<tr>
 					<td>&nbsp;</td>
 					<!-- BEGIN: col -->
-					<td>{COL.value}</td>
+					<th>{COL.value}</th>
 					<!-- END: col -->
 				</tr>
 				<!-- BEGIN: row -->
 				<tr>
-					<td>{ROW.value}</td>
+					<th>{ROW.value}</th>
 					<!-- BEGIN: td -->
 					<td><input type="text" class="form-control" name="question[{QUESTION.qid}][{NAME.col}][{NAME.row}]" value="{VALUE}" /></td>
 					<!-- END: td -->

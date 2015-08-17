@@ -97,7 +97,16 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 			if( defined( 'NV_IS_USER' ) )
 			{
 				$link_form = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $form_info['id'] . '-' . $form_info['alias'] . $global_config['rewrite_exturl'];
-				$info .= '<br />' . sprintf( $lang_module['success_user_info'], $link_form );
+				if( $form_info['question_report'] )
+				{
+					$link_report = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' .  $form_info['id'] . '-' . $form_info['alias'] . $global_config['rewrite_exturl'];
+					$info .= '<br />' . sprintf( $lang_module['success_user_info_report'], $link_form, $link_report );
+				}
+				else
+				{
+					$info .= '<br />' . sprintf( $lang_module['success_user_info'], $link_form );
+				}
+
 			}
 			nv_theme_nvform_alert( $lang_module['success'], $info, 'success' );
 		}
