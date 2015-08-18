@@ -141,7 +141,7 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 						$ans = '';
 						foreach( $result as $key )
 						{
-							$ans .= $data[$key] . " | ";
+							$ans .= $data[$key] . "<br />";
 						}
 					}
 					else
@@ -149,12 +149,46 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 						$ans = $data[$ans];
 					}
 				}
+				elseif( $question_type == 'date' and !empty( $ans ) )
+				{
+					$ans = nv_date( 'd/m/Y', $ans );
+				}
+				elseif( $question_type == 'time' and !empty( $ans ) )
+				{
+					$ans = nv_date( 'H:i', $ans );
+				}
+				elseif( $question_type == 'grid' )
+				{
+					$data = unserialize( $question_data[$qid]['question_choices'] );
+					$result = explode( '||', $ans );
+					foreach( $data['col'] as $col )
+					{
+						if( $result[0] == $col['key'] )
+						{
+							$ans = $col['value'];
+							break;
+						}
+					}
+					foreach( $data['row'] as $row )
+					{
+						if( $result[1] == $row['key'] )
+						{
+							$ans .= ' - ' . $col['value'];
+							break;
+						}
+					}
+				}
+				elseif( $question_type == 'file' and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans ) )
+				{
+					$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
+				}
+
+				$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : nv_show_name_user( $answer['first_name'], $answer['last_name'], $answer['username'] );
 			}
 			else
 			{
 				$ans = '';
 			}
-			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : $answer['username'];
 			$col = PHPExcel_Cell::stringFromColumnIndex( $j );
 			$CellValue = nv_unhtmlspecialchars( $ans );
 			$objPHPExcel->getActiveSheet()->setCellValue( $col . $i, $CellValue );
