@@ -17,7 +17,7 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label"><strong id="question_title">{LANG.question}</strong></label>
 				<div class="col-sm-20">
-					<textarea id="question" name="question" class="form-control">{DATAFORM.title}</textarea>
+					{DATAFORM.question}
 				</div>
 			</div>
 			<div class="form-group">

@@ -120,7 +120,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 {
 	$preg_replace = array( 'pattern' => '/[^a-zA-Z0-9\_]/', 'replacement' => '' );
 
-	$question['question'] = $nv_Request->get_title( 'question', 'post', '' );
+	$question['question'] = $nv_Request->get_editor( 'question', '', NV_ALLOWED_HTML_TAGS );
 	$question['required'] = $nv_Request->get_int( 'required', 'post', 0 );
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['break'] = $nv_Request->get_int( 'break', 'post', 0 );
@@ -628,6 +628,18 @@ foreach( $myini['exts'] as $key => $name )
 		'checked' => in_array( $name, $question_choices['ext'] ) ? ' checked="checked"' : ''
 	) );
 	$xtpl->parse( 'main.exts' );
+}
+
+if( defined( 'NV_EDITOR' ) ) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+
+$question['question'] = htmlspecialchars( nv_editor_br2nl( $question['title'] ) );
+if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
+{
+	$question['question'] = nv_aleditor( 'question', '100%', '200px', $question['question'], 'Basic' );
+}
+else
+{
+	$question['question'] = '<textarea style="width:100%;height:200px" name="question">' . $question['question'] . '</textarea>';
 }
 
 if( ! empty( $error ) )
