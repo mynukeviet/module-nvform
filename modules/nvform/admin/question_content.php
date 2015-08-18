@@ -104,7 +104,6 @@ else
 	$question['min_length'] = 0;
 	$question['max_length'] = 255;
 	$question['match_regex'] = $question['func_callback'] = '';
-	$question['class'] = 'input';
 	$question['default_value_number'] = 0;
 	$question['min_number'] = 0;
 	$question['max_number'] = 1000;
@@ -125,7 +124,6 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['break'] = $nv_Request->get_int( 'break', 'post', 0 );
 	$question['report'] = $nv_Request->get_int( 'report', 'post', 1 );
-	$question['class'] = nv_substr( $nv_Request->get_title( 'class', 'post', '', 0, $preg_replace ), 0, 50);
 
 	if( $qid )
 	{
@@ -335,13 +333,12 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$weight = intval( $weight ) + 1;
 
 			$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
-				(title, fid, weight, question_type, question_choices, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, class, default_value, break, report, status) VALUES
+				(title, fid, weight, question_type, question_choices, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, status) VALUES
 				('" . $question['question'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
-				" . $question['required'] . ", '" . $question['user_editable'] . "', :class, :default_value, " . $question['break'] . ", " . $question['report'] . ", 1)";
+				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", 1)";
 
 			$data_insert = array();
-            $data_insert['class'] = $question['class'];
 			$data_insert['default_value'] = $question['default_value'];
 			$save = $db->insert_id( $sql, 'qid', $data_insert );
 		}
@@ -356,14 +353,12 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 				required = '" . $question['required'] . "',
 				question_type = '" . $question['question_type'] . "',
 				user_editable = '" . $question['user_editable'] . "',
-				class = :class,
 				default_value= :default_value,
 				break = " . $question['break'] . ",
 				report = " . $question['report'] . "
 				WHERE qid = " . $qid;
 
 			$stmt = $db->prepare( $query ) ;
-            $stmt->bindParam( ':class', $question['class'], PDO::PARAM_STR );
 			$stmt->bindParam( ':default_value', $question['default_value'], PDO::PARAM_STR, strlen( $question['default_value'] ) );
 			$save = $stmt->execute();
 		}
@@ -533,7 +528,6 @@ $question['display_gridfields'] = ( $grid_questions ) ? '' : 'style="display: no
 $question['display_filefields'] = ( $file_questions ) ? '' : 'style="display: none;"';
 
 $question['editordisabled'] = ( $question['question_type'] != 'editor' ) ? ' style="display: none;"' : '';
-$question['classdisabled'] = ( $question['question_type'] == 'editor' ) ? ' style="display: none;"' : '';
 $question['requireddisabled'] = '';
 $question['user_editdisabled'] = '';
 if( $question['question_type'] == 'plaintext' )

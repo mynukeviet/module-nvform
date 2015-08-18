@@ -70,12 +70,6 @@
 					{FIELD_TYPE_TEXT}
 				</div>
 			</div>
-			<div class="form-group" id="classfields" {DATAFORM.classdisabled}>
-				<label class="col-sm-4 control-label"><strong>{LANG.question_class}</strong></label>
-				<div class="col-sm-20">
-					<input class="validalphanumeric form-control" type="text" value="{DATAFORM.class}" name="class" maxlength="50">
-				</div>
-			</div>
 		</div>
 	</div>
 

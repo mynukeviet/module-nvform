@@ -50,7 +50,6 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 	max_length bigint(20) unsigned NOT NULL DEFAULT '0',
 	required tinyint(3) unsigned NOT NULL DEFAULT '0',
 	user_editable tinyint(3) unsigned NOT NULL DEFAULT '0',
-	class varchar(50) NOT NULL,
 	default_value varchar(255) NOT NULL DEFAULT '',
 	break tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Ngắt trang',
 	report tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Hiển thị trong báo cáo',
