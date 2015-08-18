@@ -16,6 +16,7 @@ $form_info = $db->query( 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data .
 
 if( $nv_Request->isset_request( 'export', 'post, get' ) )
 {
+	$download = $nv_Request->get_int( 'download', 'get, post', 1 );
 	$type = $nv_Request->get_title( 'type', 'get, post', '' );
 	$is_zip = $nv_Request->get_int( 'is_zip', 'get, post', 0 );
 
@@ -248,6 +249,8 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 	$objWriter = PHPExcel_IOFactory::createWriter( $objPHPExcel, $array['objType'] );
 	$file_src = NV_ROOTDIR . NV_BASE_SITEURL . NV_TEMP_DIR . '/' . $form_info['alias'] . '.' . $array['objExt'];
 	$objWriter->save( $file_src );
+
+	if( !$download and file_exists( $file_src ) ) die( 'OK_' . str_replace( NV_ROOTDIR . NV_BASE_SITEURL, '', $file_src ) );
 
 	if( !$is_zip )
 	{

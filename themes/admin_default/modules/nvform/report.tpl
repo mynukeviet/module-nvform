@@ -1,12 +1,22 @@
 <!-- BEGIN: main -->
-<div class="pull-left m-bottom">{COUNT}</div>
+<div class="pull-left m-bottom">
+	{COUNT}
+</div>
 <div class="pull-right m-bottom">
-	<a href="{URL_ANALYTICS}" class="btn btn-danger btn-xs">
-		<em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart}
-	</a>
-	<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs">
-		<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_ex}
-	</button>
+	<a href="{URL_ANALYTICS}" class="btn btn-danger btn-xs"> <em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart} </a>
+	<!-- Split button -->
+	<div class="btn-group">
+		<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs">
+			<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_ex}
+		</button>
+		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu pull-right">
+			<li><a href="javascript:void(0)" data-fid="{FID}" id="ex_onine"><em class="fa fa-file-excel-o">&nbsp;&nbsp;</em>{LANG.report_ex_online}</a></li>
+		</ul>
+	</div>
 </div>
 <div class="clearfix">&nbsp;</div>
 
@@ -90,6 +100,7 @@
 			}
 		});
 	}
+
 
 	$("input[name=export_excel]").click(function() {
 		$("input[name=export_excel]").attr("disabled", "disabled");
