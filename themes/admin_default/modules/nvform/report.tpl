@@ -1,28 +1,30 @@
 <!-- BEGIN: main -->
 <div class="pull-left m-bottom">{COUNT}</div>
 <div class="pull-right m-bottom">
-	<div class="btn-group">
-		<a href="{URL_ANALYTICS}" class="btn btn-primary btn-xs">
-			<em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart}
-		</a>
-		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<span class="caret"></span>
-			<span class="sr-only">Toggle Dropdown</span>
-		</button>
-		<ul class="dropdown-menu pull-right">
-			<li><a href="#"><em class="fa fa-file-excel-o">&nbsp;</em>{LANG.report_ex_excel}</a></li>
-			<li>
-				<a href="#"><em class="fa fa-calculator">&nbsp;</em>{LANG.report_ex_calc}</a>
-			</li>
-			<li>
-				<a href="#"><em class="fa fa-file-pdf-o">&nbsp;</em>{LANG.report_ex_pdf}</a>
-			</li>
-		</ul>
-	</div>
+	<a href="{URL_ANALYTICS}" class="btn btn-danger btn-xs">
+		<em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart}
+	</a>
+	<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs">
+		<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_ex}
+	</button>
 </div>
 <div class="clearfix">&nbsp;</div>
 
-<p id="export" class="text-center">&nbsp;</p>
+<div class="modal fade" id="exportmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">{LANG.report_ex}</h4>
+			</div>
+			<div class="modal-body">
+
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
 	<table class="table table-striped table-bordered table-hover" id="table_report">
@@ -88,7 +90,6 @@
 			}
 		});
 	}
-
 
 	$("input[name=export_excel]").click(function() {
 		$("input[name=export_excel]").attr("disabled", "disabled");

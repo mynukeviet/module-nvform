@@ -74,10 +74,14 @@ $lang_module['report_ex'] = 'Xuất dữ liệu';
 $lang_module['report_ex_excel'] = 'Xuất MS Excel';
 $lang_module['report_ex_calc'] = 'Xuất Libreoffice Calc';
 $lang_module['report_ex_pdf'] = 'Xuất PDF';
-$lang_module['report_required_phpexcel'] = 'Để sử dụng chức năng này bạn cần cài đặt thư viện PHPExcel, bạn có thể download tại <a title="Download PHPExcel" href="http://nukeviet.vn/vi/store/other/phpexcel/">NukeViet Store</a>';
+$lang_module['report_required_phpexcel'] = 'Để sử dụng chức năng này bạn cần cài đặt thư viện PHPExcel';
 $lang_module['report_export_excel'] = 'Xuất dữ liệu ra file Excel';
 $lang_module['report_export_complete'] = "Xuất dữ liệu thành công, bạn hãy download và giải nén để lấy các file dữ liệu";
 $lang_module['report_export_note'] = "Quá trình xuất dữ liệu có thể diễn ra trong vòng vài phút, vui lòng đợi đến khi có thông báo hoàn thành";
+$lang_module['report_type'] = "Định dạng tập tin";
+$lang_module['report_zip'] = "Nén tập tin";
+$lang_module['report_zip_note'] = "Đóng góp tập tin ở dạng tập tin nén (.zip)";
+$lang_module['report_download'] = "Tải về";
 
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';

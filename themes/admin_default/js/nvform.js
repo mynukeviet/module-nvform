@@ -87,3 +87,21 @@ function nv_del_answer(aid) {
 	}
 	return false;
 }
+
+$( document ).ready(function() {
+	$('#frm-download').submit(function(res){
+		var type= $('input[name="type"]:checked').val();
+		var is_zip= $('input[name="zip"]').is(':checked') ? 1 : 0;
+		var fid = $('#fid').val();
+		window.location.href = script_name + "?" + nv_lang_variable + "=" + nv_sitelang + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&export=1&type=' + type + '&is_zip=' + is_zip + '&fid=' + fid;
+		$('#exportmodal').modal('hide');
+		return false;
+	});
+
+	$('#open_modal').click(function(){
+		$.get( script_name + "?" + nv_lang_variable + "=" + nv_sitelang + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&fid=' + $(this).data('fid'), function( res ){
+			$('#exportmodal .modal-body').html( res );
+			$('#exportmodal').modal('show');
+		});
+	});
+});
