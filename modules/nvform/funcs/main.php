@@ -48,7 +48,7 @@ $question_info = $db->query( "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_da
 
 $info = '';
 $filled = false;
-$answer_info = $old_answer_info = array();
+$answer_info = $answer_info_extend = $old_answer_info = $old_answer_info_extend = array();
 
 // Trạng thái trả lời
 if( defined( 'NV_IS_USER' ) )
@@ -61,6 +61,7 @@ if( defined( 'NV_IS_USER' ) )
 		$filled = true;
 		$form_info['filled'] = true;
 		$answer_info = unserialize( $_rows['answer'] );
+		$answer_info_extend = unserialize( $_rows['answer_extend'] );
 	}
 }
 
@@ -71,26 +72,32 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 	if( $filled )
 	{
 		$old_answer_info = $answer_info;
+		$old_answer_info_extend = $answer_info_extend;
 	}
 
 	$answer_info = $nv_Request->get_array( 'question', 'post' );
+	$answer_info_extend = $nv_Request->get_array( 'question_extend', 'post', array() );
+
 	require NV_ROOTDIR . '/modules/' . $module_file . '/form.check.php';
 
 	if( empty( $error ) )
 	{
 		$answer_info = serialize( $answer_info );
+		$answer_info_extend = serialize( $answer_info_extend );
+
 		if( ! isset( $user_info['userid'] ) ) $user_info['userid'] = 0;
 
 		if ( $filled )
 		{
-			$sth = $db->prepare( "UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_edit_time = " . NV_CURRENTTIME . " WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'] );
+			$sth = $db->prepare( "UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_extend = :answer_extend, answer_edit_time = " . NV_CURRENTTIME . " WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'] );
 		}
 		else
 		{
-			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, who_answer, answer_time) VALUES (" . $fid . ", :answer, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
+			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, answer_extend, who_answer, answer_time) VALUES (" . $fid . ", :answer, :answer_extend, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
 		}
-
 		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
+		$sth->bindParam( ':answer_extend', $answer_info_extend, PDO::PARAM_STR );
+
 		if( $sth->execute() )
 		{
 			$info = $lang_module['success_info'];
@@ -118,7 +125,7 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 }
 
 $page_title = $form_info['title'];
-$contents = nv_theme_nvform_main( $form_info, $question_info, $answer_info, $info );
+$contents = nv_theme_nvform_main( $form_info, $question_info, $answer_info, $answer_info_extend, $info );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );

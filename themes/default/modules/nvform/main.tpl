@@ -24,19 +24,19 @@
 		<label <!-- BEGIN: display_left_label -->class="col-xs-24 col-sm-6 control-label"<!-- END: display_left_label -->>{QUESTION.title}<!-- BEGIN: required --><span class="text-danger"> (*)</span><!-- END: required --></label>
 		<div <!-- BEGIN: display_left_div -->class="col-xs-24 col-sm-18"<!-- END: display_left_div -->>
 			<!-- BEGIN: textbox -->
-				<input class="{QUESTION.required} {QUESTION.class} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />
+				<input class="{QUESTION.required} form-control" type="text" name="question[{QUESTION.qid}]" value="{QUESTION.value}" {QUESTION.readonly} />
 			<!-- END: textbox -->
 
 			<!-- BEGIN: date -->
-				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
+				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
 			<!-- END: date -->
 
 			<!-- BEGIN: time -->
-				<input type="time" class="form-control {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}">
+				<input type="time" class="form-control {QUESTION.required}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}">
 			<!-- END: time -->
 
 			<!-- BEGIN: textarea -->
-			<textarea name="question[{QUESTION.qid}]" class="{QUESTION.class} form-control" {QUESTION.readonly}>{QUESTION.value}</textarea>
+			<textarea name="question[{QUESTION.qid}]" class="form-control" {QUESTION.readonly}>{QUESTION.value}</textarea>
 			<!-- END: textarea -->
 
 			<!-- BEGIN: editor -->
@@ -44,23 +44,40 @@
 			<!-- END: editor -->
 
 			<!-- BEGIN: select -->
-			<select name="question[{QUESTION.qid}]" class="{QUESTION.class} form-control" {QUESTION.readonly}>
+			<select name="question[{QUESTION.qid}]" data-toggle="{QUESTION.qid}" class="m-bottom form-control" {QUESTION.readonly}>
 				<!-- BEGIN: loop -->
 				<option value="{QUESTION_CHOICES.key}" {QUESTION_CHOICES.selected}>{QUESTION_CHOICES.value}</option>
 				<!-- END: loop -->
 			</select>
+			<!-- BEGIN: choice_extend -->
+			<blockquote class="form-inline toggle_{QUESTION.qid} {QUESTION_CHOICES.key}" {QUESTION_CHOICES.display}>
+				<!-- BEGIN: loop -->
+				<input type="text" class="form-control m-bottom" name="question_extend[{QUESTION.qid}][{FIELD_CHOICES_EXTEND.number}][{FIELD_CHOICES_EXTEND.key}]" value="{FIELD_CHOICES_EXTEND.value}" placeholder="{FIELD_CHOICES_EXTEND.text}" {FIELD_CHOICES_EXTEND.readonly} />
+				<!-- END: loop -->
+			</blockquote>
+			<!-- END: choice_extend -->
 			<!-- END: select -->
 
 			<!-- BEGIN: radio -->
-			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show"> <input type="radio" name="question[{QUESTION.qid}]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
+			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show">
+				<input type="radio" name="question[{QUESTION.qid}]" data-toggle="{QUESTION.qid}" value="{QUESTION_CHOICES.key}" data-id="lb_{QUESTION_CHOICES.id}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly} />
+				{QUESTION_CHOICES.value}
+			</label>
+			<!-- BEGIN: choice_extend -->
+			<blockquote class="form-inline toggle_{QUESTION.qid} lb_{QUESTION_CHOICES.id}" {QUESTION_CHOICES.display}>
+				<!-- BEGIN: loop -->
+				<input type="text" class="form-control m-bottom" name="question_extend[{QUESTION.qid}][{QUESTION_CHOICES.number}][{FIELD_CHOICES_EXTEND.key}]" value="{FIELD_CHOICES_EXTEND.value}" placeholder="{FIELD_CHOICES_EXTEND.text}" {FIELD_CHOICES_EXTEND.readonly} />
+				<!-- END: loop -->
+			</blockquote>
+			<!-- END: choice_extend -->
 			<!-- END: radio -->
 
 			<!-- BEGIN: checkbox -->
-			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show"> <input type="checkbox" name="question[{QUESTION.qid}][]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" class="{QUESTION.class}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
+			<label for="lb_{QUESTION_CHOICES.id}" class="none_weight show"> <input type="checkbox" name="question[{QUESTION.qid}][]" value="{QUESTION_CHOICES.key}" id="lb_{QUESTION_CHOICES.id}" {QUESTION_CHOICES.checked} {QUESTION_CHOICES.readonly}> {QUESTION_CHOICES.value} </label>
 			<!-- END: checkbox -->
 
 			<!-- BEGIN: multiselect -->
-			<select name="question[{QUESTION.qid}][]" multiple="multiple" class="{QUESTION.class} form-control" {QUESTION.readonly}>
+			<select name="question[{QUESTION.qid}][]" multiple="multiple" class="form-control" {QUESTION.readonly}>
 				<!-- BEGIN: loop -->
 				<option value="{QUESTION_CHOICES.key}" {QUESTION_CHOICES.selected}>{QUESTION_CHOICES.value}</option>
 				<!-- END: loop -->
@@ -139,6 +156,20 @@ $(document).ready(function() {
 		changeYear : true,
 		showOtherMonths : true,
 		showOn: 'focus'
+	});
+
+	$('#question input[type="radio"]').click(function(){
+		$( '.toggle_' + $(this).data('toggle') ).hide();
+		$( '.toggle_' + $(this).data('toggle') ).children().attr( 'disabled', 'disabled' );
+		$('.' + $(this).data('id')).show();
+		$('.' + $(this).data('id')).children().removeAttr( 'disabled' );
+	});
+
+	$('#question select').change(function(){
+		$( '.toggle_' + $(this).data('toggle') ).hide();
+		$( '.toggle_' + $(this).data('toggle') ).children().attr( 'disabled', 'disabled' );
+		$('.' + $(this).val()).show();
+		$('.' + $(this).val()).children().removeAttr( 'disabled' );
 	});
 });
 </script>

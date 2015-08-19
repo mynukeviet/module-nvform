@@ -17,7 +17,7 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
  * @param mixed $question
  * @return
  */
-function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info )
+function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $answer_info_extend, $info )
 {
     global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
 
@@ -138,14 +138,38 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		elseif( $row['question_type'] == 'select' )
 		{
 			$row['question_choices'] = unserialize( $row['question_choices'] );
+			$row['question_choices_extend'] = !empty( $row['question_choices_extend'] ) ? unserialize( $row['question_choices_extend'] ) : array();
+
 			foreach( $row['question_choices'] as $key => $value )
 			{
 				$xtpl->assign( 'QUESTION_CHOICES', array(
 					'key' => $key,
 					'selected' => ( $key == $row['value'] ) ? ' selected="selected"' : '',
-					"value" => $value
+					'display' => ( $key == $row['value'] ) ? 'style="display: block"' : 'style="display: none"',
+					"value" => $value,
 				) );
 				$xtpl->parse( 'main.loop.select.loop' );
+
+				if( isset( $row['question_choices_extend'][$key] ) )
+				{
+					$number = 0;
+					if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
+					{
+						$readonly = 'readonly="readonly"';
+					}
+					foreach( $row['question_choices_extend'][$key] as $key => $value )
+					{
+						$xtpl->assign( 'FIELD_CHOICES_EXTEND', array(
+							"key" => $key,
+							'value' => isset( $answer_info_extend[$row['qid']][$number][$key] ) ? $answer_info_extend[$row['qid']][$number][$key] : '',
+							'text' => $value,
+							'number' => $number++,
+							'readonly' => $readonly
+						) );
+						$xtpl->parse( 'main.loop.select.choice_extend.loop' );
+					}
+					$xtpl->parse( 'main.loop.select.choice_extend' );
+				}
 			}
 
 			if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
@@ -160,20 +184,43 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $info 
 		{
 			$number = 0;
 			$row['question_choices'] = unserialize( $row['question_choices'] );
+			$row['question_choices_extend'] = !empty( $row['question_choices_extend'] ) ? unserialize( $row['question_choices_extend'] ) : array();
+
 			foreach( $row['question_choices'] as $key => $value )
 			{
+				$readonly = '';
 				$row['readonly'] = '';
 				if( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) )
 				{
 					$row['readonly'] = 'onclick="return false;"';
+					$readonly = 'readonly="readonly"';
 				}
 				$xtpl->assign( 'QUESTION_CHOICES', array(
 					'id' => $row['qid'] . '_' . $number++,
 					'key' => $key,
 					'checked' => ( $key == $row['value'] ) ? ' checked="checked"' : '',
+					'display' => ( $key == $row['value'] ) ? 'style="display: block"' : 'style="display: none"',
 					'readonly' => $row['readonly'],
-					"value" => $value
+					"value" => $value,
+					'number' => $number
 				) );
+
+				if( isset( $row['question_choices_extend'][$key] ) )
+				{
+					foreach( $row['question_choices_extend'][$key] as $key => $value )
+					{
+						$xtpl->assign( 'FIELD_CHOICES_EXTEND', array(
+							"key" => $key,
+							'value' => isset( $answer_info_extend[$row['qid']][$number][$key] ) ? $answer_info_extend[$row['qid']][$number][$key] : '',
+							'text' => $value,
+							'readonly' => $readonly
+						) );
+						$xtpl->parse( 'main.loop.radio.choice_extend.loop' );
+					}
+
+					$xtpl->parse( 'main.loop.radio.choice_extend' );
+				}
+
 				$xtpl->parse( 'main.loop.radio' );
 			}
 		}

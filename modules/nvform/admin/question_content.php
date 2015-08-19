@@ -66,7 +66,7 @@ if( $num < 1 )
 $qid = $nv_Request->get_int( 'qid', 'get, post', 0 );
 $fid = $nv_Request->get_int( 'fid', 'get, post', 0 );
 $question = array();
-$question_choices = array();
+$question_choices = $question_choices_extend = array();
 $error = '';
 $text_questions = $editor_questions = $number_questions = $date_questions = $time_questions = $choice_questions = $choice_type_text = $plaintext_question = $grid_questions = $file_questions = 0;
 
@@ -85,6 +85,7 @@ if( $qid )
 	if( ! empty( $question['question_choices'] ) )
 	{
 		$question_choices = unserialize( $question['question_choices'] );
+		$question_choices_extend = unserialize( $question['question_choices_extend'] );
 	}
 
 	$question['question_form'] = $question['fid'];
@@ -318,6 +319,20 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		{
 			unset( $question_choices[''] );
 			$question['question_choices'] = serialize( $question_choices );
+
+			$question_choice_extend = $nv_Request->get_array( 'question_choice_extend', 'post' );
+			foreach( $question_choice_value as $key => $value )
+			{
+				if( isset( $question_choice_extend[$key] ) )
+				{
+					$question_choice_extend[$key] = array_diff( $question_choice_extend[$key], array('') );
+					$question_choice_extend[$value] = $question_choice_extend[$key];
+				}
+			}
+			if( !empty( $question_choice_extend )  )
+			{
+				$question['question_choices_extend'] = serialize( $question_choice_extend );
+			}
 		}
 		else
 		{
@@ -333,8 +348,8 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$weight = intval( $weight ) + 1;
 
 			$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
-				(title, fid, weight, question_type, question_choices, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, status) VALUES
-				('" . $question['question'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['match_type'] . "',
+				(title, fid, weight, question_type, question_choices, question_choices_extend, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, status) VALUES
+				('" . $question['question'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['question_choices_extend'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
 				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", 1)";
 
@@ -345,7 +360,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 		else
 		{
 			$query = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_question SET";
-			$query .= " question_choices='" . $question['question_choices'] . "', match_type='" . $question['match_type'] . "',
+			$query .= " question_choices='" . $question['question_choices'] . "', question_choices_extend='" . $question['question_choices_extend'] . "', match_type='" . $question['match_type'] . "',
 				match_regex='" . $question['match_regex'] . "', func_callback='" . $question['func_callback'] . "', ";
 			$query .= " max_length=" . $question['max_length'] . ", min_length=" . $question['min_length'] . ",
 				title = '" . $question['question'] . "',
@@ -493,6 +508,20 @@ if( ! empty( $question_choices ) )
 				'key' => $key,
 				'value' => $value
 			) );
+
+			if( isset( $question_choices_extend[$key] ) )
+			{
+				$number_extend = 0;
+				foreach( $question_choices_extend[$key] as $choices_extend )
+				{
+					$xtpl->assign( 'FIELD_CHOICES_EXTEND', array(
+						"number" => $number_extend++,
+						'value' => $choices_extend
+					) );
+					$xtpl->parse( 'main.loop_field_choice.loop_field_choice_extend' );
+				}
+				$xtpl->assign( 'FIELD_CHOICES_EXTEND_NUMBER', $number_extend );
+			}
 			$xtpl->parse( 'main.loop_field_choice' );
 			$xtpl->assign( 'FIELD_CHOICES_NUMBER', $number );
 		}

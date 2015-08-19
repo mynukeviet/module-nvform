@@ -164,6 +164,7 @@ $lang_module['question_number'] = 'STT';
 $lang_module['question_value'] = 'Giá trị';
 $lang_module['question_text'] = 'Mô tả';
 $lang_module['question_add_choice'] = 'Thêm lựa chọn';
+$lang_module['question_add_choice_extend'] = 'Thêm câu trả lời mở rộng';
 $lang_module['question_add_col'] = 'Thêm cột';
 $lang_module['question_add_row'] = 'Thêm hàng';
 $lang_module['question_date_error'] = 'Giá trị của Min Date cần nhỏ hơn Max Date';

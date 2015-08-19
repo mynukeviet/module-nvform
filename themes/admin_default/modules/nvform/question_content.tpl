@@ -236,6 +236,7 @@
 					<col class="w150" />
 					<col />
 					<col class="w100" />
+					<col class="w50" />
 				</colgroup>
 				<thead>
 					<tr>
@@ -247,17 +248,28 @@
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="4" ><input type="button" class="btn btn-success btn-xs" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
+						<td colspan="5" ><input type="button" class="btn btn-success btn-xs" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
 					</tr>
 				</tfoot>
 				<tbody id="choiceitems">
 					<!-- BEGIN: loop_field_choice -->
-					<tr>
+					<tr class="choiceitems_row_{FIELD_CHOICES.number}">
 						<td class="text-center">{FIELD_CHOICES.number}</td>
 						<td><input class="validalphanumeric form-control" type="text" value="{FIELD_CHOICES.key}" name="question_choice[{FIELD_CHOICES.number}]" /></td>
 						<td><input class="form-control" type="text" value="{FIELD_CHOICES.value}" name="question_choice_text[{FIELD_CHOICES.number}]" /></td>
 						<td class="text-center"><input type="radio" {FIELD_CHOICES.checked} value="{FIELD_CHOICES.number}" name="default_value_choice"></td>
+						<td class="text-center">
+							<button id="button_extend_{FIELD_CHOICES.number}" class="btn btn-primary btn-xs" data-number="{FIELD_CHOICES.number}" data-number-extend="{FIELD_CHOICES_EXTEND_NUMBER}" onclick="nv_choice_fields_extend( $(this).data('number'), $(this).data('number-extend') ); return false;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.question_add_choice_extend}">
+								<em class="fa fa-code-fork">&nbsp;</em>
+							</button>
+						</td>
 					</tr>
+					<!-- BEGIN: loop_field_choice_extend -->
+					<tr class="choiceitems_row_{FIELD_CHOICES.number}">
+						<td colspan="2">&nbsp;</td>
+						<td colspan="4"><input type="text" class="form-control" name="question_choice_extend[{FIELD_CHOICES.number}][{FIELD_CHOICES_EXTEND.number}]" value="{FIELD_CHOICES_EXTEND.value}" placeholder="{LANG.question_text}" /></td>
+					</tr>
+					<!-- END: loop_field_choice_extend -->
 					<!-- END: loop_field_choice -->
 				</tbody>
 			</table>
@@ -370,12 +382,23 @@
 	function nv_choice_fields_additem() {
 		items++;
 		var newitem = '<tr class="center">';
-		newitem += '	<td>' + items + '</td>';
-		newitem += '	<td><input class="w100 validalphanumeric form-control" type="text" value="" name="question_choice[' + items + ']"></td>';
-		newitem += '	<td><input class="w350 form-control" type="text" value="" name="question_choice_text[' + items + ']"></td>';
-		newitem += '	<td><input type="radio" value="' + items + '" name="default_value_choice"></td>';
+		newitem += '	<td class="text-center">' + items + '</td>';
+		newitem += '	<td><input class="validalphanumeric form-control" type="text" value="" name="question_choice[' + items + ']"></td>';
+		newitem += '	<td><input class="form-control" type="text" value="" name="question_choice_text[' + items + ']"></td>';
+		newitem += '	<td class="text-center"><input type="radio" value="' + items + '" name="default_value_choice"></td>';
+		newitem += '	<td class="text-center"><button class="btn btn-primary btn-xs" onclick="nv_choice_fields_extend( \"items_' + items + '\" ); return false;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.question_add_choice_extend}"><em class="fa fa-code-fork">&nbsp;</em></button></td>';
 		newitem += '	</tr>';
 		$('#choiceitems').append(newitem);
+	}
+
+	function nv_choice_fields_extend( item_id, items_extend ) {
+		items_extend++;
+		$('#button_extend_'+item_id).data('number-extend', items_extend );
+		var newitem = '<tr class="choiceitems_row_' + item_id + '">';
+		newitem += '	<td colspan="2">&nbsp;</td>';
+		newitem += '	<td colspan="4"><input type="text" class="form-control" name="question_choice_extend[' + item_id + '][' + items_extend + ']" placeholder="{LANG.question_text}" /></td>';
+		newitem += '</tr>';
+		$('.choiceitems_row_'+item_id+':last').after(newitem);
 	}
 
 	var col_numfield = '{COL_NUMFIELD}';
