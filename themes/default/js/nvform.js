@@ -103,6 +103,7 @@ $('#btn-prev').click(function(){
 
 	if( prev_page < $('#max_page' ).val() )
 	{
+		$('#btn-next').removeAttr( 'disabled' );
 		$('#btn-next').show();
 		$('#btn-submit').css( 'display', 'none' );
 	}
