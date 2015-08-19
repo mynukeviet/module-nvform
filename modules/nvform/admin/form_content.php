@@ -123,7 +123,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
