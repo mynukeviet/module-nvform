@@ -120,7 +120,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 {
 	$preg_replace = array( 'pattern' => '/[^a-zA-Z0-9\_]/', 'replacement' => '' );
 
-	$question['question'] = $nv_Request->get_editor( 'question', '', NV_ALLOWED_HTML_TAGS );
+	$question['title'] = $nv_Request->get_editor( 'title', '', NV_ALLOWED_HTML_TAGS );
 	$question['required'] = $nv_Request->get_int( 'required', 'post', 0 );
 	$question['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$question['break'] = $nv_Request->get_int( 'break', 'post', 0 );
@@ -349,7 +349,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 
 			$sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
 				(title, fid, weight, question_type, question_choices, question_choices_extend, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, status) VALUES
-				('" . $question['question'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['question_choices_extend'] . "', '" . $question['match_type'] . "',
+				('" . $question['title'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['question_choices_extend'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
 				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", 1)";
 
@@ -363,7 +363,7 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$query .= " question_choices='" . $question['question_choices'] . "', question_choices_extend='" . $question['question_choices_extend'] . "', match_type='" . $question['match_type'] . "',
 				match_regex='" . $question['match_regex'] . "', func_callback='" . $question['func_callback'] . "', ";
 			$query .= " max_length=" . $question['max_length'] . ", min_length=" . $question['min_length'] . ",
-				title = '" . $question['question'] . "',
+				title = '" . $question['title'] . "',
 				fid = " . $question['question_form'] . ",
 				required = '" . $question['required'] . "',
 				question_type = '" . $question['question_type'] . "',
@@ -655,14 +655,14 @@ foreach( $myini['exts'] as $key => $name )
 
 if( defined( 'NV_EDITOR' ) ) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 
-$question['question'] = htmlspecialchars( nv_editor_br2nl( $question['title'] ) );
+$question['title'] = htmlspecialchars( nv_editor_br2nl( $question['title'] ) );
 if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 {
-	$question['question'] = nv_aleditor( 'question', '100%', '200px', $question['question'], 'Basic' );
+	$question['title'] = nv_aleditor( 'title', '100%', '200px', $question['title'], 'Basic' );
 }
 else
 {
-	$question['question'] = '<textarea style="width:100%;height:200px" name="question">' . $question['question'] . '</textarea>';
+	$question['title'] = '<textarea style="width:100%;height:200px" name="title">' . $question['title'] . '</textarea>';
 }
 
 if( ! empty( $error ) )

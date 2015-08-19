@@ -51,6 +51,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $answe
 
 	$i = 1;
 	$page = 1;
+	$break = 0;
 	foreach( $question_info as $row )
 	{
 		// Giá trị mặc định
@@ -367,11 +368,20 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $answe
 			$xtpl->parse( 'main.loop.display_two_column' );
 		}
 
-		if( $row['break'] ) $page++;
+		if( $row['break'] )
+		{
+			$page++;
+			$break++;
+		}
 		$xtpl->assign( 'PAGE', $page );
 
 		$xtpl->parse( 'main.loop' );
 		$i++;
+	}
+
+	if( empty( $break ) )
+	{
+		$xtpl->assign( 'BREAK_PAGE', 'style="display: none;"' );
 	}
 
 	$tem = $form_info['template'];

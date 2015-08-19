@@ -139,7 +139,7 @@
 	<!-- END: loop -->
 	<div class="m-bottom">
 		<div class="pull-left">
-			<button class="btn btn-danger btn-sm" id="btn-prev">{LANG.prev}</button>
+			<button class="btn btn-danger btn-sm" id="btn-prev" {BREAK_PAGE}>{LANG.prev}</button>
 		</div>
 		<div class="pull-right">
 			<button class="btn btn-danger btn-sm" id="btn-next">{LANG.next}</button>
@@ -156,20 +156,6 @@ $(document).ready(function() {
 		changeYear : true,
 		showOtherMonths : true,
 		showOn: 'focus'
-	});
-
-	$('#question input[type="radio"]').click(function(){
-		$( '.toggle_' + $(this).data('toggle') ).hide();
-		$( '.toggle_' + $(this).data('toggle') ).children().attr( 'disabled', 'disabled' );
-		$('.' + $(this).data('id')).show();
-		$('.' + $(this).data('id')).children().removeAttr( 'disabled' );
-	});
-
-	$('#question select').change(function(){
-		$( '.toggle_' + $(this).data('toggle') ).hide();
-		$( '.toggle_' + $(this).data('toggle') ).children().attr( 'disabled', 'disabled' );
-		$('.' + $(this).val()).show();
-		$('.' + $(this).val()).children().removeAttr( 'disabled' );
 	});
 });
 </script>

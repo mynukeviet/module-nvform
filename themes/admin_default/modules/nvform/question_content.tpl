@@ -17,7 +17,7 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label"><strong id="question_title">{LANG.question}</strong></label>
 				<div class="col-sm-20">
-					{DATAFORM.question}
+					{DATAFORM.title}
 				</div>
 			</div>
 			<div class="form-group">
