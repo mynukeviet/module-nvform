@@ -25,6 +25,7 @@ $form_data = array(
 	'end_time' => '',
 	'question_display' => '',
 	'question_report' => 1,
+	'user_editable' => 1,
 	'template' => array(
 		'background_color' => '',
 		'background_image' => '',
@@ -64,6 +65,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
 	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
 	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
+	$form_data['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$form_data['question_report'] = $nv_Request->get_int( 'question_report', 'post', 0 );
 	$form_data['template'] = $nv_Request->get_array( 'template', 'post', array() );
 
@@ -116,14 +118,14 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, question_display = :question_display, question_report = :question_report, template = :template WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, user_editable = :user_editable, question_display = :question_display, question_report = :question_report, template = :template WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, user_editable, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -133,6 +135,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':start_time', $form_data['start_time'], PDO::PARAM_STR );
 		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
+		$query->bindParam( ':user_editable', $form_data['user_editable'], PDO::PARAM_INT );
 		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
 		$query->bindParam( ':question_report', $form_data['question_report'], PDO::PARAM_INT );
 		$query->bindParam( ':template', $form_data['template'], PDO::PARAM_STR );
@@ -161,6 +164,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 
 $form_data['template']['background_image'] = !empty( $form_data['template']['background_image'] ) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['template']['background_image'] : '';
 $form_data['question_report_check'] = $form_data['question_report'] ? 'checked="checked"' : '';
+$form_data['user_editable_check'] = $form_data['user_editable'] ? 'checked="checked"' : '';
 
 $xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );

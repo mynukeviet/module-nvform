@@ -114,6 +114,12 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-3 text-right"><strong>{LANG.form_user_editable}</strong></label>
+						<div class="col-sm-21">
+							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="col-sm-3 text-right"><strong>{LANG.form_question_report}</strong></label>
 						<div class="col-sm-21">
 							<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>

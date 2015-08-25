@@ -97,8 +97,9 @@ else
 {
 	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
 	$lang_submit = $lang_module['question_add'];
+	$question['title'] = '';
 	$question['required'] = 0;
-	$question['user_editable'] = 0;
+	$question['user_editable'] = -1;
 	$question['question_type'] = 'textbox';
 	$question['question_form'] = $fid;
 	$question['match_type'] = 'none';
@@ -567,7 +568,6 @@ if( $question['question_type'] == 'plaintext' )
 }
 
 $question['checked_required'] = ( $question['required'] ) ? ' checked="checked"' : '';
-$question['checked_user_editable'] = ( $question['user_editable'] ) ? ' checked="checked"' : '';
 $question['checked_break'] = ( $question['break'] ) ? ' checked="checked"' : '';
 $question['checked_report'] = ( !$question['report'] ) ? ' checked="checked"' : '';
 
@@ -663,6 +663,18 @@ if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 else
 {
 	$question['title'] = '<textarea style="width:100%;height:200px" name="title">' . $question['title'] . '</textarea>';
+}
+
+$array_user_editable = array(
+	'-1' => $lang_module['form_user_editable_form'],
+	'1' => $lang_global['yes'],
+	'0' => $lang_global['no']
+);
+foreach( $array_user_editable as $key => $value )
+{
+	$ck = $key == $question['user_editable'] ? 'checked="checked"' : '';
+	$xtpl->assign( 'EDITABLE', array( 'key' => $key, 'value' => $value, 'checked' => $ck ) );
+	$xtpl->parse( 'main.user_editable' );
 }
 
 if( ! empty( $error ) )
