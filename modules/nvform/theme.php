@@ -506,6 +506,10 @@ function nv_theme_nvform_viewanalytics ( $form_info, $question_info, $answer_inf
 					{
 						if( isset( $answer[$row['qid']] ) )
 						{
+							if( $row['question_type'] == 'date' )
+							{
+								$answer[$row['qid']] = nv_date( 'd/m/Y', $answer[$row['qid']] );
+							}
 							$xtpl->assign( 'ANSWER', $answer[$row['qid']] );
 							$xtpl->parse( 'main.loop.textbox.loop' );
 						}

@@ -97,6 +97,7 @@ else
 {
 	$action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
 	$lang_submit = $lang_module['question_add'];
+	$question['title'] = '';
 	$question['required'] = 0;
 	$question['user_editable'] = 0;
 	$question['question_type'] = 'textbox';
