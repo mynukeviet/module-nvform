@@ -29,6 +29,7 @@ $lang_module['form_title'] = 'Tiêu đề';
 $lang_module['form_alias'] = 'Liên kết tĩnh';
 $lang_module['form_description'] = 'Mô tả';
 $lang_module['form_description_html'] = 'Nội dung chi tiết';
+$lang_module['form_image'] = 'Hình ảnh';
 $lang_module['form_who_view'] = 'Quyền xem';
 $lang_module['form_groups'] = 'Nếu chọn "Nhóm thành viên", hãy chọn nhóm trong danh sách dưới đây';
 $lang_module['form_start_time'] = 'Từ ngày';
