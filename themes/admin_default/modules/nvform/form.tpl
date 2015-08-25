@@ -49,7 +49,13 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label"><strong>{LANG.form_description}</strong></label>
 						<div class="col-sm-21">
-							{DESCRIPTION}
+							<textarea name="description" class="form-control" rows="4">{DATA.description}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><strong>{LANG.form_description_html}</strong></label>
+						<div class="col-sm-21">
+							{DESCRIPTION_HTML}
 						</div>
 					</div>
 					<div class="form-group">

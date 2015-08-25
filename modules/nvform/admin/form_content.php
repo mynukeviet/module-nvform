@@ -21,6 +21,8 @@ $form_data = array(
 	'who_view' => '',
 	'groups_view' => 6,
 	'description' => '',
+	'description' => '',
+	'description_html' => '',
 	'start_time' => NV_CURRENTTIME,
 	'end_time' => '',
 	'question_display' => '',
@@ -61,7 +63,8 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['title'] = $nv_Request->get_string( 'title', 'post', '', 1 );
 	$form_data['alias'] = $nv_Request->get_string( 'alias', 'post', '', 1 );
 	$form_data['alias'] = empty( $form_data['alias'] ) ? change_alias( $form_data['title'] ) : change_alias( $form_data['alias'] );
-	$form_data['description'] = $nv_Request->get_editor( 'description', '', NV_ALLOWED_HTML_TAGS );
+	$form_data['description'] = $nv_Request->get_textarea( 'description', '', NV_ALLOWED_HTML_TAGS );
+	$form_data['description_html'] = $nv_Request->get_editor( 'description_html', '', NV_ALLOWED_HTML_TAGS );
 	$form_data['start_time'] = $nv_Request->get_title( 'start_time', 'post', 0 );
 	$form_data['end_time'] = $nv_Request->get_title( 'end_time', 'post', 0 );
 	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
@@ -115,23 +118,24 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	if( empty( $error ) )
 	{
 		$form_data['template'] = serialize( $form_data['template'] );
-		$form_data['description'] = nv_editor_nl2br( $form_data['description'] );
+		$form_data['description_html'] = nv_editor_nl2br( $form_data['description_html'] );
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, user_editable = :user_editable, question_display = :question_display, question_report = :question_report, template = :template WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, description_html = :description_html, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, user_editable = :user_editable, question_display = :question_display, question_report = :question_report, template = :template WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, start_time, end_time, groups_view, user_editable, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, start_time, end_time, groups_view, user_editable, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
 		$query->bindParam( ':title', $form_data['title'], PDO::PARAM_STR );
 		$query->bindParam( ':alias', $form_data['alias'], PDO::PARAM_STR );
 		$query->bindParam( ':description', $form_data['description'], PDO::PARAM_STR );
+		$query->bindParam( ':description_html', $form_data['description_html'], PDO::PARAM_STR );
 		$query->bindParam( ':start_time', $form_data['start_time'], PDO::PARAM_STR );
 		$query->bindParam( ':end_time', $form_data['end_time'], PDO::PARAM_STR );
 		$query->bindParam( ':groups_view', $form_data['groups_view'], PDO::PARAM_STR );
@@ -253,17 +257,17 @@ foreach( $style_list as $key => $_title )
 if( empty( $alias ) ) $xtpl->parse( 'main.get_alias' );
 
 // Trình soạn thảo
-if( ! empty( $form_data['description'] ) ) $form_data['description'] = nv_htmlspecialchars( $form_data['description'] );
+if( ! empty( $form_data['description_html'] ) ) $form_data['description_html'] = nv_htmlspecialchars( $form_data['description_html'] );
 
 if( defined( 'NV_EDITOR' ) ) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 
 if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
 {
-	$form_data['description'] = nv_aleditor( 'description', '100%', '300px', $form_data['description'] );
+	$form_data['description_html'] = nv_aleditor( 'description_html', '100%', '300px', $form_data['description_html'] );
 }
 else
 {
-	$form_data['description'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $form_data['description'] . '</textarea>';
+	$form_data['description_html'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $form_data['description_html'] . '</textarea>';
 }
 
 $array_background_repeat = array(
@@ -303,7 +307,7 @@ if( $error )
 	$xtpl->parse( 'main.error' );
 }
 
-$xtpl->assign( 'DESCRIPTION', $form_data['description'] );
+$xtpl->assign( 'DESCRIPTION_HTML', $form_data['description_html'] );
 $xtpl->assign( 'LANG_SUBMIT', $lang_summit );
 $xtpl->assign( 'DATA', $form_data );
 $xtpl->assign( 'FORM_ACTION', $action );

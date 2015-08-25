@@ -23,6 +23,8 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 	title varchar(255) NOT NULL,
  	alias varchar(255) NOT NULL,
  	description text COMMENT 'Mô tả biểu mẫu',
+ 	description_html text COMMENT 'Nội dung chi tiết biểu mẫu',
+ 	image varchar(255) NOT NULL COMMENT 'Hình ảnh',
  	start_time int(11) NOT NULL DEFAULT '0' COMMENT 'Thời gian bắt đầu hiệu lực',
  	end_time int(11) NOT NULL DEFAULT '0' COMMENT 'Thời gian kết thúc',
 	groups_view varchar(255) DEFAULT '' COMMENT 'Nhóm được xem',
