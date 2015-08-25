@@ -57,6 +57,7 @@ function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $answe
 		// Giá trị mặc định
 		$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : $row['default_value'];
 		$row['required'] = ( $row['required'] ) ? 'required' : '';
+		$row['user_editable'] = $row['user_editable'] == -1 ? $form_info['user_editable'] : $row['user_editable'];
 		$xtpl->assign( 'QUESTION', $row );
 
 		if( $row['required'] )

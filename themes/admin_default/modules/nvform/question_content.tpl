@@ -42,7 +42,9 @@
 			<div class="form-group" id="question_user_edit" {DATAFORM.user_editdisabled}>
 				<label class="col-sm-4 text-right"><strong>{LANG.question_user_edit}</strong></label>
 				<div class="col-sm-20">
-					<label><input name="user_editable" value="1" type="checkbox" {DATAFORM.checked_user_editable}/> {LANG.question_user_edit_note}</label>
+					<!-- BEGIN: user_editable -->
+					<label><input name="user_editable" value="{EDITABLE.key}" type="radio" {EDITABLE.checked} />{EDITABLE.value}</label>&nbsp;&nbsp;&nbsp;
+					<!-- END: user_editable -->
 				</div>
 			</div>
 			<div class="form-group">
