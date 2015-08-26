@@ -13,11 +13,54 @@ if ( ! defined( 'NV_IS_MOD_NVFORM' ) ) die( 'Stop!!!' );
 /**
  * nv_theme_nvform_main()
  *
- * @param mixed $form_info
- * @param mixed $question
+ * @param mixed $array_data
  * @return
  */
-function nv_theme_nvform_main ( $form_info, $question_info, $answer_info, $answer_info_extend, $info )
+function nv_theme_nvform_main ( $array_data, $nv_alias_page )
+{
+    global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op;
+
+    $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
+    $xtpl->assign( 'LANG', $lang_module );
+
+	if( !empty( $array_data ) )
+	{
+		foreach( $array_data as $data )
+		{
+			$data['time'] = nv_date( 'H:i d/m/Y', $data['start_time'] );
+			$data['time'] = !empty( $data['end_time'] ) ? $data['time'] . ' - ' . nv_date( 'H:i d/m/Y', $data['end_time'] ) : $data['time'];
+			$data['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '/' . $data['alias'] . '-' . $data['id'];
+			$xtpl->assign( 'DATA', $data );
+			$xtpl->parse( 'main.loop' );
+		}
+	}
+
+	if( !empty( $nv_alias_page ) )
+	{
+		$xtpl->assign( 'PAGE', $nv_alias_page );
+		$xtpl->parse( 'main.page' );
+	}
+
+    $xtpl->parse( 'main' );
+    $contents = $xtpl->text( 'main' );
+
+	include ( NV_ROOTDIR . "/includes/header.php" );
+	echo nv_site_theme( $contents );
+	include ( NV_ROOTDIR . "/includes/footer.php" );
+	exit();
+}
+
+/**
+ * nv_theme_nvform_viewform()
+ *
+ * @param mixed $form_info
+ * @param mixed $question_info
+ * @param mixed $answer_info
+ * @param mixed $answer_info_extend
+ * @param mixed $info
+ * @return
+ */
+function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $answer_info_extend, $info )
 {
     global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
 

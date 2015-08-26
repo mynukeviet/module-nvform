@@ -49,7 +49,25 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label"><strong>{LANG.form_description}</strong></label>
 						<div class="col-sm-21">
-							{DESCRIPTION}
+							<textarea name="description" class="form-control" rows="4">{DATA.description}</textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><strong>{LANG.form_description_html}</strong></label>
+						<div class="col-sm-21">
+							{DESCRIPTION_HTML}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label"><strong>{LANG.form_image}</strong></label>
+						<div class="col-sm-21">
+							<div class="input-group">
+								<input class="form-control" type="text" name="image" id="image" value="{DATA.image}"/>
+								<span class="input-group-btn">
+									<button class="btn btn-default" onclick="nv_selectimg('image')" type="button">
+										<em class="fa fa-folder-open-o fa-fix">&nbsp;</em>
+									</button> </span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -142,7 +160,7 @@
 									</button> </span>
 								<input type="text" class="form-control" id="bg_image" value="{DATA.template.background_image}" name="template[background_image]" placeholder="{LANG.form_template_background_image}" readonly="readonly" />
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" id="selectimg" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.form_template_background_image_chosen}">
+									<button class="btn btn-default" onclick="nv_selectimg('bg_image')" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.form_template_background_image_chosen}">
 										<em class="fa fa-folder-open-o fa-fix">&nbsp;</em>
 									</button> </span>
 							</div>
@@ -211,18 +229,17 @@
 		});
 	});
 
-	$('#selectimg').click(function() {
-		var area = 'bg_image';
-		var alt = "backgroundimgalt";
-		var path = "{UPLOADS_DIR_USER}";
-		var type = "image";
-		nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&alt=" + alt + "&path=" + path + "&type=" + type, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
-		return false;
-	});
-
 	$('#clearimg').click(function() {
 		$('#bg_image').val('');
 	});
+
+	function nv_selectimg( area )
+	{
+		var path = "{UPLOADS_DIR_USER}";
+		var type = "image";
+		nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+		return false;
+	}
 </script>
 <!-- END: get_alias -->
 <!-- END: main -->
