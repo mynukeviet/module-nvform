@@ -125,6 +125,15 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 }
 
 $page_title = $form_info['title'];
+if( !empty( $form_info['description'] ) )
+{
+	$description = $form_info['description'];
+}
+if( !empty( $form_info['image'] ) )
+{
+	$meta_property['og:image'] = NV_MY_DOMAIN . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_info['image'];
+}
+
 $contents = nv_theme_nvform_viewform( $form_info, $question_info, $answer_info, $answer_info_extend, $info );
 
 include NV_ROOTDIR . '/includes/header.php';
