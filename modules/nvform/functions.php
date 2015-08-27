@@ -32,3 +32,7 @@ if( $op == 'main' )
 		}
 	}
 }
+elseif( preg_match( '/^([a-z0-9\-]+)\-([0-9]+)$/i', $array_op[1], $m1 ) and !preg_match( '/^page\-([0-9]+)$/', $array_op[1], $m2 ) )
+{
+	$fid = $m1[2];
+}
