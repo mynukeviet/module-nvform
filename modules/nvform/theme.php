@@ -62,7 +62,7 @@ function nv_theme_nvform_main ( $array_data, $nv_alias_page )
  */
 function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $answer_info_extend, $info )
 {
-    global $global_config, $module_name, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
+    global $global_config, $module_name, $module_data, $module_file, $module_upload, $lang_module, $module_config, $module_info, $op, $my_head, $my_footer;
 
 	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR .  "/js/jquery/jquery.validate.min.js\"></script>\n";
 	$my_footer .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR .  "/js/language/jquery.validator-" . NV_LANG_INTERFACE . ".js\"></script>\n";
@@ -143,24 +143,30 @@ function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $a
 		}
 		elseif( $row['question_type'] == 'editor' )
 		{
-			if( defined( 'NV_EDITOR' ) )
+			if( !defined( 'NV_EDITOR_LOADED' ) )
 			{
-				require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
-			}
-			elseif( ! nv_function_exists( 'nv_aleditor' ) and file_exists( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor.js' ) )
-			{
-				define( 'NV_EDITOR', true );
-				define( 'NV_IS_CKEDITOR', true );
-				$my_head .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . NV_EDITORSDIR . '/ckeditor/ckeditor.js"></script>';
-
-				function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '' )
+				if( defined( 'NV_EDITOR' ) )
 				{
-					$return = '<textarea style="width: ' . $width . '; height:' . $height . ';" id="' . $module_data . '_' . $textareaname . '" name="' . $textareaname . '">' . $val . '</textarea>';
-					$return .= "<script type=\"text/javascript\">
-					CKEDITOR.replace( '" . $module_data . "_" . $textareaname . "', {" . ( ! empty( $customtoolbar ) ? 'toolbar : "' . $customtoolbar . '",' : '' ) . " width: '" . $width . "',height: '" . $height . "',});
-					</script>";
-					return $return;
+					require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 				}
+				elseif( ! nv_function_exists( 'nv_aleditor' ) and file_exists( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/ckeditor/ckeditor.js' ) )
+				{
+					define( 'NV_EDITOR', true );
+					define( 'NV_IS_CKEDITOR', true );
+					$my_head .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . NV_EDITORSDIR . '/ckeditor/ckeditor.js"></script>';
+
+					function nv_aleditor( $textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '' )
+					{
+						global $module_data;
+
+						$return = '<textarea style="width: ' . $width . '; height:' . $height . ';" id="' . $module_data . '_' . $textareaname . '" name="' . $textareaname . '">' . $val . '</textarea>';
+						$return .= "<script type=\"text/javascript\">
+						CKEDITOR.replace( '" . $module_data . "_" . $textareaname . "', {" . ( ! empty( $customtoolbar ) ? 'toolbar : "' . $customtoolbar . '",' : '' ) . " width: '" . $width . "',height: '" . $height . "',});
+						</script>";
+						return $return;
+					}
+				}
+				define( 'NV_EDITOR_LOADED', true );
 			}
 
 			if( defined( 'NV_EDITOR' ) and nv_function_exists( 'nv_aleditor' ) )
