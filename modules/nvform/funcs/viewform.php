@@ -103,10 +103,10 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 			$info = $lang_module['success_info'];
 			if( defined( 'NV_IS_USER' ) )
 			{
-				$link_form = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $form_info['id'] . '-' . $form_info['alias'] . $global_config['rewrite_exturl'];
+				$link_form = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $form_info['alias'] . '-' . $form_info['id'] . $global_config['rewrite_exturl'];
 				if( $form_info['question_report'] )
 				{
-					$link_report = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' .  $form_info['id'] . '-' . $form_info['alias'] . $global_config['rewrite_exturl'];
+					$link_report = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' . $form_info['alias'] . '-' . $form_info['id'] . $global_config['rewrite_exturl'];
 					$info .= '<br />' . sprintf( $lang_module['success_user_info_report'], $link_form, $link_report );
 				}
 				else
