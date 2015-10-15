@@ -95,6 +95,7 @@ function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $a
 	$i = 1;
 	$page = 1;
 	$break = 0;
+	$datepicker = 0;
 	foreach( $question_info as $row )
 	{
 		// Giá trị mặc định
@@ -118,6 +119,7 @@ function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $a
 		}
 		elseif( $row['question_type'] == 'date' )
 		{
+			$datepicker = 1;
 			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'd/m/Y', $row['value'] );
 			$row['datepicker'] = ( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) ) ? '' : 'datepicker';
 			$xtpl->assign( 'QUESTION', $row );
@@ -427,6 +429,11 @@ function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $a
 
 		$xtpl->parse( 'main.loop' );
 		$i++;
+	}
+
+	if( $datepicker )
+	{
+		$xtpl->parse( 'main.datepicker' );
 	}
 
 	if( empty( $break ) )

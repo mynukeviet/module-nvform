@@ -28,7 +28,15 @@
 			<!-- END: textbox -->
 
 			<!-- BEGIN: date -->
-				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
+			<div class="form-group">
+				<div class="input-group">
+					<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" readonly="readonly" placeholder="{LANG.filter_to}" />
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" id="to-btn">
+							<em class="fa fa-calendar fa-fix">&nbsp;</em>
+						</button> </span>
+				</div>
+			</div>
 			<!-- END: date -->
 
 			<!-- BEGIN: time -->
@@ -148,6 +156,8 @@
 		<div class="clearfix"></div>
 	</div>
 </form>
+
+<!-- BEGIN: datepicker -->
 <script>
 $(document).ready(function() {
 	$(".datepicker").datepicker({
@@ -155,8 +165,11 @@ $(document).ready(function() {
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn: 'focus'
+		showOn: 'focus',
+		yearRange: "-90:+30"
 	});
 });
 </script>
+<!-- END: datepicker -->
+
 <!-- END: main -->

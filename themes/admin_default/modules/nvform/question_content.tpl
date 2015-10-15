@@ -494,7 +494,8 @@
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn : 'focus'
+		showOn : 'focus',
+		yearRange: "-90:+30"
 	});
 
 	$("input[name=question_type]").click(function() {
