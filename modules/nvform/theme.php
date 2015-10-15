@@ -120,6 +120,11 @@ function nv_theme_nvform_viewform ( $form_info, $question_info, $answer_info, $a
 		elseif( $row['question_type'] == 'date' )
 		{
 			$datepicker = 1;
+			$row['question_choices'] = unserialize( $row['question_choices'] );
+			if( $row['question_choices']['current_date'] == 1 )
+			{
+				$row['value'] = NV_CURRENTTIME;
+			}
 			$row['value'] = ( empty( $row['value'] ) ) ? '' : date( 'd/m/Y', $row['value'] );
 			$row['datepicker'] = ( $answer_info and ! $row['user_editable'] and isset( $form_info['filled'] ) ) ? '' : 'datepicker';
 			$xtpl->assign( 'QUESTION', $row );

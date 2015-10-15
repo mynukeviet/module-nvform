@@ -429,9 +429,18 @@ elseif( $question['question_type'] == 'number' )
 elseif( $question['question_type'] == 'date' )
 {
 	$date_questions = 1;
+	$question['current_date_2'] = ( $question_choices['current_date'] == 2 ) ? ' checked="checked"' : '';
 	$question['current_date_1'] = ( $question_choices['current_date'] == 1 ) ? ' checked="checked"' : '';
 	$question['current_date_0'] = ( $question_choices['current_date'] == 0 ) ? ' checked="checked"' : '';
-	$question['default_date'] = empty( $question['default_value'] ) ? '' : date( 'd/m/Y', $question['default_value'] );
+	$question['default_date_display'] = '';
+	if( $question_choices['current_date'] != 0 )
+	{
+		$question['default_date_display'] = 'style="display: none"';
+	}
+	else
+	{
+		$question['default_date'] = empty( $question['default_value'] ) ? '' : date( 'd/m/Y', $question['default_value'] );
+	}
 	$question['min_date'] = empty( $question['min_length'] ) ? '' : date( 'd/m/Y', $question['min_length'] );
 	$question['max_date'] = empty( $question['max_length'] ) ? '' : date( 'd/m/Y', $question['max_length'] );
 }

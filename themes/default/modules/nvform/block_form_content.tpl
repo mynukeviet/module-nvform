@@ -28,7 +28,15 @@
 			<!-- END: textbox -->
 
 			<!-- BEGIN: date -->
-				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required} {QUESTION.class}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">
+							<em class="fa fa-calendar fa-fix">&nbsp;</em>
+						</button> </span>
+				</div>
+			</div>
 			<!-- END: date -->
 
 			<!-- BEGIN: textarea -->
@@ -72,6 +80,7 @@
 	</div>
 </form>
 
+<!-- BEGIN: datepicker -->
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".datepicker").datepicker({
@@ -79,8 +88,15 @@ $(document).ready(function() {
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn: 'focus'
+		showOn: 'focus',
+		yearRange: "-90:+30"
 	});
 });
+
+$('#default_date-btn').click(function() {
+	$("input[name=default_date]").datepicker('show');
+});
 </script>
+<!-- END: datepicker -->
+
 <!-- END: main -->

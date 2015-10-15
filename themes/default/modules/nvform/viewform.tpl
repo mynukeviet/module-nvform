@@ -30,9 +30,9 @@
 			<!-- BEGIN: date -->
 			<div class="form-group">
 				<div class="input-group">
-					<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" readonly="readonly" placeholder="{LANG.filter_to}" />
+					<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" readonly="readonly" />
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" id="to-btn">
+						<button class="btn btn-default" type="button">
 							<em class="fa fa-calendar fa-fix">&nbsp;</em>
 						</button> </span>
 				</div>

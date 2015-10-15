@@ -144,9 +144,10 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 					$xtpl->assign( 'FORM_LEFT', 'class="form-horizontal"' );
 				}
 
+				$datepicker = 0;
 				foreach( $question_info as $row )
 				{
-					$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : '';
+					$row['value'] = isset( $answer_info[$row['qid']] ) ? $answer_info[$row['qid']] : $row['default_value'];
 					$row['required'] = ($row['required']) ? 'required' : '';
 					$xtpl->assign( 'QUESTION', $row );
 
@@ -165,6 +166,12 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 					}
 					elseif( $row['question_type'] == 'date' )
 					{
+						$datepicker = 1;
+						$row['question_choices'] = unserialize( $row['question_choices'] );
+						if( $row['question_choices']['current_date'] == 1 )
+						{
+							$row['value'] = NV_CURRENTTIME;
+						}
 						$row['value'] = ( empty( $row['value'] )) ? '' : date( 'd/m/Y', $row['value'] );
 						$row['datepicker'] = ($answer_info and !$row['user_editable'] and isset( $form_info['filled'] )) ? '' : 'datepicker';
 						$xtpl->assign( 'QUESTION', $row );
@@ -376,6 +383,11 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 					}
 
 					$xtpl->parse( 'main.loop' );
+				}
+
+				if( $datepicker )
+				{
+					$xtpl->parse( 'main.datepicker' );
 				}
 
 				$xtpl->parse( 'main' );
