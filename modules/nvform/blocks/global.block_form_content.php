@@ -142,9 +142,9 @@ if( !nv_function_exists( 'nv_block_form_content' ) )
 							 });";
 					$my_footer .= " </script>\n";
 
-					if( file_exists( NV_ROOTDIR . '/modules/' . $site_mods[$module]['module_file'] . '/language/' . NV_LANG_DATA . '.php' ) )
+					if( file_exists( NV_ROOTDIR . '/modules/' . $site_mods[$module]['module_file'] . '/language/' . NV_LANG_INTERFACE . '.php' ) )
 					{
-						require_once NV_ROOTDIR . '/modules/' . $site_mods[$module]['module_file'] . '/language/' . NV_LANG_DATA . '.php';
+						require_once NV_ROOTDIR . '/modules/' . $site_mods[$module]['module_file'] . '/language/' . NV_LANG_INTERFACE . '.php';
 					}
 				}
 				else

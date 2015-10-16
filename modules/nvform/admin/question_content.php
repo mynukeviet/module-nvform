@@ -357,6 +357,10 @@ if( $nv_Request->isset_request( 'submit', 'post' ) )
 			$data_insert = array();
 			$data_insert['default_value'] = $question['default_value'];
 			$save = $db->insert_id( $sql, 'qid', $data_insert );
+			if( $save > 0 )
+			{
+				nv_update_answer( $question['question_form'] );
+			}
 		}
 		else
 		{

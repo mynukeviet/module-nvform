@@ -21,20 +21,28 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 
 	$qid = $nv_Request->get_int( 'qid', 'post', 0 );
 
-	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
-	$db->exec( $sql );
-
-	$sql = 'SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question ORDER BY weight ASC';
-	$result = $db->query( $sql );
-	$weight = 0;
-	while( $row = $result->fetch() )
+	$question = $db->query( 'SELECT fid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid )->fetch();
+	if( !empty( $question ) )
 	{
-		++$weight;
-		$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_question SET weight=' . $weight . ' WHERE qid = ' . $row['qid'];
-		$db->query( $sql );
+		$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
+		$db->exec( $sql );
+
+		$sql = 'SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question ORDER BY weight ASC';
+		$result = $db->query( $sql );
+		$weight = 0;
+		while( $row = $result->fetch() )
+		{
+			++$weight;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_question SET weight=' . $weight . ' WHERE qid = ' . $row['qid'];
+			$db->query( $sql );
+		}
+
+		nv_update_answer( $question['fid'] );
+
+		nv_del_moduleCache( $module_name );
+		die('OK');
 	}
-	nv_del_moduleCache( $module_name );
-	die('OK');
+	die('NO');
 }
 
 $fid = $nv_Request->get_int( 'fid', 'get', 0 );

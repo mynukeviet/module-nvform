@@ -80,3 +80,50 @@ function nv_get_plaintext( $string, $keep_image = false, $keep_link = false )
 	$string = str_replace( '&nbsp;', ' ', strip_tags( $string ) );
 	return preg_replace( '/[ ]+/', ' ', $string );
 }
+
+/**
+ * nv_update_answer()
+ *
+ * @param mixed $form_id
+ * @return
+ */
+function nv_update_answer( $form_id )
+{
+	global $db, $module_data;
+
+	$array_qid = $array_qid_old = array();
+	$result = $db->query( 'SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid=' . $form_id . ' ORDER BY weight' );
+	while( list( $qid ) = $result->fetch( 3 ) )
+	{
+		$array_qid[] = $qid;
+	}
+
+	$result = $db->query( 'SELECT id, answer FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE fid=' . $form_id );
+	while( list( $id, $row_answer ) = $result->fetch( 3 ) )
+	{
+		$row_answer = unserialize( $row_answer );
+		$array_qid_old = array_keys( $row_answer );
+		sort( $array_qid );
+		sort( $array_qid_old );
+		if( $array_qid != $array_qid_old )
+		{
+			foreach( $array_qid as $qid )
+			{
+				if( !in_array( $qid, $array_qid_old ) )
+				{
+					$row_answer[$qid] = '';
+				}
+			}
+
+			foreach( $array_qid_old as $qid_old )
+			{
+				if( !in_array( $qid_old, $array_qid ) )
+				{
+					unset( $row_answer[$qid_old] );
+				}
+			}
+		}
+		$db->query( 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_answer SET answer=' . $db->quote( serialize( $row_answer ) ) . ' WHERE id=' . $id );
+	}
+
+}
