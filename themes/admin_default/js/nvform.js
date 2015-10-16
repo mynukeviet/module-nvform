@@ -100,8 +100,7 @@ $( document ).ready(function() {
 
 	$('#open_modal').click(function(){
 		$.get( script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&fid=' + $(this).data('fid'), function( res ){
-			$('#exportmodal .modal-body').html( res );
-			$('#exportmodal').modal('show');
+			modalShow( $('#open_modal').data('lang_ex'), res );
 		});
 	});
 
@@ -110,6 +109,9 @@ $( document ).ready(function() {
 			var r_split = res.split("_");
 			if ( r_split[0] == 'OK' ) {
 				window.location.href = 'https://docs.google.com/viewerng/viewer?' + window.location.host + '/' + r_split[1];
+			}
+			else{
+				alert(r_split[1]);
 			}
 		});
 	});

@@ -3,10 +3,10 @@
 	{COUNT}
 </div>
 <div class="pull-right m-bottom">
-	<a href="{URL_ANALYTICS}" class="btn btn-danger btn-xs"> <em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart} </a>
+	<a href="{URL_ANALYTICS}" target="_blank" class="btn btn-danger btn-xs"> <em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart} </a>
 	<!-- Split button -->
 	<div class="btn-group">
-		<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs">
+		<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs" data-lang_ex="{LANG.report_ex}">
 			<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_ex}
 		</button>
 		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -19,22 +19,6 @@
 	</div>
 </div>
 <div class="clearfix">&nbsp;</div>
-
-<div class="modal fade" id="exportmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">{LANG.report_ex}</h4>
-			</div>
-			<div class="modal-body">
-
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
 	<table class="table table-striped table-bordered table-hover" id="table_report">
@@ -73,40 +57,4 @@
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript">
-	$(function() {
-		$("[rel='tooltip']").tooltip();
-		$("#export").hide();
-	});
-
-	function nv_data_export(set_export, fid) {
-		$.ajax({
-			type : "POST",
-			url : "index.php?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=export_excel&nocache=" + new Date().getTime(),
-			data : "step=1&set_export=" + set_export + "&fid=" + fid,
-			success : function(response) {
-				if (response == "OK_GETFILE") {
-					nv_data_export(0);
-				} else if (response == "OK_COMPLETE") {
-					$("#export").hide();
-					alert('{LANG.report_export_complete}');
-					$("input[name=export_excel]").removeAttr("disabled");
-					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
-				} else {
-					$("input[name=export_excel]").removeAttr("disabled");
-					$("#export").hide();
-					alert(response);
-				}
-			}
-		});
-	}
-
-
-	$("input[name=export_excel]").click(function() {
-		$("input[name=export_excel]").attr("disabled", "disabled");
-		$("#export").show();
-		$('#export').html('<div class="text-center well">{LANG.report_export_note}<br /><br /><em class="fa fa-spinner fa-spin fa-3x"></em></div>');
-		nv_data_export(1, '{FID}');
-	});
-</script>
 <!-- END: main -->
