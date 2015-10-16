@@ -111,6 +111,8 @@ foreach ( $_rows as $row )
 	if( $row['break'] ) $page++;
 	$row['page'] = $page;
 
+	$row['title'] = nv_get_plaintext( $row['title'] );
+
 	$xtpl->assign( 'ROW', $row );
 	$xtpl->parse( 'main.row' );
 }

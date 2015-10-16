@@ -94,7 +94,7 @@ $( document ).ready(function() {
 		var is_zip= $('input[name="zip"]').is(':checked') ? 1 : 0;
 		var fid = $('#fid').val();
 		window.location.href = script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&export=1&type=' + type + '&is_zip=' + is_zip + '&fid=' + fid;
-		$('#exportmodal').modal('hide');
+		$('#sitemodal').modal('hide');
 		return false;
 	});
 

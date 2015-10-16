@@ -30,7 +30,7 @@
 					</select>
 				</td>
 				<td>
-					<a href="{ROW.url_view}" title="{ROW.title}" target="_blank">{ROW.title}</a>
+					{ROW.title}
 					<small class="help-block">{LANG.page} {ROW.page}</small>
 				</td>
 				<td>{FIELD_TYPE_TEXT}</td>

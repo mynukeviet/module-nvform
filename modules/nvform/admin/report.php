@@ -63,8 +63,9 @@ while( $row = $result->fetch() )
 {
 	if( $row['report'] )
 	{
+		$row['title'] = nv_get_plaintext( $row['title'] );
+		$row['title_cut'] = nv_clean60( $row['title'] );
 		$question_data[$row['qid']] = $row;
-		$row['title_cut'] = nv_clean60( $row['title'], 40 );
 		$xtpl->assign( 'QUESTION', $row );
 		$xtpl->parse( 'main.thead' );
 	}
