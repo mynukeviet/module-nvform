@@ -6,7 +6,7 @@
 				<th width="100">{LANG.order}</th>
 				<th>{LANG.form_title}</th>
 				<th width="100">{LANG.status}</th>
-				<th width="130">&nbsp;</th>
+				<th width="140">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>

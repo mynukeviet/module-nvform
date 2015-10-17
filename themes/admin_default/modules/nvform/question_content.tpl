@@ -169,10 +169,11 @@
 				<div class="form-group">
 					<label class="col-sm-4 text-right"><strong>{LANG.question_default_value}</strong></label>
 					<div class="col-sm-20">
-						<label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>
+						<label><input type="radio" value="2" name="current_date" {DATAFORM.current_date_2}> {LANG.question_empty}</label>&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>&nbsp;&nbsp;&nbsp;
 						<label><input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.question_default_date}</label>
-						<div class="input-group">
-							<input class="date form-control" type="text" value="{DATAFORM.default_date}" name="default_date" id="default_date">
+						<div class="input-group" id="default_date" {DATAFORM.default_date_display}>
+							<input class="date form-control datepicker" type="text" value="{DATAFORM.default_date}" name="default_date">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" id="default_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
@@ -441,10 +442,27 @@
 
 
 	$(document).ready(function() {
-		nv_load_current_date();
+		$('input[name="current_date"]').change(function(){
+			if( $(this).val() == 0 ){
+				$('#default_date').show();
+				$("input[name=default_date]").datepicker({
+					dateFormat : "dd/mm/yy",
+					changeMonth : true,
+					changeYear : true,
+					showOtherMonths : true,
+					showOn : 'focus',
+					yearRange: "-90:+30"
+				});
+				$("input[name=default_date]").removeAttr("disabled");
+				$("input[name=default_date]").focus();
+			}
+			else{
+				$('#default_date').hide();
+			}
+		});
 
 		$('#default_date-btn').click(function() {
-			$("#default_date").datepicker('show');
+			$("input[name=default_date]").datepicker('show');
 		});
 
 		$('#min_date-btn').click(function() {
@@ -472,29 +490,13 @@
 		}, ' required a-z, 0-9, and _ only');
 	});
 
-	function nv_load_current_date() {
-		if ($("input[name=current_date]:checked").val() == 1) {
-			$("input[name=default_date]").attr('disabled', 'disabled');
-			$("input[name=default_date]").datepicker("destroy");
-		} else {
-			$("input[name=default_date]").datepicker({
-				dateFormat : "dd/mm/yy",
-				changeMonth : true,
-				changeYear : true,
-				showOtherMonths : true,
-				showOn : 'focus'
-			});
-			$("input[name=default_date]").removeAttr("disabled");
-			$("input[name=default_date]").focus();
-		}
-	}
-
 	$(".datepicker").datepicker({
 		dateFormat : "dd/mm/yy",
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn : 'focus'
+		showOn : 'focus',
+		yearRange: "-90:+30"
 	});
 
 	$("input[name=question_type]").click(function() {

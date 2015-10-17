@@ -240,9 +240,8 @@ foreach( $question_info as $row_f )
 				$error = sprintf( $lang_module['field_match_type_error'], $row_f['title'] );
 			}
 		}
-
-		$answer_info[$row_f['qid']] = $value;
 	}
+	$answer_info[$row_f['qid']] = $value;
 
 	$row_f['user_editable'] = $row_f['user_editable'] == -1 ? $form_info['user_editable'] : $row_f['user_editable'];
 	if( $filled and !$row_f['user_editable'] and $value != $old_value )

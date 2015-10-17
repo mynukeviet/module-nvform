@@ -142,6 +142,7 @@ $lang_module['question_real'] = 'Số thực';
 $lang_module['question_options_date'] = 'Các tùy chọn dữ liệu ngày tháng';
 $lang_module['question_current_date'] = 'Sử dụng ngày hiện tại';
 $lang_module['question_default_date'] = 'Sử dụng ngày';
+$lang_module['question_empty'] = 'Không sử dụng';
 $lang_module['question_min_date'] = 'Từ ngày';
 $lang_module['question_max_date'] = 'Tới ngày';
 

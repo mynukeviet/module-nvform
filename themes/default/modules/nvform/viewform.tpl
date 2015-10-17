@@ -7,15 +7,24 @@
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 
 <div class="nvform">
+	<!-- BEGIN: dis_title -->
 	<h2 class="text-center">{FORM.title}</h2>
+	<!-- END: dis_title -->
+	<!-- BEGIN: dis_form_info -->
 	<p class="text-center text-info"><em>{FORM.close_info}</em></p>
+	<!-- END: dis_form_info -->
+	<!-- BEGIN: dis_description -->
 	<p>{FORM.description}</p>
+	<!-- END: dis_description -->
+	<!-- BEGIN: dis_description_html -->
+	<p>{FORM.description_html}</p>
+	<!-- END: dis_description_html -->
 </div>
 <hr />
 <!-- BEGIN: info -->
 <div class="alert alert-danger">{INFO}</div>
 <!-- END: info -->
-<form action="" method="post" id="question" <!-- BEGIN: display_left_form -->class="form-horizontal"<!-- END: display_left_form --> <!-- BEGIN: enctype -->enctype="multipart/form-data"<!-- END: enctype -->>
+<form action="{FORM_ACTION}" method="post" id="question" <!-- BEGIN: display_left_form -->class="form-horizontal"<!-- END: display_left_form --> <!-- BEGIN: enctype -->enctype="multipart/form-data"<!-- END: enctype -->>
 	<input type="hidden" id="page" value="1" />
 	<input type="hidden" id="max_page" value="{MAX_PAGE}" />
 	<!-- BEGIN: loop -->
@@ -28,7 +37,15 @@
 			<!-- END: textbox -->
 
 			<!-- BEGIN: date -->
-				<input type="text" class="form-control {QUESTION.datepicker} {QUESTION.required}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}" readonly="readonly">
+			<div class="form-group">
+				<div class="input-group">
+					<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" readonly="readonly" />
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">
+							<em class="fa fa-calendar fa-fix">&nbsp;</em>
+						</button> </span>
+				</div>
+			</div>
 			<!-- END: date -->
 
 			<!-- BEGIN: time -->
@@ -148,6 +165,8 @@
 		<div class="clearfix"></div>
 	</div>
 </form>
+
+<!-- BEGIN: datepicker -->
 <script>
 $(document).ready(function() {
 	$(".datepicker").datepicker({
@@ -155,8 +174,11 @@ $(document).ready(function() {
 		changeMonth : true,
 		changeYear : true,
 		showOtherMonths : true,
-		showOn: 'focus'
+		showOn: 'focus',
+		yearRange: "-90:+30"
 	});
 });
 </script>
+<!-- END: datepicker -->
+
 <!-- END: main -->

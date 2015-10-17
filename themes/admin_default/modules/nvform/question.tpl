@@ -7,7 +7,8 @@
 		<colgroup>
 			<col class="w100">
 			<col span="1">
-			<col span="2" class="w200">
+			<col class="w200">
+			<col span="2" class="w150">
 		</colgroup>
 		<thead>
 			<tr class="center">
@@ -15,7 +16,7 @@
 				<th>{LANG.question_content}</th>
 				<th>{LANG.question_type}</th>
 				<th>{LANG.status}</th>
-				<th width="120">&nbsp;</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,7 +30,7 @@
 					</select>
 				</td>
 				<td>
-					<a href="{ROW.url_view}" title="{ROW.title}" target="_blank">{ROW.title}</a>
+					{ROW.title}
 					<small class="help-block">{LANG.page} {ROW.page}</small>
 				</td>
 				<td>{FIELD_TYPE_TEXT}</td>
@@ -40,7 +41,7 @@
 						<!-- END: status -->
 					</select>
 				</td>
-				<td class="center">
+				<td class="text-center">
 					<em class="fa fa-edit fa-lg">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
 					<em class="fa fa-trash-o fa-lg">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_question({ROW.qid});">{GLANG.delete}</a>
 				</td>

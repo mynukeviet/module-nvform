@@ -95,7 +95,7 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 	foreach( $question_data as $question )
 	{
 		$TextColumnIndex = PHPExcel_Cell::stringFromColumnIndex( $_columnIndex );
-		$objPHPExcel->getActiveSheet()->setCellValue( $TextColumnIndex . $rowIndex, $question['title'] );
+		$objPHPExcel->getActiveSheet()->setCellValue( $TextColumnIndex . $rowIndex, nv_get_plaintext( $question['title'] ) );
 		$_columnIndex++;
 	}
 
@@ -191,7 +191,7 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 				$ans = '';
 			}
 			$col = PHPExcel_Cell::stringFromColumnIndex( $j );
-			$CellValue = nv_unhtmlspecialchars( $ans );
+			$CellValue = htmlspecialchars( nv_editor_br2nl( ( $ans ) ) );
 			$objPHPExcel->getActiveSheet()->setCellValue( $col . $i, $CellValue );
 			$j++;
 		}

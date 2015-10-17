@@ -94,14 +94,13 @@ $( document ).ready(function() {
 		var is_zip= $('input[name="zip"]').is(':checked') ? 1 : 0;
 		var fid = $('#fid').val();
 		window.location.href = script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&export=1&type=' + type + '&is_zip=' + is_zip + '&fid=' + fid;
-		$('#exportmodal').modal('hide');
+		$('#sitemodal').modal('hide');
 		return false;
 	});
 
 	$('#open_modal').click(function(){
 		$.get( script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&fid=' + $(this).data('fid'), function( res ){
-			$('#exportmodal .modal-body').html( res );
-			$('#exportmodal').modal('show');
+			modalShow( $('#open_modal').data('lang_ex'), res );
 		});
 	});
 
@@ -109,7 +108,10 @@ $( document ).ready(function() {
 		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export&nocache=' + new Date().getTime(), 'export=1&download=0&type=xlsx&fid=' + $(this).data('fid'), function(res) {
 			var r_split = res.split("_");
 			if ( r_split[0] == 'OK' ) {
-				window.location.href = 'https://docs.google.com/viewerng/viewer?' + window.location.host + '/' + r_split[1];
+				window.open( 'https://docs.google.com/viewerng/viewer?' + window.location.host + '/' + r_split[1], '_blank' ) ;
+			}
+			else{
+				alert(r_split[1]);
 			}
 		});
 	});

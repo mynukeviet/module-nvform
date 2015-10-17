@@ -50,7 +50,7 @@ $xtpl = new XTemplate( 'report.tpl', NV_ROOTDIR . '/themes/' . $global_config['m
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
 $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
-$xtpl->assign( 'URL_ANALYTICS', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' . $fid . '-' . $form_info['alias'] );
+$xtpl->assign( 'URL_ANALYTICS', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['viewanalytics'] . '/' . $form_info['alias'] . '-' . $fid );
 
 $sql = 'SELECT t1.*, t2.username, t2.last_name, t2.first_name FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid;
 $result = $db->query( $sql );
@@ -63,8 +63,9 @@ while( $row = $result->fetch() )
 {
 	if( $row['report'] )
 	{
+		$row['title'] = nv_get_plaintext( $row['title'] );
+		$row['title_cut'] = nv_clean60( $row['title'] );
 		$question_data[$row['qid']] = $row;
-		$row['title_cut'] = nv_clean60( $row['title'], 40 );
 		$xtpl->assign( 'QUESTION', $row );
 		$xtpl->parse( 'main.thead' );
 	}
