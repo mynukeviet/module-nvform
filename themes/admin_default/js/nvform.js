@@ -116,3 +116,9 @@ $( document ).ready(function() {
 		});
 	});
 });
+
+function nv_open_windown( url )
+{
+	nv_open_browse( url, '', 860, 500, 'resizable=no,scrollbars=yes,toolbar=no,location=no,status=no');
+	return false;
+}

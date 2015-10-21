@@ -85,6 +85,9 @@ $lang_module['report_type'] = "Định dạng tập tin";
 $lang_module['report_zip'] = "Nén tập tin";
 $lang_module['report_zip_note'] = "Đóng góp tập tin ở dạng tập tin nén (.zip)";
 $lang_module['report_download'] = "Tải về";
+$lang_module['report_viewtable'] = "Xem bảng";
+$lang_module['report_viewpage'] = "Xem câu trả lời của người này";
+$lang_module['report_print'] = "In trang";
 
 $lang_module['question'] = 'Câu hỏi';
 $lang_module['question_list'] = 'Danh sách câu hỏi';
@@ -181,6 +184,7 @@ $lang_module['question_min_max_value'] = '%1$s cần nhập từ %2$s đến %3$
 $lang_module['page'] = 'Trang';
 $lang_module['order'] = 'Sắp xếp';
 $lang_module['status'] = 'Trạng thái';
+$lang_module['answer'] = 'Trả lời';
 
 $lang_module['error_groups_choice'] = 'Chọn ít nhất một nhóm thành viên';
 $lang_module['error_formtitle'] = 'Nhập tiêu đề biểu mẫu';

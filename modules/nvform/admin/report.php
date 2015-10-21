@@ -78,6 +78,7 @@ foreach( $answer_data as $answer )
 
 	foreach( $answer['answer'] as $qid => $ans )
 	{
+		$answer_info = '';
 		if( isset( $question_data[$qid] ) and $question_data[$qid]['report'] )
 		{
 			$question_type = $question_data[$qid]['question_type'];
@@ -87,24 +88,23 @@ foreach( $answer_data as $answer )
 				if( $question_type == 'checkbox' )
 				{
 					$result = explode( ',', $ans );
-					$ans = '';
 					foreach( $result as $key )
 					{
-						$ans .= $data[$key] . "<br />";
+						$answer_info .= $data[$key] . "<br />";
 					}
 				}
 				else
 				{
-					$ans = $data[$ans];
+					$answer_info = $data[$ans];
 				}
 			}
 			elseif( $question_type == 'date' and !empty( $ans ) )
 			{
-				$ans = nv_date( 'd/m/Y', $ans );
+				$answer_info = nv_date( 'd/m/Y', $ans );
 			}
 			elseif( $question_type == 'time' and !empty( $ans ) )
 			{
-				$ans = nv_date( 'H:i', $ans );
+				$answer_info = nv_date( 'H:i', $ans );
 			}
 			elseif( $question_type == 'grid' )
 			{
@@ -114,7 +114,7 @@ foreach( $answer_data as $answer )
 				{
 					if( $result[0] == $col['key'] )
 					{
-						$ans = $col['value'];
+						$answer_info = $col['value'];
 						break;
 					}
 				}
@@ -122,25 +122,37 @@ foreach( $answer_data as $answer )
 				{
 					if( $result[1] == $row['key'] )
 					{
-						$ans .= ' - ' . $col['value'];
+						$answer_info .= ' - ' . $col['value'];
 						break;
 					}
 				}
 			}
-			elseif( $question_type == 'file' and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans ) )
-			{
-				$ans = '<a href="' . NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans . '" title="">' . $lang_module['question_options_file_dowload'] . '</a>';
-			}
 
 			$answer['username'] = empty( $answer['username'] ) ? $lang_module['report_guest'] : nv_show_name_user( $answer['first_name'], $answer['last_name'], $answer['username'] );
 
-			$xtpl->assign( 'ANSWER', $ans );
+			$xtpl->assign( 'ANSWER', $answer_info );
+
+			if( $question_type == 'table' )
+			{
+				$xtpl->parse( 'main.tr.td.table' );
+			}
+			elseif( $question_type == 'file' and file_exists( NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans ) )
+			{
+				$xtpl->assign( 'FILES', NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $ans );
+				$xtpl->parse( 'main.tr.td.files' );
+			}
+			else
+			{
+				$xtpl->parse( 'main.tr.td.other' );
+			}
+
 			$xtpl->parse( 'main.tr.td' );
 		}
 	}
 
 	$answer['answer_time'] = nv_date( 'd/m/Y H:i', $answer['answer_time'] );
 	$answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date( 'd/m/Y H:i', $answer['answer_edit_time'] );
+	$answer['answer_view_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_answer&id=' . $answer['id'];
 
 	$answer['no'] = $i;
 	$xtpl->assign( 'ANSWER', $answer );
