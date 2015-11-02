@@ -29,14 +29,14 @@
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_title}</strong> <span class="red">*</span></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_title}</strong> <span class="red">*</span></label>
+						<div class="col-sm-20">
 							<input class="form-control" type="text" value="{DATA.title}" name="title" id="idtitle" maxlength="255" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_alias}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_alias}</strong></label>
+						<div class="col-sm-20">
 							<div class="input-group">
 								<input class="form-control" type="text" value="{DATA.alias}" name="alias" id="idalias" maxlength="255" />
 								<span class="input-group-btn">
@@ -47,20 +47,20 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_description}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_description}</strong></label>
+						<div class="col-sm-20">
 							<textarea name="description" class="form-control" rows="4">{DATA.description}</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_description_html}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_description_html}</strong></label>
+						<div class="col-sm-20">
 							{DESCRIPTION_HTML}
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_image}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_image}</strong></label>
+						<div class="col-sm-20">
 							<div class="input-group">
 								<input class="form-control" type="text" name="image" id="image" value="{DATA.image}"/>
 								<span class="input-group-btn">
@@ -71,14 +71,17 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_who_view}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_who_view}</strong></label>
+						<div class="col-sm-20">
 							<!-- BEGIN: group_view -->
-							<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>&nbsp;&nbsp;&nbsp; <!-- END: group_view -->
+							<div class="row">
+								<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>
+							</div>
+							<!-- END: group_view -->
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_start_time}</strong></label>
+						<label class="col-sm-4 control-label"><strong>{LANG.form_active} {LANG.form_start_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
 								<input name="start_time" id="start_time" value="{DATA.start_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
@@ -100,7 +103,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_end_time}</strong></label>
+						<label class="col-sm-4 control-label"><strong>{LANG.form_end_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
 								<input name="end_time" id="end_time" value="{DATA.end_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
@@ -122,8 +125,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_question_display}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_question_display}</strong></label>
+						<div class="col-sm-20">
 							<select name="question_display" class="form-control">
 								<!-- BEGIN: question_display -->
 								<option value="{STYLE.value}" {STYLE.seleced}>{STYLE.title}</option>
@@ -132,14 +135,14 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_user_editable}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_user_editable}</strong></label>
+						<div class="col-sm-20">
 							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_question_report}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_question_report}</strong></label>
+						<div class="col-sm-20">
 							<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
 						</div>
 					</div>
@@ -150,8 +153,8 @@
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_template_background}</strong></label>
-						<div class="col-sm-21 form-inline">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_template_background}</strong></label>
+						<div class="col-sm-20 form-inline">
 							<input type="text" class="form-control m-bottom" value="{DATA.template.background_color}" name="template[background_color]" id="picker_background" placeholder="{LANG.form_template_background_color}" style="background-color: {DATA.template.background_color}" />
 							<div class="input-group m-bottom">
 								<span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.form_template_background_image_clear}">
