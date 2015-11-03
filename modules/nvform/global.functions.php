@@ -164,3 +164,48 @@ function nv_form_result( $question_data, $answer_data )
 	$xtpl->parse( 'main' );
 	return $xtpl->text( 'main' );
 }
+
+/**
+ * nv_get_plaintext()
+ *
+ * @param mixed $string
+ * @return
+ */
+function nv_get_plaintext( $string, $keep_image = false, $keep_link = false )
+{
+	// Get image tags
+	if( $keep_image )
+	{
+		if( preg_match_all( "/\<img[^\>]*src=\"([^\"]*)\"[^\>]*\>/is", $string, $match ) )
+		{
+			foreach( $match[0] as $key => $_m )
+			{
+				$textimg = '';
+				if( strpos( $match[1][$key], 'data:image/png;base64' ) === false )
+				{
+					$textimg = " " . $match[1][$key];
+				}
+				if( preg_match_all( "/\<img[^\>]*alt=\"([^\"]+)\"[^\>]*\>/is", $_m, $m_alt ) )
+				{
+					$textimg .= " " . $m_alt[1][0];
+				}
+				$string = str_replace( $_m, $textimg, $string );
+			}
+		}
+	}
+
+	// Get link tags
+	if( $keep_link )
+	{
+		if( preg_match_all( "/\<a[^\>]*href=\"([^\"]+)\"[^\>]*\>(.*)\<\/a\>/isU", $string, $match ) )
+		{
+			foreach( $match[0] as $key => $_m )
+			{
+				$string = str_replace( $_m, $match[1][$key] . " " . $match[2][$key], $string );
+			}
+		}
+	}
+
+	$string = str_replace( '&nbsp;', ' ', strip_tags( $string ) );
+	return preg_replace( '/[ ]+/', ' ', $string );
+}

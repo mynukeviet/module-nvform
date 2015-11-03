@@ -80,7 +80,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['question_report'] = $nv_Request->get_int( 'question_report', 'post', 0 );
 	$form_data['form_report_type'] = $nv_Request->get_int( 'form_report_type', 'post', 0 );
 	$form_data['form_report_type_email'] = array();
-	if( $form_data['form_report_type'] == 1 or $form_data['form_report_type'] == 2 )
+	if( $form_data['form_report_type'] == 1 )
 	{
 		$array = array(
 			'form_report_type_email' => $nv_Request->get_int( 'form_report_type_email', 'post', 0 ),
@@ -340,8 +340,7 @@ foreach( $array_background_position as $key => $value )
 
 $form_report_type = array(
 	'0' => $lang_module['form_report_type_acp'],
-	'1' => $lang_module['form_report_type_email'],
-	'2' => $lang_module['form_report_type_all']
+	'1' => $lang_module['form_report_type_all']
 );
 foreach( $form_report_type as $key => $value )
 {

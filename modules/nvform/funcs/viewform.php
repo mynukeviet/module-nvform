@@ -82,9 +82,6 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 
 	if( empty( $error ) )
 	{
-		$answer_info = serialize( $answer_info );
-		$answer_info_extend = serialize( $answer_info_extend );
-
 		if( ! isset( $user_info['userid'] ) ) $user_info['userid'] = 0;
 
 		if ( $filled )
@@ -95,18 +92,19 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 		{
 			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, answer_extend, who_answer, answer_time) VALUES (" . $fid . ", :answer, :answer_extend, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
 		}
-		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
-		$sth->bindParam( ':answer_extend', $answer_info_extend, PDO::PARAM_STR );
+		$sth->bindParam( ':answer', serialize( $answer_info ), PDO::PARAM_STR );
+		$sth->bindParam( ':answer_extend', serialize( $answer_info_extend ), PDO::PARAM_STR );
 
 		if( $sth->execute() )
 		{
 			// Báo cáo kết qủa qua email
-			if( $form_info['form_report_type'] == 1 or $form_info['form_report_type'] == 2 )
+			if( ( $form_info['form_report_type'] == 1 ) and !$filled )
 			{
 				$form_report_type_email = unserialize( $form_info['form_report_type_email'] );
 				$subject = $lang_module['reply'] . ': ' . $form_info['title'];
-				$message = '';
 				$listmail = array();
+
+				// Lấy danh sách email
 				if( $form_report_type_email['form_report_type_email'] == 0 and !empty( $form_report_type_email['group_email'] ) )
 				{
 					$result = $db->query( 'SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN (' . implode( ',', $form_report_type_email['group_email'] ) . ')' );
@@ -120,9 +118,23 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 					$listmail = explode( ';', $form_report_type_email['listmail'] );
 					$listmail = array_map( 'trim', $listmail );
 				}
-				$listmail = array_unique( $listmail );
-var_dump($listmail); die;
-				nv_sendmail( $global_config['site_email'], $listmail, $subject, $message );
+
+				if( !empty( $listmail ) )
+				{
+					$listmail = array_unique( $listmail );
+
+					// Nội dung email
+					$answer_info['username'] = empty( $user_info['userid'] ) ? $lang_module['report_guest'] : nv_show_name_user( $user_info['full_name'] );
+
+					$xtpl = new XTemplate( 'sendmail.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file );
+					$xtpl->assign( 'FORM_DATA', nv_form_result( $question_info, $answer_info ) );
+
+					$xtpl->parse( 'main' );
+					$message = $xtpl->text( 'main' );
+					$message = nv_site_theme( $message, false );
+
+					nv_sendmail( $global_config['site_email'], $listmail, $subject, $message );
+				}
 			}
 
 			$info = $lang_module['success_info'];
