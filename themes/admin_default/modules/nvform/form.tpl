@@ -29,14 +29,14 @@
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_title}</strong> <span class="red">*</span></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_title}</strong> <span class="red">*</span></label>
+						<div class="col-sm-20">
 							<input class="form-control" type="text" value="{DATA.title}" name="title" id="idtitle" maxlength="255" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_alias}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_alias}</strong></label>
+						<div class="col-sm-20">
 							<div class="input-group">
 								<input class="form-control" type="text" value="{DATA.alias}" name="alias" id="idalias" maxlength="255" />
 								<span class="input-group-btn">
@@ -47,20 +47,20 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_description}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_description}</strong></label>
+						<div class="col-sm-20">
 							<textarea name="description" class="form-control" rows="4">{DATA.description}</textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_description_html}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_description_html}</strong></label>
+						<div class="col-sm-20">
 							{DESCRIPTION_HTML}
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_image}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_image}</strong></label>
+						<div class="col-sm-20">
 							<div class="input-group">
 								<input class="form-control" type="text" name="image" id="image" value="{DATA.image}"/>
 								<span class="input-group-btn">
@@ -71,14 +71,17 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_who_view}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_who_view}</strong></label>
+						<div class="col-sm-20">
 							<!-- BEGIN: group_view -->
-							<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>&nbsp;&nbsp;&nbsp; <!-- END: group_view -->
+							<div class="row">
+								<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>
+							</div>
+							<!-- END: group_view -->
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_start_time}</strong></label>
+						<label class="col-sm-4 control-label"><strong>{LANG.form_active} {LANG.form_start_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
 								<input name="start_time" id="start_time" value="{DATA.start_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
@@ -100,7 +103,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_end_time}</strong></label>
+						<label class="col-sm-4 control-label"><strong>{LANG.form_end_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
 								<input name="end_time" id="end_time" value="{DATA.end_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
@@ -122,25 +125,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_question_display}</strong></label>
-						<div class="col-sm-21">
-							<select name="question_display" class="form-control">
-								<!-- BEGIN: question_display -->
-								<option value="{STYLE.value}" {STYLE.seleced}>{STYLE.title}</option>
-								<!-- END: question_display -->
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_user_editable}</strong></label>
-						<div class="col-sm-21">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_user_editable}</strong></label>
+						<div class="col-sm-20">
 							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 text-right"><strong>{LANG.form_question_report}</strong></label>
-						<div class="col-sm-21">
-							<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
 						</div>
 					</div>
 				</div>
@@ -150,8 +137,18 @@
 			<div class="panel panel-default" style="border-top: none">
 				<div class="panel-body">
 					<div class="form-group">
-						<label class="col-sm-3 control-label"><strong>{LANG.form_template_background}</strong></label>
-						<div class="col-sm-21 form-inline">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_question_display}</strong></label>
+						<div class="col-sm-20">
+							<select name="question_display" class="form-control">
+								<!-- BEGIN: question_display -->
+								<option value="{STYLE.value}" {STYLE.seleced}>{STYLE.title}</option>
+								<!-- END: question_display -->
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><strong>{LANG.form_template_background}</strong></label>
+						<div class="col-sm-20 form-inline">
 							<input type="text" class="form-control m-bottom" value="{DATA.template.background_color}" name="template[background_color]" id="picker_background" placeholder="{LANG.form_template_background_color}" style="background-color: {DATA.template.background_color}" />
 							<div class="input-group m-bottom">
 								<span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.form_template_background_image_clear}">
@@ -182,6 +179,41 @@
 			</div>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">{LANG.form_report}</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.form_question_report}</strong></label>
+				<div class="col-sm-20">
+					<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.form_report_type}</strong></label>
+				<div class="col-sm-20">
+					<!-- BEGIN: form_report_type -->
+					<label><input type="radio" name="form_report_type" class="form_report_type" value="{REPORT_TYPE.key}" {REPORT_TYPE.checked} />{REPORT_TYPE.value}&nbsp;&nbsp;&nbsp;</label>
+					<!-- END: form_report_type -->
+					<div id="form_report_type_email" {form_report_type_email_dipslay}>
+						<hr />
+						<div class="m-bottom">
+							<!-- BEGIN: form_report_type_email -->
+							<label><input type="radio" name="form_report_type_email" class="form_report_type_email" value="{REPORT_TYPE_EMAIL.key}" {REPORT_TYPE_EMAIL.checked} />{REPORT_TYPE_EMAIL.value}&nbsp;&nbsp;&nbsp;</label>
+							<!-- END: form_report_type_email -->
+						</div>
+						<div id="group_email" {form_report_type_email_groups_mail_dipslay}>
+							<!-- BEGIN: group_email -->
+							<div style="display: block">
+								<label><input name="group_email[]" type="checkbox" value="{GR_EMAIL.value}" {GR_EMAIL.checked} />{GR_EMAIL.title}</label>
+							</div>
+							<!-- END: group_email -->
+						</div>
+						<input type="text" name="listmail" id="listmail" value="{DATA.listmail}" class="form-control" {form_report_type_email_listmail_dipslay} placeholder="{LANG.form_report_type_email_maillist_note}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="text-center">
 		<input type="submit" value="{LANG_SUBMIT}" class="btn btn-primary"/>
 	</div>
@@ -193,6 +225,11 @@
 <script src="{NV_BASE_SITEURL}themes/{NV_ADMIN_THEME}/js/colpick.js"></script>
 
 <!-- BEGIN: get_alias -->
+<script type="text/javascript">
+
+</script>
+<!-- END: get_alias -->
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#start_time,#end_time").datepicker({
@@ -227,6 +264,26 @@
 		}).keyup(function() {
 			$(this).colpickSetColor(this.value);
 		});
+
+		$('.form_report_type').change(function(){
+			if( $(this).val() == 1 || $(this).val() == 2 ){
+				$('#form_report_type_email').slideDown();
+			}
+			else{
+				$('#form_report_type_email').slideUp();
+			}
+		});
+
+		$('.form_report_type_email').change(function(){
+			if( $(this).val() == 0 ){
+				$('#group_email').show();
+				$('#listmail').hide();
+			}
+			else{
+				$('#group_email').hide();
+				$('#listmail').show();
+			}
+		});
 	});
 
 	$('#clearimg').click(function() {
@@ -241,5 +298,4 @@
 		return false;
 	}
 </script>
-<!-- END: get_alias -->
 <!-- END: main -->

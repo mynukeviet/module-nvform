@@ -29,6 +29,12 @@ $form_data = array(
 	'question_display' => '',
 	'question_report' => 1,
 	'user_editable' => 1,
+	'form_report_type' => 0,
+	'form_report_type_email' => array(
+		'form_report_type_email' => 0,
+		'group_email' => 0,
+		'listmail' => ''
+	),
 	'template' => array(
 		'background_color' => '',
 		'background_image' => '',
@@ -72,6 +78,18 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 	$form_data['question_display'] = $nv_Request->get_string( 'question_display', 'post', '' );
 	$form_data['user_editable'] = $nv_Request->get_int( 'user_editable', 'post', 0 );
 	$form_data['question_report'] = $nv_Request->get_int( 'question_report', 'post', 0 );
+	$form_data['form_report_type'] = $nv_Request->get_int( 'form_report_type', 'post', 0 );
+	$form_data['form_report_type_email'] = array();
+	if( $form_data['form_report_type'] == 1 )
+	{
+		$array = array(
+			'form_report_type_email' => $nv_Request->get_int( 'form_report_type_email', 'post', 0 ),
+			'group_email' => $nv_Request->get_typed_array( 'group_email', 'post', 'int', 0 ),
+			'listmail' => $nv_Request->get_title( 'listmail', 'post', '' )
+		);
+		$array['form_report_type_email'] = ! empty( $array['form_report_type_email'] ) ? implode( ',', nv_groups_post( array_intersect( $array['form_report_type_email'], array_keys( $groups_list ) ) ) ) : '';
+		$form_data['form_report_type_email'] = serialize( $array );
+	}
 	$form_data['template'] = $nv_Request->get_array( 'template', 'post', array() );
 
 	if( ! empty( $form_data['start_time'] ) and preg_match( '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m ) )
@@ -128,14 +146,14 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		}
 		if( $id )
 		{
-			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, description_html = :description_html, image = :image, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, user_editable = :user_editable, question_display = :question_display, question_report = :question_report, template = :template WHERE id =' . $id;
+			$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET title = :title, alias = :alias, description = :description, description_html = :description_html, image = :image, start_time = :start_time, end_time = :end_time, groups_view = :groups_view, user_editable = :user_editable, question_display = :question_display, question_report = :question_report, form_report_type = :form_report_type, form_report_type_email = :form_report_type_email, template = :template WHERE id =' . $id;
 		}
 		else
 		{
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, form_report_type, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :form_report_type, :form_report_type_email, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -150,6 +168,8 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':user_editable', $form_data['user_editable'], PDO::PARAM_INT );
 		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
 		$query->bindParam( ':question_report', $form_data['question_report'], PDO::PARAM_INT );
+		$query->bindParam( ':form_report_type', $form_data['form_report_type'], PDO::PARAM_INT );
+		$query->bindParam( ':form_report_type_email', $form_data['form_report_type_email'], PDO::PARAM_STR );
 		$query->bindParam( ':template', $form_data['template'], PDO::PARAM_STR );
 
 		if( $query->execute() )
@@ -177,6 +197,10 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 $form_data['template']['background_image'] = !empty( $form_data['template']['background_image'] ) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['template']['background_image'] : '';
 $form_data['question_report_check'] = $form_data['question_report'] ? 'checked="checked"' : '';
 $form_data['user_editable_check'] = $form_data['user_editable'] ? 'checked="checked"' : '';
+
+$form_report_type_email = unserialize( $form_data['form_report_type_email'] );
+$form_data['form_report_type_email'] = $form_report_type_email['form_report_type_email'];
+$form_data['listmail'] = $form_report_type_email['listmail'];
 
 $xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
@@ -312,6 +336,52 @@ foreach( $array_background_position as $key => $value )
 	$sl = $key == $form_data['template']['background_imgage_position'] ? 'selected="selected"' : '';
 	$xtpl->assign( 'POSITION', array( 'key' => $key, 'value' => $value, 'selected' => $sl ) );
 	$xtpl->parse( 'main.background_position' );
+}
+
+$form_report_type = array(
+	'0' => $lang_module['form_report_type_acp'],
+	'1' => $lang_module['form_report_type_all']
+);
+foreach( $form_report_type as $key => $value )
+{
+	$ck = $key == $form_data['form_report_type'] ? 'checked="checked"' : '';
+	$xtpl->assign( 'REPORT_TYPE', array( 'key' => $key, 'value' => $value, 'checked' => $ck ) );
+	$xtpl->parse( 'main.form_report_type' );
+}
+
+$array_form_report_type_email = array(
+	'0' => $lang_module['form_report_type_email_groups'],
+	'1' => $lang_module['form_report_type_email_maillist']
+);
+foreach( $array_form_report_type_email as $key => $value )
+{
+	$ck = $key == $form_data['form_report_type_email'] ? 'checked="checked"' : '';
+	$xtpl->assign( 'REPORT_TYPE_EMAIL', array( 'key' => $key, 'value' => $value, 'checked' => $ck ) );
+	$xtpl->parse( 'main.form_report_type_email' );
+}
+
+foreach( $groups_list as $_group_id => $_title )
+{
+	$xtpl->assign( 'GR_EMAIL', array(
+		'value' => $_group_id,
+		'checked' => in_array( $_group_id, $form_report_type_email['group_email'] ) ? ' checked="checked"' : '',
+		'title' => $_title
+	) );
+	$xtpl->parse( 'main.group_email' );
+}
+
+if( $form_data['form_report_type'] == 0 )
+{
+	$xtpl->assign( 'form_report_type_email_dipslay', 'style="display: none"' );
+}
+
+if( $form_report_type_email['form_report_type_email'] == 1 )
+{
+	$xtpl->assign( 'form_report_type_email_groups_mail_dipslay', 'style="display: none"' );
+}
+else
+{
+	$xtpl->assign( 'form_report_type_email_listmail_dipslay', 'style="display: none"' );
 }
 
 if( $error )

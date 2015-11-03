@@ -14,9 +14,10 @@ $submenu['form_content'] = $lang_module['form_add'];
 $submenu['question'] = $lang_module['question_list'];
 $submenu['question_content'] = $lang_module['question_add'];
 
-$allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content', 'report', 'export' );
+$allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content', 'report', 'export', 'view_answer' );
 
 define( 'NV_IS_FILE_ADMIN', true );
+require_once NV_ROOTDIR . NV_BASE_SITEURL . 'modules/' . $module_file . '/global.functions.php';
 
 // Danh sach cac kieu du lieu
 $array_field_type = array(
@@ -35,51 +36,6 @@ $array_field_type = array(
 	'file' => $lang_module['question_type_file'],
 	'plaintext' => $lang_module['question_type_plaintext']
 );
-
-/**
- * nv_get_plaintext()
- *
- * @param mixed $string
- * @return
- */
-function nv_get_plaintext( $string, $keep_image = false, $keep_link = false )
-{
-	// Get image tags
-	if( $keep_image )
-	{
-		if( preg_match_all( "/\<img[^\>]*src=\"([^\"]*)\"[^\>]*\>/is", $string, $match ) )
-		{
-			foreach( $match[0] as $key => $_m )
-			{
-				$textimg = '';
-				if( strpos( $match[1][$key], 'data:image/png;base64' ) === false )
-				{
-					$textimg = " " . $match[1][$key];
-				}
-				if( preg_match_all( "/\<img[^\>]*alt=\"([^\"]+)\"[^\>]*\>/is", $_m, $m_alt ) )
-				{
-					$textimg .= " " . $m_alt[1][0];
-				}
-				$string = str_replace( $_m, $textimg, $string );
-			}
-		}
-	}
-
-	// Get link tags
-	if( $keep_link )
-	{
-		if( preg_match_all( "/\<a[^\>]*href=\"([^\"]+)\"[^\>]*\>(.*)\<\/a\>/isU", $string, $match ) )
-		{
-			foreach( $match[0] as $key => $_m )
-			{
-				$string = str_replace( $_m, $match[1][$key] . " " . $match[2][$key], $string );
-			}
-		}
-	}
-
-	$string = str_replace( '&nbsp;', ' ', strip_tags( $string ) );
-	return preg_replace( '/[ ]+/', ' ', $string );
-}
 
 /**
  * nv_update_answer()

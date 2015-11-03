@@ -12,6 +12,7 @@ if( !defined( 'NV_SYSTEM' ) )
 	die( 'Stop!!!' );
 
 define( 'NV_IS_MOD_NVFORM', true );
+require_once NV_ROOTDIR . NV_BASE_SITEURL . 'modules/' . $module_file . '/global.functions.php';
 
 $page = 1; // Trang mặc định
 $per_page = 10; // Số lượng bản ghi trên 1 trang
