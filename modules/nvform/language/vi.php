@@ -27,6 +27,7 @@ $lang_module['prev'] = 'Trở lại';
 $lang_module['status'] = 'Trạng thái';
 $lang_module['time_apply'] = 'Thời gian hiệu lực';
 $lang_module['answer_count'] = 'Số lượt trả lời';
+$lang_module['reply'] = 'Trả lời';
 
 $lang_module['error_form_not_found_detail'] = 'Hệ thống không tìm thấy biểu mẫu nào theo như yêu cầu của bạn.<br />Vui lòng liên hệ với quản trị để biết thêm thông tin.';
 $lang_module['error_form_not_premission_detail'] = 'Bạn không được phép truy cập biểu mẫu này.<br />Vui lòng liên hệ quản trị để biết thêm chi tiết.';

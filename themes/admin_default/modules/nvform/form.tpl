@@ -125,6 +125,18 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label class="col-sm-4 text-right"><strong>{LANG.form_user_editable}</strong></label>
+						<div class="col-sm-20">
+							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="form_template">
+			<div class="panel panel-default" style="border-top: none">
+				<div class="panel-body">
+					<div class="form-group">
 						<label class="col-sm-4 control-label"><strong>{LANG.form_question_display}</strong></label>
 						<div class="col-sm-20">
 							<select name="question_display" class="form-control">
@@ -134,24 +146,6 @@
 							</select>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-4 text-right"><strong>{LANG.form_user_editable}</strong></label>
-						<div class="col-sm-20">
-							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 text-right"><strong>{LANG.form_question_report}</strong></label>
-						<div class="col-sm-20">
-							<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div role="tabpanel" class="tab-pane" id="form_template">
-			<div class="panel panel-default" style="border-top: none">
-				<div class="panel-body">
 					<div class="form-group">
 						<label class="col-sm-4 control-label"><strong>{LANG.form_template_background}</strong></label>
 						<div class="col-sm-20 form-inline">
@@ -185,6 +179,41 @@
 			</div>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">{LANG.form_report}</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.form_question_report}</strong></label>
+				<div class="col-sm-20">
+					<label><input type="checkbox" name="question_report" value="1" {DATA.question_report_check} />{LANG.form_question_report_note}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 text-right"><strong>{LANG.form_report_type}</strong></label>
+				<div class="col-sm-20">
+					<!-- BEGIN: form_report_type -->
+					<label><input type="radio" name="form_report_type" class="form_report_type" value="{REPORT_TYPE.key}" {REPORT_TYPE.checked} />{REPORT_TYPE.value}&nbsp;&nbsp;&nbsp;</label>
+					<!-- END: form_report_type -->
+					<div id="form_report_type_email" {form_report_type_email_dipslay}>
+						<hr />
+						<div class="m-bottom">
+							<!-- BEGIN: form_report_type_email -->
+							<label><input type="radio" name="form_report_type_email" class="form_report_type_email" value="{REPORT_TYPE_EMAIL.key}" {REPORT_TYPE_EMAIL.checked} />{REPORT_TYPE_EMAIL.value}&nbsp;&nbsp;&nbsp;</label>
+							<!-- END: form_report_type_email -->
+						</div>
+						<div id="group_email" {form_report_type_email_groups_mail_dipslay}>
+							<!-- BEGIN: group_email -->
+							<div style="display: block">
+								<label><input name="group_email[]" type="checkbox" value="{GR_EMAIL.value}" {GR_EMAIL.checked} />{GR_EMAIL.title}</label>
+							</div>
+							<!-- END: group_email -->
+						</div>
+						<input type="text" name="listmail" id="listmail" value="{DATA.listmail}" class="form-control" {form_report_type_email_listmail_dipslay} placeholder="{LANG.form_report_type_email_maillist_note}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="text-center">
 		<input type="submit" value="{LANG_SUBMIT}" class="btn btn-primary"/>
 	</div>
@@ -196,6 +225,11 @@
 <script src="{NV_BASE_SITEURL}themes/{NV_ADMIN_THEME}/js/colpick.js"></script>
 
 <!-- BEGIN: get_alias -->
+<script type="text/javascript">
+
+</script>
+<!-- END: get_alias -->
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#start_time,#end_time").datepicker({
@@ -230,6 +264,26 @@
 		}).keyup(function() {
 			$(this).colpickSetColor(this.value);
 		});
+
+		$('.form_report_type').change(function(){
+			if( $(this).val() == 1 || $(this).val() == 2 ){
+				$('#form_report_type_email').slideDown();
+			}
+			else{
+				$('#form_report_type_email').slideUp();
+			}
+		});
+
+		$('.form_report_type_email').change(function(){
+			if( $(this).val() == 0 ){
+				$('#group_email').show();
+				$('#listmail').hide();
+			}
+			else{
+				$('#group_email').hide();
+				$('#listmail').show();
+			}
+		});
 	});
 
 	$('#clearimg').click(function() {
@@ -244,5 +298,4 @@
 		return false;
 	}
 </script>
-<!-- END: get_alias -->
 <!-- END: main -->

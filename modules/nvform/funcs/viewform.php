@@ -100,6 +100,31 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 
 		if( $sth->execute() )
 		{
+			// Báo cáo kết qủa qua email
+			if( $form_info['form_report_type'] == 1 or $form_info['form_report_type'] == 2 )
+			{
+				$form_report_type_email = unserialize( $form_info['form_report_type_email'] );
+				$subject = $lang_module['reply'] . ': ' . $form_info['title'];
+				$message = '';
+				$listmail = array();
+				if( $form_report_type_email['form_report_type_email'] == 0 and !empty( $form_report_type_email['group_email'] ) )
+				{
+					$result = $db->query( 'SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN (' . implode( ',', $form_report_type_email['group_email'] ) . ')' );
+					while( list( $userid ) = $result->fetch( 3 ) )
+					{
+						$listmail[] = $db->query( 'SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid=' . $userid )->fetchColumn();
+					}
+				}
+				elseif( $form_report_type_email['form_report_type_email'] == 1 and !empty( $form_report_type_email['listmail'] ) )
+				{
+					$listmail = explode( ';', $form_report_type_email['listmail'] );
+					$listmail = array_map( 'trim', $listmail );
+				}
+				$listmail = array_unique( $listmail );
+var_dump($listmail); die;
+				nv_sendmail( $global_config['site_email'], $listmail, $subject, $message );
+			}
+
 			$info = $lang_module['success_info'];
 			if( defined( 'NV_IS_USER' ) )
 			{

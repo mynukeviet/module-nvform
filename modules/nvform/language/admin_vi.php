@@ -45,6 +45,13 @@ $lang_module['form_question_report_note'] = 'Hiển thị liên kết đến tra
 $lang_module['form_user_editable'] = 'Thay đổi câu trả lời';
 $lang_module['form_user_editable_note'] = 'Cho phép người dùng thay đổi câu trả lời trong thời gian hiệu lực';
 $lang_module['form_user_editable_form'] = 'Theo cấu hình biểu mẫu';
+$lang_module['form_report_type'] = 'Hình thức thống kê';
+$lang_module['form_report_type_all'] = 'Trang quản trị và Email';
+$lang_module['form_report_type_acp'] = 'Chỉ Trang quản trị';
+$lang_module['form_report_type_email'] = 'Chỉ Email';
+$lang_module['form_report_type_email_groups'] = 'Chọn nhóm thành viên nhận báo cáo';
+$lang_module['form_report_type_email_maillist'] = 'hoặc nhập sách sách email nhận báo cáo (Cách nhau bởi dấu chấm phẩy)';
+$lang_module['form_report_type_email_maillist_note'] = 'Nhập danh sách email nhận thông báo';
 
 $lang_module['form_template'] = 'Giao diện biểu mẫu';
 $lang_module['form_template_background'] = 'Nền trang';

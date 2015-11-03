@@ -17,6 +17,7 @@ $submenu['question_content'] = $lang_module['question_add'];
 $allow_func = array( 'main', 'config','form_content', 'alias', 'change_status', 'change_weight', 'question', 'question_content', 'report', 'export', 'view_answer' );
 
 define( 'NV_IS_FILE_ADMIN', true );
+require_once NV_ROOTDIR . NV_BASE_SITEURL . 'modules/' . $module_file . '/global.functions.php';
 
 // Danh sach cac kieu du lieu
 $array_field_type = array(
