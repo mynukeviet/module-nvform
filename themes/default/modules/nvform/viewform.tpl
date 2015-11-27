@@ -154,6 +154,7 @@
 		</div>
 	</div>
 	<!-- END: loop -->
+	<div class="clearfix"></div>
 	<div class="m-bottom">
 		<div class="pull-left">
 			<button class="btn btn-danger btn-sm" id="btn-prev" {BREAK_PAGE}>{LANG.prev}</button>
