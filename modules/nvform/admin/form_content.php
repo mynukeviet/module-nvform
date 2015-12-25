@@ -54,6 +54,7 @@ if( $id > 0 )
 		die();
 	}
 	$form_data['template'] = unserialize( $form_data['template'] );
+	$form_data['form_report_type_email'] = unserialize( $form_data['form_report_type_email'] );
 
 	$page_title = $lang_module['form_edit'] . ': ' . $form_data['title'];
 	$lang_summit = $lang_module['form_edit'];
@@ -153,7 +154,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, form_report_type, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :form_report_type, :form_report_type_email, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, form_report_type, form_report_type_email, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :form_report_type, :form_report_type_email, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -198,7 +199,7 @@ $form_data['template']['background_image'] = !empty( $form_data['template']['bac
 $form_data['question_report_check'] = $form_data['question_report'] ? 'checked="checked"' : '';
 $form_data['user_editable_check'] = $form_data['user_editable'] ? 'checked="checked"' : '';
 
-$form_report_type_email = unserialize( $form_data['form_report_type_email'] );
+$form_report_type_email = $form_data['form_report_type_email'];
 $form_data['form_report_type_email'] = $form_report_type_email['form_report_type_email'];
 $form_data['listmail'] = $form_report_type_email['listmail'];
 
@@ -360,6 +361,7 @@ foreach( $array_form_report_type_email as $key => $value )
 	$xtpl->parse( 'main.form_report_type_email' );
 }
 
+$form_report_type_email['group_email'] = explode( ',', $form_report_type_email['group_email'] );
 foreach( $groups_list as $_group_id => $_title )
 {
 	$xtpl->assign( 'GR_EMAIL', array(
