@@ -32,7 +32,7 @@ $form_data = array(
 	'form_report_type' => 0,
 	'form_report_type_email' => array(
 		'form_report_type_email' => 0,
-		'group_email' => 0,
+		'group_email' => array(),
 		'listmail' => ''
 	),
 	'template' => array(
@@ -54,6 +54,7 @@ if( $id > 0 )
 		die();
 	}
 	$form_data['template'] = unserialize( $form_data['template'] );
+	$form_data['form_report_type_email'] = unserialize( $form_data['form_report_type_email'] );
 
 	$page_title = $lang_module['form_edit'] . ': ' . $form_data['title'];
 	$lang_summit = $lang_module['form_edit'];
@@ -153,7 +154,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 			$weight = $db->query( "SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data )->fetchColumn();
 			$weight = intval( $weight ) + 1;
 
-			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, form_report_type, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :form_report_type, :form_report_type_email, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
+			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (title, alias, description, description_html, image, start_time, end_time, groups_view, user_editable, question_display, question_report, form_report_type, form_report_type_email, template, weight, add_time, status) VALUES (:title, :alias, :description, :description_html, :image, :start_time, :end_time, :groups_view, :user_editable, :question_display, :question_report, :form_report_type, :form_report_type_email, :template, ' . $weight . ', ' . NV_CURRENTTIME . ', 1)';
 		}
 
 		$query = $db->prepare( $sql );
@@ -169,7 +170,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 		$query->bindParam( ':question_display', $form_data['question_display'], PDO::PARAM_STR );
 		$query->bindParam( ':question_report', $form_data['question_report'], PDO::PARAM_INT );
 		$query->bindParam( ':form_report_type', $form_data['form_report_type'], PDO::PARAM_INT );
-		$query->bindParam( ':form_report_type_email', $form_data['form_report_type_email'], PDO::PARAM_STR );
+		$query->bindParam( ':form_report_type_email', serialize( $form_data['form_report_type_email'] ), PDO::PARAM_STR );
 		$query->bindParam( ':template', $form_data['template'], PDO::PARAM_STR );
 
 		if( $query->execute() )
@@ -183,7 +184,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 				nv_insert_logs( NV_LANG_DATA, $module_name, 'Add', 'Form: ' . $form_data['title'], $admin_info['userid'] );
 			}
 
-			nv_del_moduleCache( $module_name );
+			$nv_Cache->delMod( $module_name );
 			Header( 'Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name );
 			die();
 		}
@@ -198,14 +199,13 @@ $form_data['template']['background_image'] = !empty( $form_data['template']['bac
 $form_data['question_report_check'] = $form_data['question_report'] ? 'checked="checked"' : '';
 $form_data['user_editable_check'] = $form_data['user_editable'] ? 'checked="checked"' : '';
 
-$form_report_type_email = unserialize( $form_data['form_report_type_email'] );
+$form_report_type_email = $form_data['form_report_type_email'];
 $form_data['form_report_type_email'] = $form_report_type_email['form_report_type_email'];
 $form_data['listmail'] = $form_report_type_email['listmail'];
 
 $xtpl = new XTemplate( 'form.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload );
-$xtpl->assign( 'NV_ASSETS_DIR', NV_ASSETS_DIR );
 $xtpl->assign( 'NV_ADMIN_THEME', $global_config['admin_theme'] );
 
 // Thời gian
@@ -394,8 +394,6 @@ $xtpl->assign( 'DESCRIPTION_HTML', $form_data['description_html'] );
 $xtpl->assign( 'LANG_SUBMIT', $lang_summit );
 $xtpl->assign( 'DATA', $form_data );
 $xtpl->assign( 'FORM_ACTION', $action );
-$xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
-$xtpl->assign( 'NV_LANG_INTERFACE', NV_LANG_INTERFACE );
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

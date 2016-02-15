@@ -33,9 +33,9 @@ if( empty( $id ) or empty( $op ) ) die( 'NO_' . $id );
 $new_status = $nv_Request->get_bool( 'new_status', 'post' );
 $new_status = ( int )$new_status;
 
-$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET status=' . $new_status . ' WHERE ' . $field . '=' . $id;	
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET status=' . $new_status . ' WHERE ' . $field . '=' . $id;
 $db->query( $sql );
-nv_del_moduleCache( $module_name );
+$nv_Cache->delMod( $module_name );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo 'OK_' . $id;

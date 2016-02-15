@@ -39,7 +39,7 @@ if( $nv_Request->isset_request( 'del', 'post' ) )
 
 		nv_update_answer( $question['fid'] );
 
-		nv_del_moduleCache( $module_name );
+		$nv_Cache->delMod( $module_name );
 		die('OK');
 	}
 	die('NO');

@@ -92,8 +92,10 @@ if( $nv_Request->isset_request( 'submit', 'post') )
 		{
 			$sth = $db->prepare( "INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, answer_extend, who_answer, answer_time) VALUES (" . $fid . ", :answer, :answer_extend, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")" );
 		}
-		$sth->bindParam( ':answer', serialize( $answer_info ), PDO::PARAM_STR );
-		$sth->bindParam( ':answer_extend', serialize( $answer_info_extend ), PDO::PARAM_STR );
+		$answer_info = serialize( $answer_info );
+		$answer_info_extend = serialize( $answer_info_extend );
+		$sth->bindParam( ':answer', $answer_info, PDO::PARAM_STR );
+		$sth->bindParam( ':answer_extend', $answer_info_extend, PDO::PARAM_STR );
 
 		if( $sth->execute() )
 		{
