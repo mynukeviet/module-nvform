@@ -254,7 +254,7 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 
 	if( !$is_zip )
 	{
-		$download = new download( $file_src, NV_ROOTDIR . NV_BASE_SITEURL . NV_TEMP_DIR );
+		$download = new NukeViet\Files\Download($file_src, NV_ROOTDIR . NV_BASE_SITEURL . NV_TEMP_DIR );
 		$download->download_file();
 		die( 'OK' );
 	}
@@ -277,7 +277,7 @@ if( $nv_Request->isset_request( 'export', 'post, get' ) )
 		}
 
 		//Download file
-		$download = new download( $file_src, NV_ROOTDIR . "/" . NV_TEMP_DIR, $form_info['alias'] . ".zip" );
+		$download = new NukeViet\Files\Download( $file_src, NV_ROOTDIR . "/" . NV_TEMP_DIR, $form_info['alias'] . ".zip" );
 		$download->download_file();
 		exit();
 	}
