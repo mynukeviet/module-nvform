@@ -103,10 +103,12 @@ foreach ($answer_data as $answer) {
                         break;
                     }
                 }
+            }else{
+                $answer_info = $ans;
             }
             
             $answer['username'] = empty($answer['username']) ? $lang_module['report_guest'] : nv_show_name_user($answer['first_name'], $answer['last_name'], $answer['username']);
-            
+
             $xtpl->assign('ANSWER', $answer_info);
             
             if ($question_type == 'table') {
