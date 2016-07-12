@@ -7,8 +7,8 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-
-if ( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
+if (! defined('NV_MAINFILE'))
+    die('Stop!!!');
 
 $lang_translator['author'] = 'VINADES.,JSC (contact@vinades.vn)';
 $lang_translator['createdate'] = '08/04/2014, 15:13';
@@ -74,7 +74,6 @@ $lang_module['form_template_background_image_position_right_bottom'] = 'Phải -
 $lang_module['form_template_background_image_position_center_top'] = 'Giữa - Trên';
 $lang_module['form_template_background_image_position_center_center'] = 'Giữa - Giữa';
 $lang_module['form_template_background_image_position_center_bottom'] = 'Giữa - Dưới';
-
 
 $lang_module['report_who_answer'] = 'Người trả lời';
 $lang_module['report_guest'] = 'Khách';
