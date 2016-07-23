@@ -87,3 +87,38 @@ function nv_del_answer(aid) {
 	}
 	return false;
 }
+
+$( document ).ready(function() {
+	$('#frm-download').submit(function(res){
+		var type= $('input[name="type"]:checked').val();
+		var is_zip= $('input[name="zip"]').is(':checked') ? 1 : 0;
+		var fid = $('#fid').val();
+		window.location.href = script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&export=1&type=' + type + '&is_zip=' + is_zip + '&fid=' + fid;
+		$('#sitemodal').modal('hide');
+		return false;
+	});
+
+	$('#open_modal').click(function(){
+		$.get( script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + '=export&fid=' + $(this).data('fid'), function( res ){
+			modalShow( $('#open_modal').data('lang_ex'), res );
+		});
+	});
+
+	$('#ex_onine').click(function(){
+		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export&nocache=' + new Date().getTime(), 'export=1&download=0&type=xlsx&fid=' + $(this).data('fid'), function(res) {
+			var r_split = res.split("_");
+			if ( r_split[0] == 'OK' ) {
+				window.open( 'https://docs.google.com/viewerng/viewer?' + window.location.host + '/' + r_split[1], '_blank' ) ;
+			}
+			else{
+				alert(r_split[1]);
+			}
+		});
+	});
+});
+
+function nv_open_windown( url )
+{
+	nv_open_browse( url, '', 860, 500, 'resizable=no,scrollbars=yes,toolbar=no,location=no,status=no');
+	return false;
+}

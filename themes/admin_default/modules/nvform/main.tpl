@@ -6,7 +6,7 @@
 				<th width="100">{LANG.order}</th>
 				<th>{LANG.form_title}</th>
 				<th width="100">{LANG.status}</th>
-				<th width="280">&nbsp;</th>
+				<th width="140">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,10 +26,10 @@
 					<!-- END: status -->
 				</select></td>
 				<td class="center">
-					<em class="fa fa-tasks fa-lg">&nbsp;</em> <a href="{ROW.qlist}">{LANG.question}</a> &nbsp;
-					<em class="fa fa-bar-chart-o fa-lg">&nbsp;</em> <a href="{ROW.url_report}">{LANG.form_report}</a> &nbsp;
-					<em class="fa fa-edit fa-lg">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
-					<em class="fa fa-trash-o fa-lg">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_form({ROW.id});">{GLANG.delete}</a>
+					<a href="{ROW.qlist}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.question_list}"><em class="fa fa-tasks fa-lg">&nbsp;</em></a> &nbsp;
+					<a href="{ROW.url_report}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{LANG.form_report}"><em class="fa fa-bar-chart-o fa-lg">&nbsp;</em></a> &nbsp;
+					<a href="{ROW.url_edit}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{GLANG.edit}"><em class="fa fa-edit fa-lg">&nbsp;</em></a> &nbsp;
+					<a href="javascript:void(0);" onclick="nv_del_form({ROW.id});" data-toggle="tooltip" data-placement="top" title="" data-original-title="{GLANG.delete}"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a>
 				</td>
 			</tr>
 			<!-- END: row -->

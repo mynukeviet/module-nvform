@@ -1,10 +1,29 @@
 <!-- BEGIN: main -->
-<input type="button" name="export_excel" class="btn btn-success" style="margin-bottom: 10px" value="{LANG.report_ex_excel}">
-<p id="export" class="text-center">&nbsp;</p>
+<div class="pull-left m-bottom">
+	{COUNT}
+</div>
+<div class="pull-right m-bottom">
+	<a href="{URL_ANALYTICS}" target="_blank" class="btn btn-danger btn-xs"> <em class="fa fa-area-chart">&nbsp;</em>{LANG.report_chart} </a>
+	<!-- Split button -->
+	<div class="btn-group">
+		<button id="open_modal" data-fid="{FID}" class="btn btn-primary btn-xs" data-lang_ex="{LANG.report_ex}">
+			<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_ex}
+		</button>
+		<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu pull-right">
+			<li><a href="javascript:void(0)" data-fid="{FID}" id="ex_onine"><em class="fa fa-file-excel-o">&nbsp;&nbsp;</em>{LANG.report_ex_online}</a></li>
+		</ul>
+	</div>
+</div>
+<div class="clearfix">&nbsp;</div>
+
 <div class="table-responsive" style="width: 100%; height: 100%; overflow:scroll">
 	<table class="table table-striped table-bordered table-hover" id="table_report">
 		<colgroup>
-			<col width="30" />
+			<col width="60" />
 			<col width="20" />
 			<col class="w150" />
 			<col width="120" />
@@ -25,52 +44,32 @@
 		<tbody>
 			<!-- BEGIN: tr -->
 			<tr>
-				<td class="danger"><a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="bottom" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a></td>
-				<td class="success">{ANSWER.no}</td>
+				<td class="danger text-center">
+					<a href="javascript:void(0);" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="top" title="{GLANG.delete}" onclick="nv_del_answer({ANSWER.id});"><em class="fa fa-trash-o fa-lg">&nbsp;</em></a>
+					<a href="#" rel='tooltip' data-html="true" data-toggle="tooltip" data-placement="top" title="{LANG.report_viewpage}" onclick="nv_open_windown('{ANSWER.answer_view_url}');"><em class="fa fa-search fa-lg">&nbsp;</em></a>
+				</td>
+				<td class="success text-center">{ANSWER.no}</td>
 				<td class="success">{ANSWER.username}</td>
 				<td class="success">{ANSWER.answer_time}</td>
 				<td class="success">{ANSWER.answer_edit_time}</td>
 				<!-- BEGIN: td -->
-				<td>{ANSWER}</td>
+				<td>
+					<!-- BEGIN: table -->
+					<a href="#" title="" onclick="modalShow('Chức năng đang hoàn thiện', 'Chức năng đang hoàn thiện'); return false;">{LANG.report_viewtable}</a>
+					<!-- END: table -->
+
+					<!-- BEGIN: files -->
+					<a href="{FILES}" title="">{LANG.question_options_file_dowload}</a>
+					<!-- END: files -->
+
+					<!-- BEGIN: other -->
+					{ANSWER}
+					<!-- END: other -->
+				</td>
 				<!-- END: td -->
 			</tr>
 			<!-- END: tr -->
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript">
-    $(function () {
-        $("[rel='tooltip']").tooltip();
-        $("#export").hide();
-    });
-    
-	function nv_data_export(set_export, fid) {
-		$.ajax({
-			type : "POST",
-			url : "index.php?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=export_excel&nocache=" + new Date().getTime(),
-			data : "step=1&set_export=" + set_export + "&fid=" + fid,
-			success : function(response) {
-				if (response == "OK_GETFILE") {
-					nv_data_export(0);
-				} else if (response == "OK_COMPLETE") {
-					$("#export").hide();
-					alert('{LANG.report_export_complete}');
-					$("input[name=export_excel]").removeAttr("disabled");
-					window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=export_excel&step=2';
-				} else {
-					$("input[name=export_excel]").removeAttr("disabled");
-					$("#export").hide();
-					alert(response);
-				}
-			}
-		});
-	}
-
-	$("input[name=export_excel]").click(function() {
-		$("input[name=export_excel]").attr("disabled", "disabled");
-		$("#export").show();
-		$('#export').html('<div class="text-center well">{LANG.report_export_note}<br /><br /><em class="fa fa-spinner fa-spin fa-3x"></em></div>');
-		nv_data_export(1, '{FID}' );
-	});
-</script>
 <!-- END: main -->
