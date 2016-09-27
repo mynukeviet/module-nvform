@@ -1,7 +1,5 @@
 <!-- BEGIN: main -->
-<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.css" rel="stylesheet" />
-<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.theme.css" rel="stylesheet" />
-<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
+<link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{NV_BASE_SITEURL}themes/{NV_ADMIN_THEME}/js/colpick.css">
 
 <!-- BEGIN: error -->
@@ -84,9 +82,9 @@
 						<label class="col-sm-4 control-label"><strong>{LANG.form_active} {LANG.form_start_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
-								<input name="start_time" id="start_time" value="{DATA.start_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
+								<input name="start_time" value="{DATA.start_time}" class="form-control datepicker" maxlength="10" readonly="readonly" type="text"/>
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" id="start_time-btn">
+									<button class="btn btn-default" type="button" >
 										<em class="fa fa-calendar fa-fix">&nbsp;</em>
 									</button> </span>
 							</div>
@@ -106,9 +104,9 @@
 						<label class="col-sm-4 control-label"><strong>{LANG.form_end_time}</strong></label>
 						<div class="col-sm-4">
 							<div class="input-group">
-								<input name="end_time" id="end_time" value="{DATA.end_time}" class="form-control" maxlength="10" readonly="readonly" type="text"/>
+								<input name="end_time" value="{DATA.end_time}" class="form-control datepicker" maxlength="10" readonly="readonly" type="text"/>
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" id="end_time-btn">
+									<button class="btn btn-default" type="button">
 										<em class="fa fa-calendar fa-fix">&nbsp;</em>
 									</button> </span>
 							</div>
@@ -219,8 +217,7 @@
 	</div>
 </form>
 
-<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 <script src="{NV_BASE_SITEURL}themes/{NV_ADMIN_THEME}/js/colpick.js"></script>
 
@@ -232,12 +229,13 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#start_time,#end_time").datepicker({
-			dateFormat : "dd/mm/yy",
-			changeMonth : true,
-			changeYear : true,
-			showOtherMonths : true,
-			showOn : 'focus'
+		$(".datepicker").datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: !0,
+			changeYear: !0,
+			showOtherMonths: !0,
+			showOn: "focus",
+			yearRange: "-90:+0"
 		});
 
 		$('#start_time-btn').click(function() {
