@@ -70,6 +70,12 @@
 					{FIELD_TYPE_TEXT}
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label"><strong>{LANG.question_css}</strong></label>
+				<div class="col-sm-20">
+					<input class="form-control" name="class" value="{DATAFORM.class}" type="text" />
+				</div>
+			</div>
 		</div>
 	</div>
 

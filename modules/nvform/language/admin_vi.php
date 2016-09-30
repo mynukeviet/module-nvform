@@ -126,7 +126,6 @@ $lang_module['question_type_table'] = 'Bảng dữ liệu';
 $lang_module['question_type_file'] = 'Tập tin đính kèm';
 $lang_module['question_type_plaintext'] = 'Văn bản thuần';
 $lang_module['question_type_plaintext_content'] = 'Nội dung văn bản';
-$lang_module['question_class'] = 'Thuộc tính class html';
 $lang_module['question_editor_size'] = 'Kích thước ô nhập liệu';
 $lang_module['question_editor_mode'] = 'Loại trình soạn thảo';
 $lang_module['question_editor_mode_basic'] = 'Trình soạn thảo cơ bản';
@@ -147,6 +146,7 @@ $lang_module['question_options_number'] = 'Các tùy chọn cho dữ liệu';
 $lang_module['question_number_type'] = 'Kiểu số';
 $lang_module['question_integer'] = 'Số nguyên';
 $lang_module['question_real'] = 'Số thực';
+$lang_module['question_css'] = 'Class CSS';
 
 // Date field
 $lang_module['question_options_date'] = 'Các tùy chọn dữ liệu ngày tháng';

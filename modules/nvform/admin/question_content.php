@@ -48,13 +48,7 @@ unset($myini['exts'][0]);
 
 $xtpl = new XTemplate($op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
-$xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
-$xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
-$xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
-$xtpl->assign('NV_LANG_INTERFACE', NV_LANG_INTERFACE);
-$xtpl->assign('NV_ASSETS_DIR', NV_ASSETS_DIR);
 
 // Danh sach cac bieu mau hien co
 $sql = 'SELECT id, title FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE status = 1 ORDER BY weight ASC';
@@ -113,6 +107,7 @@ if ($qid) {
     $question['current_date_0'] = ' checked="checked"';
     $question['current_time_0'] = ' checked="checked"';
     $question['editor_mode_0'] = ' checked="checked"';
+    $question['class'] = '';
 }
 
 if ($nv_Request->isset_request('submit', 'post')) {
@@ -126,6 +121,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $question['user_editable'] = $nv_Request->get_int('user_editable', 'post', 0);
     $question['break'] = $nv_Request->get_int('break', 'post', 0);
     $question['report'] = $nv_Request->get_int('report', 'post', 1);
+    $question['class'] = $nv_Request->get_title('class', 'post', '');
     
     if ($qid) {
         $data_old = $db->query('SELECT fid, question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid)->fetch();
@@ -311,10 +307,10 @@ if ($nv_Request->isset_request('submit', 'post')) {
             $weight = intval($weight) + 1;
             
             $sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
-				(title, fid, weight, question_type, question_choices, question_choices_extend, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, status) VALUES
+				(title, fid, weight, question_type, question_choices, question_choices_extend, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, class, status) VALUES
 				('" . $question['title'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['question_choices_extend'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
-				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", 1)";
+				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", '" . $question['class'] . "', 1)";
             
             $data_insert = array();
             $data_insert['default_value'] = $question['default_value'];
@@ -334,7 +330,8 @@ if ($nv_Request->isset_request('submit', 'post')) {
 				user_editable = '" . $question['user_editable'] . "',
 				default_value= :default_value,
 				break = " . $question['break'] . ",
-				report = " . $question['report'] . "
+				report = " . $question['report'] . ",
+			    class = '" . $question['class'] . "'
 				WHERE qid = " . $qid;
             
             $stmt = $db->prepare($query);

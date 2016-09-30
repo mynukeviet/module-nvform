@@ -77,6 +77,12 @@ while (list ($lang) = $language_query->fetch(3)) {
         
         $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET version='1.0.05 " . NV_CURRENTTIME . "' WHERE type='module' and basename=" . $db->quote($mod));
         
+        try {
+            $db->query("ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $mod_data . "_question ADD class VARCHAR(255) NOT NULL AFTER report;");
+        } catch (PDOException $e) {
+            //
+        }
+        
     }
     die('OK');
 }

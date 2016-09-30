@@ -68,6 +68,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   default_value varchar(255) NOT NULL DEFAULT '',
   break tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Ngắt trang',
   report tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Hiển thị trong báo cáo',
+  class varchar(255) NOT NULL,
   status tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (qid)
 ) ENGINE=MyISAM";
