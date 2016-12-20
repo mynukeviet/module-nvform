@@ -34,10 +34,9 @@ if ($nv_Request->isset_request('export', 'post, get')) {
         $answer_data[] = $row;
     }
     
-    if (! file_exists(NV_ROOTDIR . '/includes/class/PHPExcel.php')) {
+    if (!class_exists('PHPExcel')) {
         die('NO_' . $lang_module['report_required_phpexcel']);
     }
-    require_once NV_ROOTDIR . '/includes/class/PHPExcel.php';
     
     if ($type == 'pdf') {
         $rendererName = PHPExcel_Settings::PDF_RENDERER_MPDF;
@@ -271,7 +270,7 @@ $xtpl = new XTemplate('export.tpl', NV_ROOTDIR . '/themes/' . $global_config['mo
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('FID', $fid);
 
-if (! file_exists(NV_ROOTDIR . '/includes/class/PHPExcel.php')) {
+if (!class_exists('PHPExcel')) {
     $xtpl->parse('main.PHPExcel_req');
 } else {
     $default = 'xlsx';
