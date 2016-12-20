@@ -66,9 +66,7 @@
 						<label class="col-sm-4 text-right"><strong>{LANG.form_who_view}</strong></label>
 						<div class="col-sm-20">
 							<!-- BEGIN: group_view -->
-							<div class="row">
-								<label><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>
-							</div>
+							<label class="show"><input name="groups_view[]" type="checkbox" value="{GR_VIEW.value}" {GR_VIEW.checked} />{GR_VIEW.title}</label>
 							<!-- END: group_view -->
 						</div>
 					</div>
@@ -116,6 +114,16 @@
 						<label class="col-sm-4 text-right"><strong>{LANG.form_user_editable}</strong></label>
 						<div class="col-sm-20">
 							<label><input type="checkbox" name="user_editable" value="1" {DATA.user_editable_check} />{LANG.form_user_editable_note}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><strong>{LANG.status}</strong></label>
+						<div class="col-sm-20">
+							<select id="change_status_{ROW.id}" class="form-control">
+								<!-- BEGIN: status -->
+								<option value="{STATUS.key}"{STATUS.selected}>{STATUS.val}</option>
+								<!-- END: status -->
+							</select>
 						</div>
 					</div>
 				</div>
@@ -212,19 +220,19 @@
 
 <!-- BEGIN: get_alias -->
 <script type="text/javascript">
-
+	
 </script>
 <!-- END: get_alias -->
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".datepicker").datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: !0,
-			changeYear: !0,
-			showOtherMonths: !0,
-			showOn: "focus",
-			yearRange: "-90:+0"
+			dateFormat : "dd/mm/yy",
+			changeMonth : !0,
+			changeYear : !0,
+			showOtherMonths : !0,
+			showOn : "focus",
+			yearRange : "-90:+0"
 		});
 
 		$('#start_time-btn').click(function() {
@@ -252,21 +260,19 @@
 			$(this).colpickSetColor(this.value);
 		});
 
-		$('.form_report_type').change(function(){
-			if( $(this).val() == 1 || $(this).val() == 2 ){
+		$('.form_report_type').change(function() {
+			if ($(this).val() == 1 || $(this).val() == 2) {
 				$('#form_report_type_email').slideDown();
-			}
-			else{
+			} else {
 				$('#form_report_type_email').slideUp();
 			}
 		});
 
-		$('.form_report_type_email').change(function(){
-			if( $(this).val() == 0 ){
+		$('.form_report_type_email').change(function() {
+			if ($(this).val() == 0) {
 				$('#group_email').show();
 				$('#listmail').hide();
-			}
-			else{
+			} else {
 				$('#group_email').hide();
 				$('#listmail').show();
 			}
@@ -277,11 +283,13 @@
 		$('#bg_image').val('');
 	});
 
-	function nv_selectimg( area )
-	{
+	function nv_selectimg(area) {
 		var path = "{UPLOADS_DIR_USER}";
 		var type = "image";
-		nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+		nv_open_browse(script_name + "?" + nv_name_variable
+				+ "=upload&popup=1&area=" + area + "&path=" + path + "&type="
+				+ type, "NVImg", 850, 420,
+				"resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
 		return false;
 	}
 </script>

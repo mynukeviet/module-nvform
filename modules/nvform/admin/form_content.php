@@ -40,7 +40,8 @@ $form_data = array(
         'background_image' => '',
         'background_imgage_repeat' => '',
         'background_imgage_position' => ''
-    )
+    ),
+    'status' => 1
 );
 
 if ($id > 0) {
@@ -355,6 +356,15 @@ if ($form_report_type_email['form_report_type_email'] == 1) {
     $xtpl->assign('form_report_type_email_groups_mail_dipslay', 'style="display: none"');
 } else {
     $xtpl->assign('form_report_type_email_listmail_dipslay', 'style="display: none"');
+}
+
+foreach ($array_status as $key => $val) {
+    $xtpl->assign('STATUS', array(
+        'key' => $key,
+        'val' => $val,
+        'selected' => ($key == $form_data['status']) ? ' selected="selected"' : ''
+    ));
+    $xtpl->parse('main.status');
 }
 
 if ($error) {

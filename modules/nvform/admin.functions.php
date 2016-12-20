@@ -10,10 +10,6 @@
 if (! defined('NV_ADMIN') or ! defined('NV_MAINFILE') or ! defined('NV_IS_MODADMIN'))
     die('Stop!!!');
 
-$submenu['form_content'] = $lang_module['form_add'];
-$submenu['question'] = $lang_module['question_list'];
-$submenu['question_content'] = $lang_module['question_add'];
-
 $allow_func = array(
     'main',
     'config',
@@ -47,6 +43,12 @@ $array_field_type = array(
     'table' => $lang_module['question_type_table'],
     'file' => $lang_module['question_type_file'],
     'plaintext' => $lang_module['question_type_plaintext']
+);
+
+$array_status = array(
+    1 => $lang_module['form_active'],
+    2 => $lang_module['form_review'],
+    0 => $lang_module['form_deactive']
 );
 
 /**

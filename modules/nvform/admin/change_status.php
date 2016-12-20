@@ -28,7 +28,7 @@ $id = $db->query($sql)->fetchColumn();
 if (empty($id) or empty($op))
     die('NO_' . $id);
 
-$new_status = $nv_Request->get_bool('new_status', 'post');
+$new_status = $nv_Request->get_int('new_status', 'post');
 $new_status = (int) $new_status;
 
 $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET status=' . $new_status . ' WHERE ' . $field . '=' . $id;

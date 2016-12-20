@@ -25,6 +25,7 @@ $lang_module['form_content'] = 'Quản lý biểu mẫu';
 $lang_module['form_edit'] = 'Sửa biểu mẫu';
 $lang_module['form_active'] = 'Hoạt động';
 $lang_module['form_deactive'] = 'Không hoạt động';
+$lang_module['form_review'] = 'Xem trước';
 $lang_module['form_title'] = 'Tiêu đề';
 $lang_module['form_alias'] = 'Liên kết tĩnh';
 $lang_module['form_description'] = 'Mô tả';

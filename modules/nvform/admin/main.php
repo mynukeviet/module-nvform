@@ -56,11 +56,6 @@ if ($num < 1) {
     die();
 }
 
-$array_status = array(
-    $lang_module['form_deactive'],
-    $lang_module['form_active']
-);
-
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
@@ -77,7 +72,6 @@ foreach ($_rows as $row) {
             'w' => $i,
             'selected' => ($i == $row['weight']) ? ' selected="selected"' : ''
         ));
-        
         $xtpl->parse('main.row.weight');
     }
     
@@ -87,11 +81,17 @@ foreach ($_rows as $row) {
             'val' => $val,
             'selected' => ($key == $row['status']) ? ' selected="selected"' : ''
         ));
-        
         $xtpl->parse('main.row.status');
     }
     
     $xtpl->assign('ROW', $row);
+    
+    if ($row['status'] == 0) {
+        $xtpl->parse('main.row.label');
+    } else {
+        $xtpl->parse('main.row.link');
+    }
+    
     $xtpl->parse('main.row');
 }
 

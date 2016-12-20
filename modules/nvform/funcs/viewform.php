@@ -17,7 +17,7 @@ if (empty($form_info)) {
 
 // Kiểm tra trạng thái biểu mẫu
 // Trạng thái hoạt động
-if (! $form_info['status']) {
+if ($form_info['status'] == 0 or ($form_info['status'] == 2 and ! defined('NV_IS_MODADMIN'))) {
     nv_theme_nvform_alert($form_info['title'], $lang_module['error_form_not_status_detail']);
 }
 

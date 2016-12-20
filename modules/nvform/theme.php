@@ -82,8 +82,6 @@ function nv_theme_nvform_viewform($form_info, $question_info, $answer_info, $ans
     $xtpl = new XTemplate($op . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('FORM', $form_info);
-    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
-    $xtpl->assign('NV_ASSETS_DIR', NV_ASSETS_DIR);
     
     if ($form_info['question_display'] == 'question_display_left') {
         $xtpl->parse('main.display_left_form');
@@ -148,13 +146,13 @@ function nv_theme_nvform_alert($message_title, $message_content, $type = 'info',
     $xtpl = new XTemplate('info.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     
     if ($type == 'success') {
-        $class = 'class="alert alert-success"';
+        $class = ' class="alert alert-success"';
     } elseif ($type == 'warning') {
-        $class = 'class="alert alert-warning"';
+        $class = ' class="alert alert-warning"';
     } elseif ($type == 'danger') {
-        $class = 'class="alert alert-danger"';
+        $class = ' class="alert alert-danger"';
     } else {
-        $class = 'class="alert alert-info"';
+        $class = ' class="alert alert-info"';
     }
     
     if (! empty($message_title)) {
