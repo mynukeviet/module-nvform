@@ -67,8 +67,8 @@ foreach ($_rows as $row) {
     $row['url_view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'] . '-' . $row['id'];
     $row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=form_content&amp;id=' . $row['id'];
     $row['url_report'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=report&amp;fid=' . $row['id'];
-    $row['url_copy'] = NV_MY_DOMAIN . $row['url_view'];
-    $row['embed_copy'] = '<embed width="100%" src="' . $row['url_copy'] . '&amp;embed=1' . '"></embed>';
+    $row['url_copy'] = NV_MY_DOMAIN . nv_url_rewrite($row['url_view'], true);
+    $row['embed_copy'] = '<embed width="100%" src="' . NV_MY_DOMAIN . $row['url_view'] . '&amp;embed=1' . '"></embed>';
     
     for ($i = 1; $i <= $num; ++ $i) {
         $xtpl->assign('WEIGHT', array(
