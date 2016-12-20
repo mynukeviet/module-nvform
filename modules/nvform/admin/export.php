@@ -34,7 +34,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
         $answer_data[] = $row;
     }
     
-    if (!class_exists('PHPExcel')) {
+    if (! class_exists('PHPExcel')) {
         die('NO_' . $lang_module['report_required_phpexcel']);
     }
     
@@ -270,7 +270,7 @@ $xtpl = new XTemplate('export.tpl', NV_ROOTDIR . '/themes/' . $global_config['mo
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('FID', $fid);
 
-if (!class_exists('PHPExcel')) {
+if (! class_exists('PHPExcel')) {
     $xtpl->parse('main.PHPExcel_req');
 } else {
     $default = 'xlsx';
@@ -278,9 +278,9 @@ if (!class_exists('PHPExcel')) {
         'xlsx' => 'Microsoft Excel (XLSX)',
         'csv' => 'Comma-separated values (CSV)',
         'ods' => 'LibreOffice Calc (ODS)'
-    )
+    );
     // 'pdf' => 'PDF'
-    ;
+    
     foreach ($array_type as $key => $value) {
         $ck = $key == $default ? 'checked="checked"' : '';
         $xtpl->assign('TYPE', array(

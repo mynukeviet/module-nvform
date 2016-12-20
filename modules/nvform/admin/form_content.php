@@ -53,11 +53,12 @@ if ($id > 0) {
     }
     $form_data['template'] = unserialize($form_data['template']);
     $form_data['form_report_type_email'] = unserialize($form_data['form_report_type_email']);
-    if(empty($form_data['form_report_type_email'])){
+    if (empty($form_data['form_report_type_email'])) {
         $form_data['form_report_type_email'] = array(
-        'form_report_type_email' => 0,
-        'group_email' => array(),
-        'listmail' => '');
+            'form_report_type_email' => 0,
+            'group_email' => array(),
+            'listmail' => ''
+        );
     }
     
     $page_title = $lang_module['form_edit'] . ': ' . $form_data['title'];

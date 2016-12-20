@@ -24,7 +24,9 @@
 	<div class="form-group">
 		<label class="col-sm-6 text-right">&nbsp;</label>
 		<div class="col-sm-18">
-			<button type="submit" class="btn btn-primary"><em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_download}</button>
+			<button type="submit" class="btn btn-primary">
+				<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_download}
+			</button>
 		</div>
 	</div>
 </form>

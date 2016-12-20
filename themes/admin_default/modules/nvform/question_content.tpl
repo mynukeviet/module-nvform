@@ -14,9 +14,7 @@
 		<div class="panel-body">
 			<div class="form-group">
 				<label class="col-sm-4 control-label"><strong id="question_title">{LANG.question}</strong></label>
-				<div class="col-sm-20">
-					{DATAFORM.title}
-				</div>
+				<div class="col-sm-20">{DATAFORM.title}</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-4 control-label"><strong>{LANG.question_form}</strong></label>
@@ -24,20 +22,20 @@
 					<!-- BEGIN: form -->
 					<select name="question_form" class="form-control">
 						<!-- BEGIN: flist -->
-						<option value="{FLIST.id}" {FLIST.selected}>{FLIST.title}</option>
+						<option value="{FLIST.id}"{FLIST.selected}>{FLIST.title}</option>
 						<!-- END: flist -->
 					</select>
 					<!-- END: form -->
 					<span style="margin-top: 6px; display: block;">{FORM_TEXT}</span>
 				</div>
 			</div>
-			<div class="form-group" id="question_required" {DATAFORM.requireddisabled}>
+			<div class="form-group" id="question_required"{DATAFORM.requireddisabled}>
 				<label class="col-sm-4 text-right"><strong>{LANG.question_required}</strong></label>
 				<div class="col-sm-20">
-					<label><input name="required" value="1" type="checkbox" {DATAFORM.checked_required}> {LANG.question_required_note}</label>
+					<label><input name="required" value="1" type="checkbox"{DATAFORM.checked_required}> {LANG.question_required_note}</label>
 				</div>
 			</div>
-			<div class="form-group" id="question_user_edit" {DATAFORM.user_editdisabled}>
+			<div class="form-group" id="question_user_edit"{DATAFORM.user_editdisabled}>
 				<label class="col-sm-4 text-right"><strong>{LANG.question_user_edit}</strong></label>
 				<div class="col-sm-20">
 					<!-- BEGIN: user_editable -->
@@ -63,7 +61,8 @@
 					<div class="row">
 						<!-- BEGIN: question_type -->
 						<div class="col-sm-8">
-							<label for="f_{FIELD_TYPE.key}"> <input type="radio" {FIELD_TYPE.checked} id="f_{FIELD_TYPE.key}" value="{FIELD_TYPE.key}" name="question_type"> {FIELD_TYPE.value}</label>
+							<label for="f_{FIELD_TYPE.key}"> <input type="radio" {FIELD_TYPE.checked} id="f_{FIELD_TYPE.key}" value="{FIELD_TYPE.key}" name="question_type"> {FIELD_TYPE.value}
+							</label>
 						</div>
 						<!-- END: question_type -->
 					</div>
@@ -79,23 +78,17 @@
 		</div>
 	</div>
 
-	<div id="textfields" {DATAFORM.display_textquestions}>
+	<div id="textfields"{DATAFORM.display_textquestions}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_text}
-			</div>
+			<div class="panel-heading">{LANG.question_options_text}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><strong>{LANG.question_match_type}</strong></label>
 					<div class="col-sm-20">
 						<ul style="list-style: none; padding: 0">
 							<!-- BEGIN: match_type -->
-							<li id="li_{MATCH_TYPE.key}">
-								<label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}</label>
-								<!-- BEGIN: match_input -->
-								<input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}" {MATCH_TYPE.match_disabled}>
-								<!-- END: match_input -->
-							</li>
+							<li id="li_{MATCH_TYPE.key}"><label for="m_{MATCH_TYPE.key}"> <input type="radio" {MATCH_TYPE.checked} id="m_{MATCH_TYPE.key}" value="{MATCH_TYPE.key}" name="match_type"> {MATCH_TYPE.value}
+							</label> <!-- BEGIN: match_input --> <input type="text" value="{MATCH_TYPE.match_value}" name="match_{MATCH_TYPE.key}"{MATCH_TYPE.match_disabled}> <!-- END: match_input --></li>
 							<!-- END: match_type -->
 						</ul>
 					</div>
@@ -120,7 +113,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group" id="editor_mode" {DATAFORM.display_editorquestions}>
+				<div class="form-group" id="editor_mode"{DATAFORM.display_editorquestions}>
 					<label class="col-sm-4 control-label"><strong>{LANG.question_editor_mode}</strong></label>
 					<div class="col-sm-20">
 						<label><input type="radio" name="editor_mode" value="0" {DATAFORM.editor_mode_0} />{LANG.question_editor_mode_basic}</label>&nbsp;&nbsp; <label><input type="radio" name="editor_mode" value="1" {DATAFORM.editor_mode_1} />{LANG.question_editor_mode_advance}</label>
@@ -130,16 +123,14 @@
 		</div>
 	</div>
 
-	<div id="numberfields" {DATAFORM.display_numberquestions}>
+	<div id="numberfields"{DATAFORM.display_numberquestions}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_number}
-			</div>
+			<div class="panel-heading">{LANG.question_options_number}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 text-right"><strong>{LANG.question_number_type}</strong></label>
 					<div class="col-sm-20">
-						<input type="radio" value="1" name="number_type" {DATAFORM.number_type_1}>{LANG.question_integer} <input type="radio" value="2" name="number_type" {DATAFORM.number_type_2}> {LANG.question_real}
+						<input type="radio" value="1" name="number_type"{DATAFORM.number_type_1}>{LANG.question_integer} <input type="radio" value="2" name="number_type"{DATAFORM.number_type_2}> {LANG.question_real}
 					</div>
 				</div>
 				<div class="form-group">
@@ -164,24 +155,20 @@
 		</div>
 	</div>
 
-	<div id="datefields" {DATAFORM.display_datequestions}>
+	<div id="datefields"{DATAFORM.display_datequestions}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_date}
-			</div>
+			<div class="panel-heading">{LANG.question_options_date}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 text-right"><strong>{LANG.question_default_value}</strong></label>
 					<div class="col-sm-20">
-						<label><input type="radio" value="2" name="current_date" {DATAFORM.current_date_2}> {LANG.question_empty}</label>&nbsp;&nbsp;&nbsp;
-						<label><input type="radio" value="1" name="current_date" {DATAFORM.current_date_1}>{LANG.question_current_date}</label>&nbsp;&nbsp;&nbsp;
-						<label><input type="radio" value="0" name="current_date" {DATAFORM.current_date_0}> {LANG.question_default_date}</label>
-						<div class="input-group" id="default_date" {DATAFORM.default_date_display}>
-							<input class="date form-control datepicker" type="text" value="{DATAFORM.default_date}" name="default_date">
-							<span class="input-group-btn">
+						<label><input type="radio" value="2" name="current_date"{DATAFORM.current_date_2}> {LANG.question_empty}</label>&nbsp;&nbsp;&nbsp; <label><input type="radio" value="1" name="current_date"{DATAFORM.current_date_1}>{LANG.question_current_date}</label>&nbsp;&nbsp;&nbsp; <label><input type="radio" value="0" name="current_date"{DATAFORM.current_date_0}> {LANG.question_default_date}</label>
+						<div class="input-group" id="default_date"{DATAFORM.default_date_display}>
+							<input class="date form-control datepicker" type="text" value="{DATAFORM.default_date}" name="default_date"> <span class="input-group-btn">
 								<button class="btn btn-default" type="button" id="default_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
-								</button> </span>
+								</button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -189,18 +176,19 @@
 					<label class="col-sm-4 text-right"><strong>{LANG.question_min_date}</strong></label>
 					<div class="col-sm-20">
 						<div class="input-group pull-left">
-							<input class="datepicker required date form-control pull-left" style="width:100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10">
-							<span class="input-group-btn pull-left">
+							<input class="datepicker required date form-control pull-left" style="width: 100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10"> <span class="input-group-btn pull-left">
 								<button class="btn btn-default" type="button" id="min_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
-								</button> </span>
-						</div><span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_date}:</span>
+								</button>
+							</span>
+						</div>
+						<span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_date}:</span>
 						<div class="input-group pull-left">
-							<input class="datepicker required date form-control" style="width:100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10">
-							<span class="input-group-btn pull-left">
+							<input class="datepicker required date form-control" style="width: 100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10"> <span class="input-group-btn pull-left">
 								<button class="btn btn-default" type="button" id="max_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
-								</button> </span>
+								</button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -208,23 +196,20 @@
 		</div>
 	</div>
 
-	<div id="timefields" {DATAFORM.display_timequestions}>
+	<div id="timefields"{DATAFORM.display_timequestions}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_time}
-			</div>
+			<div class="panel-heading">{LANG.question_options_time}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 text-right"><strong>{LANG.question_default_value}</strong></label>
 					<div class="col-sm-20">
-						<label><input type="radio" value="1" name="current_time" {DATAFORM.current_time_1}>{LANG.question_current_time}</label>
-						<label><input type="radio" value="0" name="current_time" {DATAFORM.current_time_0}> {LANG.question_default_time}</label>
+						<label><input type="radio" value="1" name="current_time"{DATAFORM.current_time_1}>{LANG.question_current_time}</label> <label><input type="radio" value="0" name="current_time"{DATAFORM.current_time_0}> {LANG.question_default_time}</label>
 						<div class="input-group">
-							<input class="form-control" type="time" value="{DATAFORM.default_time}" name="default_time">
-							<span class="input-group-btn">
+							<input class="form-control" type="time" value="{DATAFORM.default_time}" name="default_time"> <span class="input-group-btn">
 								<button class="btn btn-default" type="button">
 									<em class="fa fa-clock-o fa-fix">&nbsp;</em>
-								</button> </span>
+								</button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -232,11 +217,9 @@
 		</div>
 	</div>
 
-	<div id="choicefields" {DATAFORM.display_choiceitems}>
+	<div id="choicefields"{DATAFORM.display_choiceitems}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_choice}
-			</div>
+			<div class="panel-heading">{LANG.question_options_choice}</div>
 			<table class="table table-striped table-bordered table-hover">
 				<colgroup>
 					<col class="w50" />
@@ -255,7 +238,7 @@
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="5" ><input type="button" class="btn btn-success btn-xs" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
+						<td colspan="5"><input type="button" class="btn btn-success btn-xs" value="{LANG.question_add_choice}" onclick="nv_choice_fields_additem();" /></td>
 					</tr>
 				</tfoot>
 				<tbody id="choiceitems">
@@ -283,11 +266,9 @@
 		</div>
 	</div>
 
-	<div id="gridfields" {DATAFORM.display_gridfields}>
+	<div id="gridfields"{DATAFORM.display_gridfields}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_grid}
-			</div>
+			<div class="panel-heading">{LANG.question_options_grid}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><strong>{LANG.question_options_grid_col}</strong></label>
@@ -336,19 +317,17 @@
 		</div>
 	</div>
 
-	<div id="filefields" {DATAFORM.display_filefields}>
+	<div id="filefields"{DATAFORM.display_filefields}>
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				{LANG.question_options_file}
-			</div>
+			<div class="panel-heading">{LANG.question_options_file}</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_max_size}</strong></label>
 					<div class="col-sm-20">
 						<select class="form-control" name="nv_max_size">
-						<!-- BEGIN: size -->
-						<option value="{SIZE.key}" {SIZE.selected}>{SIZE.title}</option>
-						<!-- END: size -->
+							<!-- BEGIN: size -->
+							<option value="{SIZE.key}"{SIZE.selected}>{SIZE.title}</option>
+							<!-- END: size -->
 						</select>
 					</div>
 				</div>
@@ -356,7 +335,7 @@
 					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_allow}</strong></label>
 					<div class="col-sm-20">
 						<!-- BEGIN: types -->
-						<label style="display:inline-block;width:100px"><input type="checkbox" name="type[]" value="{TYPES.key}"{TYPES.checked}/> {TYPES.title}&nbsp;&nbsp;</label>
+						<label style="display: inline-block; width: 100px"><input type="checkbox" name="type[]" value="{TYPES.key}" {TYPES.checked}/> {TYPES.title}&nbsp;&nbsp;</label>
 						<!-- END: types -->
 					</div>
 				</div>
@@ -364,7 +343,7 @@
 					<label class="col-sm-4 control-label"><strong>{LANG.question_options_file_ext_ban}</strong></label>
 					<div class="col-sm-20">
 						<!-- BEGIN: exts -->
-						<label style="display:inline-block;width:100px"><input type="checkbox" name="ext[]" value="{EXTS.key}"{EXTS.checked} /> {EXTS.title}&nbsp;&nbsp;</label>
+						<label style="display: inline-block; width: 100px"><input type="checkbox" name="ext[]" value="{EXTS.key}" {EXTS.checked} /> {EXTS.title}&nbsp;&nbsp;</label>
 						<!-- END: exts -->
 					</div>
 				</div>
@@ -373,8 +352,7 @@
 	</div>
 
 	<div class="text-center">
-		<input type="hidden" value="{DATAFORM.fid}" name="fid">
-		<input class="w150 btn btn-primary" type="submit" value="{LANG_SUBMIT}" name="submit">
+		<input type="hidden" value="{DATAFORM.fid}" name="fid"> <input class="w150 btn btn-primary" type="submit" value="{LANG_SUBMIT}" name="submit">
 	</div>
 </form>
 
