@@ -40,8 +40,8 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     
     if ($type == 'pdf') {
         $rendererName = PHPExcel_Settings::PDF_RENDERER_MPDF;
-        $rendererLibrary = 'mPDF';
-        $rendererLibraryPath = NV_ROOTDIR . '/includes/class/PHPExcel/PDF/' . $rendererLibrary;
+        $rendererLibrary = 'mpdf/mpdf';
+        $rendererLibraryPath = NV_ROOTDIR . '/vendor/' . $rendererLibrary;
     }
     
     $array = array(
@@ -182,7 +182,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     // Set page orientation and size
     $objPHPExcel->getActiveSheet()
         ->getPageSetup()
-        ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+        ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
     $objPHPExcel->getActiveSheet()
         ->getPageSetup()
         ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
@@ -218,7 +218,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     $objPHPExcel->getActiveSheet()
         ->getStyle("A1:" . $highestColumn . $highestRow)
         ->getFont()
-        ->setSize(13);
+        ->setSize(12);
     
     // Set auto column width
     foreach (range('A', $highestColumn) as $columnID) {
@@ -226,6 +226,19 @@ if ($nv_Request->isset_request('export', 'post, get')) {
             ->getColumnDimension($columnID)
             ->setAutoSize(true);
     }
+    
+    $objPHPExcel->getActiveSheet()
+        ->getStyle("A3:" . $highestColumn . $highestRow)
+        ->applyFromArray(array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                'color' => array(
+                    'rgb' => 'DDDDDD'
+                )
+            )
+        )
+    ));
     
     if ($type == 'pdf') {
         if (! PHPExcel_Settings::setPdfRenderer($rendererName, $rendererLibraryPath)) {
@@ -268,6 +281,8 @@ if ($nv_Request->isset_request('export', 'post, get')) {
 
 $xtpl = new XTemplate('export.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
+$xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('OP', $op);
 $xtpl->assign('FID', $fid);
 
 if (! class_exists('PHPExcel')) {
@@ -277,9 +292,9 @@ if (! class_exists('PHPExcel')) {
     $array_type = array(
         'xlsx' => 'Microsoft Excel (XLSX)',
         'csv' => 'Comma-separated values (CSV)',
-        'ods' => 'LibreOffice Calc (ODS)'
+        'ods' => 'LibreOffice Calc (ODS)',
+        'pdf' => 'PDF'
     );
-    // 'pdf' => 'PDF'
     
     foreach ($array_type as $key => $value) {
         $ck = $key == $default ? 'checked="checked"' : '';
@@ -297,5 +312,5 @@ $xtpl->parse('main');
 $contents = $xtpl->text('main');
 
 include NV_ROOTDIR . '/includes/header.php';
-echo nv_admin_theme($contents, false);
+echo $contents;
 include NV_ROOTDIR . '/includes/footer.php';
