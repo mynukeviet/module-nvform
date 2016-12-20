@@ -59,6 +59,7 @@ if ($num < 1) {
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
+$xtpl->assign('TEMPLATE', $global_config['module_theme']);
 
 $i = 0;
 foreach ($_rows as $row) {
@@ -66,6 +67,8 @@ foreach ($_rows as $row) {
     $row['url_view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'] . '-' . $row['id'];
     $row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=form_content&amp;id=' . $row['id'];
     $row['url_report'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=report&amp;fid=' . $row['id'];
+    $row['url_copy'] = NV_MY_DOMAIN . $row['url_view'];
+    $row['embed_copy'] = '<embed width="100%" src="' . $row['url_copy'] . '&amp;embed=1' . '"></embed>';
     
     for ($i = 1; $i <= $num; ++ $i) {
         $xtpl->assign('WEIGHT', array(

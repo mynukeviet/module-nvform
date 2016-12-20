@@ -44,6 +44,7 @@ $question_info = $db->query("SELECT * FROM " . NV_PREFIXLANG . '_' . $module_dat
 $info = '';
 $filled = false;
 $answer_info = $answer_info_extend = $old_answer_info = $old_answer_info_extend = array();
+$embed = $nv_Request->isset_request('embed', 'get');
 
 // Trạng thái trả lời
 if (defined('NV_IS_USER')) {
@@ -148,5 +149,5 @@ if (! empty($form_info['image'])) {
 $contents = nv_theme_nvform_viewform($form_info, $question_info, $answer_info, $answer_info_extend, $info);
 
 include NV_ROOTDIR . '/includes/header.php';
-echo nv_site_theme($contents);
+echo nv_site_theme($contents, !$embed);
 include NV_ROOTDIR . '/includes/footer.php';

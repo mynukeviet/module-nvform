@@ -17,6 +17,9 @@ $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
+$lang_module['link'] = 'Liên kết';
+$lang_module['copied'] = 'Đã sao chép';
+$lang_module['embed'] = 'Mã nhúng';
 $lang_module['config'] = 'Cấu hình';
 $lang_module['form_info'] = 'Thông tin biểu mẫu';
 $lang_module['form_list'] = 'Danh sách biểu mẫu';
