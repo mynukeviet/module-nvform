@@ -247,14 +247,14 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     }
     
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, $array['objType']);
-    $file_src = NV_ROOTDIR . NV_BASE_SITEURL . NV_TEMP_DIR . '/' . $form_info['alias'] . '.' . $array['objExt'];
+    $file_src = NV_ROOTDIR . '/' . NV_TEMP_DIR . '/' . $form_info['alias'] . '.' . $array['objExt'];
     $objWriter->save($file_src);
     
     if (! $download and file_exists($file_src))
         die('OK_' . str_replace(NV_ROOTDIR . NV_BASE_SITEURL, '', $file_src));
     
     if (! $is_zip) {
-        $download = new NukeViet\Files\Download($file_src, NV_ROOTDIR . NV_BASE_SITEURL . NV_TEMP_DIR);
+        $download = new NukeViet\Files\Download($file_src, NV_ROOTDIR . '/' . NV_TEMP_DIR);
         $download->download_file();
         die('OK');
     } else {
