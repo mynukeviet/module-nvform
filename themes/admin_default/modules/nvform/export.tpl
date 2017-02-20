@@ -6,7 +6,10 @@
 
 <!-- BEGIN: export -->
 <form class="form-horizontal" id="frm-download">
-	<input type="hidden" id="fid" value="{FID}" />
+	<input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" /> 
+	<input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" /> 
+	<input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}" />
+	<input type="hidden" name="fid" id="fid" value="{FID}" />
 	<div class="form-group">
 		<label class="col-sm-6 text-right"><strong>{LANG.report_type}</strong></label>
 		<div class="col-sm-18">
@@ -21,12 +24,13 @@
 			<label><input type="checkbox" name="zip" value="1" />{LANG.report_zip_note}</label>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="col-sm-6 text-right">&nbsp;</label>
-		<div class="col-sm-18">
-			<button type="submit" class="btn btn-primary"><em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_download}</button>
-		</div>
+	<hr />
+	<div class="form-group text-center">
+		<button type="submit" name="export" class="btn btn-primary">
+			<em class="fa fa-floppy-o">&nbsp;</em>{LANG.report_download}
+		</button>
 	</div>
 </form>
 <!-- END: export -->
+
 <!-- END: main -->

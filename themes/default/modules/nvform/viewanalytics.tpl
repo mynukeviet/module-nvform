@@ -6,11 +6,11 @@
 	<label>{QUESTION.title}</label>
 
 	<!-- BEGIN: textbox -->
-		<div class="list_box">
+	<div class="list_box">
 		<!-- BEGIN: loop -->
-			<div class="show">{ANSWER}</div>
+		<div class="show">{ANSWER}</div>
 		<!-- END: loop -->
-		</div>
+	</div>
 	<!-- END: textbox -->
 
 	<!-- BEGIN: radio -->

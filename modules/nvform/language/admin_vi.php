@@ -7,8 +7,8 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-
-if ( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
+if (! defined('NV_MAINFILE'))
+    die('Stop!!!');
 
 $lang_translator['author'] = 'VINADES.,JSC (contact@vinades.vn)';
 $lang_translator['createdate'] = '08/04/2014, 15:13';
@@ -17,6 +17,9 @@ $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
+$lang_module['link'] = 'Liên kết';
+$lang_module['copied'] = 'Đã sao chép';
+$lang_module['embed'] = 'Mã nhúng';
 $lang_module['config'] = 'Cấu hình';
 $lang_module['form_info'] = 'Thông tin biểu mẫu';
 $lang_module['form_list'] = 'Danh sách biểu mẫu';
@@ -25,6 +28,7 @@ $lang_module['form_content'] = 'Quản lý biểu mẫu';
 $lang_module['form_edit'] = 'Sửa biểu mẫu';
 $lang_module['form_active'] = 'Hoạt động';
 $lang_module['form_deactive'] = 'Không hoạt động';
+$lang_module['form_review'] = 'Xem trước';
 $lang_module['form_title'] = 'Tiêu đề';
 $lang_module['form_alias'] = 'Liên kết tĩnh';
 $lang_module['form_description'] = 'Mô tả';
@@ -74,7 +78,6 @@ $lang_module['form_template_background_image_position_right_bottom'] = 'Phải -
 $lang_module['form_template_background_image_position_center_top'] = 'Giữa - Trên';
 $lang_module['form_template_background_image_position_center_center'] = 'Giữa - Giữa';
 $lang_module['form_template_background_image_position_center_bottom'] = 'Giữa - Dưới';
-
 
 $lang_module['report_who_answer'] = 'Người trả lời';
 $lang_module['report_guest'] = 'Khách';
@@ -127,7 +130,6 @@ $lang_module['question_type_table'] = 'Bảng dữ liệu';
 $lang_module['question_type_file'] = 'Tập tin đính kèm';
 $lang_module['question_type_plaintext'] = 'Văn bản thuần';
 $lang_module['question_type_plaintext_content'] = 'Nội dung văn bản';
-$lang_module['question_class'] = 'Thuộc tính class html';
 $lang_module['question_editor_size'] = 'Kích thước ô nhập liệu';
 $lang_module['question_editor_mode'] = 'Loại trình soạn thảo';
 $lang_module['question_editor_mode_basic'] = 'Trình soạn thảo cơ bản';
@@ -148,6 +150,7 @@ $lang_module['question_options_number'] = 'Các tùy chọn cho dữ liệu';
 $lang_module['question_number_type'] = 'Kiểu số';
 $lang_module['question_integer'] = 'Số nguyên';
 $lang_module['question_real'] = 'Số thực';
+$lang_module['question_css'] = 'Class CSS';
 
 // Date field
 $lang_module['question_options_date'] = 'Các tùy chọn dữ liệu ngày tháng';

@@ -10,6 +10,10 @@ Xem [LICENSE.txt](LICENSE.txt) để biết thêm thông tin.
 - Đăng nhập quản trị tối cao. Truy cập menu Mở rộng / Cài dặt gói ứng dụng
 - Hoặc có thể cài đặt từ store (Cho phiên bản ổn định)
 
+## Sử dụng chức năng xuất báo cáo ra file
+
+Để sử dụng chức năng này, cần cài đặt thư viện PHPExcel và mPDF bằng composer
+
 # Tài trợ
 Công ty cổ phần phát triển nguồn mở Việt Nam (VINADES.,JSC)
 

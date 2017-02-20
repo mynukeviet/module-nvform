@@ -1,8 +1,10 @@
 <!-- BEGIN: main -->
 <div class="nvform text-center">
-	<div {CLASS}>
+	<div{CLASS}>
 		<!-- BEGIN: title -->
-		<h3><strong>{TITLE}</strong></h3>
+		<h3>
+			<strong>{TITLE}</strong>
+		</h3>
 		<!-- END: title -->
 		{CONTENT}
 	</div>

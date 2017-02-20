@@ -22,29 +22,20 @@
 		<tbody>
 			<!-- BEGIN: row -->
 			<tr>
-				<td class="center">
-					<select id="change_weight_{ROW.qid}" onchange="nv_chang_weight('{ROW.qid}', '{ROW.fid}', 'question');" class="form-control w100">
+				<td class="center"><select id="change_weight_{ROW.qid}" onchange="nv_chang_weight('{ROW.qid}', '{ROW.fid}', 'question');" class="form-control w100">
 						<!-- BEGIN: weight -->
 						<option value="{WEIGHT.w}"{WEIGHT.selected}>{WEIGHT.w}</option>
 						<!-- END: weight -->
-					</select>
-				</td>
-				<td>
-					{ROW.title}
-					<small class="help-block">{LANG.page} {ROW.page}</small>
+				</select></td>
+				<td>{ROW.title} <small class="help-block">{LANG.page} {ROW.page}</small>
 				</td>
 				<td>{FIELD_TYPE_TEXT}</td>
-				<td class="center">
-					<select id="change_status_{ROW.qid}" onchange="nv_chang_status('{ROW.qid}', 'question');" class="form-control w150">
+				<td class="center"><select id="change_status_{ROW.qid}" onchange="nv_chang_status('{ROW.qid}', 'question');" class="form-control w150">
 						<!-- BEGIN: status -->
 						<option value="{STATUS.key}"{STATUS.selected}>{STATUS.val}</option>
 						<!-- END: status -->
-					</select>
-				</td>
-				<td class="text-center">
-					<em class="fa fa-edit fa-lg">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp;
-					<em class="fa fa-trash-o fa-lg">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_question({ROW.qid});">{GLANG.delete}</a>
-				</td>
+				</select></td>
+				<td class="text-center"><em class="fa fa-edit fa-lg">&nbsp;</em> <a href="{ROW.url_edit}">{GLANG.edit}</a> &nbsp; <em class="fa fa-trash-o fa-lg">&nbsp;</em> <a href="javascript:void(0);" onclick="nv_del_question({ROW.qid});">{GLANG.delete}</a></td>
 			</tr>
 			<!-- END: row -->
 		</tbody>
