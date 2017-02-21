@@ -164,7 +164,7 @@
 					<div class="col-sm-20">
 						<label><input type="radio" value="2" name="current_date"{DATAFORM.current_date_2}> {LANG.question_empty}</label>&nbsp;&nbsp;&nbsp; <label><input type="radio" value="1" name="current_date"{DATAFORM.current_date_1}>{LANG.question_current_date}</label>&nbsp;&nbsp;&nbsp; <label><input type="radio" value="0" name="current_date"{DATAFORM.current_date_0}> {LANG.question_default_date}</label>
 						<div class="input-group" id="default_date"{DATAFORM.default_date_display}>
-							<input class="date form-control datepicker" type="text" value="{DATAFORM.default_date}" name="default_date"> <span class="input-group-btn">
+							<input class="form-control datepicker" type="text" value="{DATAFORM.default_date}" name="default_date"> <span class="input-group-btn">
 								<button class="btn btn-default" type="button" id="default_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
 								</button>
@@ -176,7 +176,7 @@
 					<label class="col-sm-4 text-right"><strong>{LANG.question_min_date}</strong></label>
 					<div class="col-sm-20">
 						<div class="input-group pull-left">
-							<input class="datepicker required date form-control pull-left" style="width: 100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10"> <span class="input-group-btn pull-left">
+							<input class="datepicker required form-control pull-left" style="width: 100px" type="text" value="{DATAFORM.min_date}" name="min_date" id="min_date" maxlength="10"> <span class="input-group-btn pull-left">
 								<button class="btn btn-default" type="button" id="min_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
 								</button>
@@ -184,7 +184,7 @@
 						</div>
 						<span style="margin-left: 30px;" class="pull-left text-middle">{LANG.question_max_date}:</span>
 						<div class="input-group pull-left">
-							<input class="datepicker required date form-control" style="width: 100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10"> <span class="input-group-btn pull-left">
+							<input class="datepicker required form-control" style="width: 100px" type="text" value="{DATAFORM.max_date}" name="max_date" id="max_date" maxlength="10"> <span class="input-group-btn pull-left">
 								<button class="btn btn-default" type="button" id="max_date-btn">
 									<em class="fa fa-calendar fa-fix">&nbsp;</em>
 								</button>
@@ -375,14 +375,14 @@
 		$('#choiceitems').append(newitem);
 	}
 
-	function nv_choice_fields_extend( item_id, items_extend ) {
+	function nv_choice_fields_extend(item_id, items_extend) {
 		items_extend++;
-		$('#button_extend_'+item_id).data('number-extend', items_extend );
+		$('#button_extend_' + item_id).data('number-extend', items_extend);
 		var newitem = '<tr class="choiceitems_row_' + item_id + '">';
 		newitem += '	<td colspan="2">&nbsp;</td>';
 		newitem += '	<td colspan="4"><input type="text" class="form-control" name="question_choice_extend[' + item_id + '][' + items_extend + ']" placeholder="{LANG.question_text}" /></td>';
 		newitem += '</tr>';
-		$('.choiceitems_row_'+item_id+':last').after(newitem);
+		$('.choiceitems_row_' + item_id + ':last').after(newitem);
 	}
 
 	var col_numfield = '{COL_NUMFIELD}';
@@ -421,10 +421,9 @@
 		$('#question_grid_row').append(newitem);
 	}
 
-
 	$(document).ready(function() {
-		$('input[name="current_date"]').change(function(){
-			if( $(this).val() == 0 ){
+		$('input[name="current_date"]').change(function() {
+			if ($(this).val() == 0) {
 				$('#default_date').show();
 				$("input[name=default_date]").datepicker({
 					dateFormat : "dd/mm/yy",
@@ -432,12 +431,11 @@
 					changeYear : true,
 					showOtherMonths : true,
 					showOn : 'focus',
-					yearRange: "-90:+30"
+					yearRange : "-90:+30"
 				});
 				$("input[name=default_date]").removeAttr("disabled");
 				$("input[name=default_date]").focus();
-			}
-			else{
+			} else {
 				$('#default_date').hide();
 			}
 		});
@@ -467,7 +465,7 @@
 				return true;
 			}
 			var fieldCheck_rule = /^([a-zA-Z0-9_])+$/;
-			return (fieldCheck_rule.test(str) ) ? true : false;
+			return (fieldCheck_rule.test(str)) ? true : false;
 		}, ' required a-z, 0-9, and _ only');
 	});
 
@@ -477,7 +475,7 @@
 		changeYear : true,
 		showOtherMonths : true,
 		showOn : 'focus',
-		yearRange: "-90:+30"
+		yearRange : "-90:+30"
 	});
 
 	$("input[name=question_type]").click(function() {
@@ -492,9 +490,9 @@
 		$("#filefields").hide();
 		$("#question_required").show();
 		$("#question_user_edit").show();
-		$("#report").prop( 'checked', false );
-		$("#report").prop( 'disabled', false );
-		$("#question_title").html( '{LANG.question}' );
+		$("#report").prop('checked', false);
+		$("#report").prop('disabled', false);
+		$("#question_title").html('{LANG.question}');
 		if (question_type == 'textbox' || question_type == 'textarea' || question_type == 'editor') {
 			if (question_type == 'textbox') {
 				$("#li_alphanumeric").show();
@@ -523,9 +521,9 @@
 			$("#textfields").hide();
 			$("#question_required").hide();
 			$("#question_user_edit").hide();
-			$("#report").prop( 'checked', true );
-			$("#report").prop( 'disabled', true );
-			$("#question_title").html( '{LANG.question_type_plaintext_content}' );
+			$("#report").prop('checked', true);
+			$("#report").prop('disabled', true);
+			$("#question_title").html('{LANG.question_type_plaintext_content}');
 		} else {
 			$("#choicefields").show();
 		}

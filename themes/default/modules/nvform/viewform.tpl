@@ -50,8 +50,8 @@
 				<!-- BEGIN: date -->
 				<div class="form-group">
 					<div class="input-group">
-						<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" readonly="readonly" /> <span class="input-group-btn">
-							<button class="btn btn-default" type="button">
+						<input class="form-control {QUESTION.datepicker} {QUESTION.required}" value="{QUESTION.value}" type="text" id="question_{QUESTION.qid}" name="question[{QUESTION.qid}]" readonly="readonly" /> <span class="input-group-btn">
+							<button class="btn btn-default" type="button" onclick="$('#question_{QUESTION.qid}').datepicker('show');">
 								<em class="fa fa-calendar fa-fix">&nbsp;</em>
 							</button>
 						</span>
@@ -60,7 +60,7 @@
 				<!-- END: date -->
 
 				<!-- BEGIN: time -->
-				<input type="time" class="form-control {QUESTION.required}" id="question[{QUESTION.qid}]" name="question[{QUESTION.qid}]" value="{QUESTION.value}">
+				<input type="time" class="form-control {QUESTION.required}" id="question_{QUESTION.qid}" name="question[{QUESTION.qid}]" value="{QUESTION.value}">
 				<!-- END: time -->
 
 				<!-- BEGIN: textarea -->
