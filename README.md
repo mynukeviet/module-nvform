@@ -17,7 +17,7 @@ Xem [LICENSE.txt](LICENSE.txt) để biết thêm thông tin.
 # Tài trợ
 Công ty cổ phần phát triển nguồn mở Việt Nam (VINADES.,JSC)
 
-Phòng 2004 - Tòa nhà CT2 Nàng Hương, 583 Nguyễn Trãi, Hà Nội.
+Phòng 1706 - Tòa nhà CT2 Nàng Hương, 583 Nguyễn Trãi, Hà Nội.
 
 Điện thoại: +84-4-85872007, Fax: +84-4-35500914, Email: contact@vinades.vn
 
