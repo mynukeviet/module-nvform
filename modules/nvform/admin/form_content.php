@@ -53,6 +53,7 @@ if ($id > 0) {
         die();
     }
     $form_data['template'] = unserialize($form_data['template']);
+    
     $form_data['form_report_type_email'] = unserialize($form_data['form_report_type_email']);
     if (empty($form_data['form_report_type_email'])) {
         $form_data['form_report_type_email'] = array(
@@ -87,10 +88,9 @@ if ($nv_Request->get_int('save', 'post') == '1') {
     if ($form_data['form_report_type'] == 1) {
         $array = array(
             'form_report_type_email' => $nv_Request->get_int('form_report_type_email', 'post', 0),
-            'group_email' => $nv_Request->get_typed_array('group_email', 'post', 'int', 0),
+            'group_email' => $nv_Request->get_typed_array('group_email', 'post', 'int'),
             'listmail' => $nv_Request->get_title('listmail', 'post', '')
         );
-        $array['form_report_type_email'] = ! empty($array['form_report_type_email']) ? implode(',', nv_groups_post(array_intersect($array['form_report_type_email'], array_keys($groups_list)))) : '';
         $form_data['form_report_type_email'] = serialize($array);
     }
     $form_data['template'] = $nv_Request->get_array('template', 'post', array());
@@ -156,7 +156,7 @@ if ($nv_Request->get_int('save', 'post') == '1') {
         $query->bindParam(':question_display', $form_data['question_display'], PDO::PARAM_STR);
         $query->bindParam(':question_report', $form_data['question_report'], PDO::PARAM_INT);
         $query->bindParam(':form_report_type', $form_data['form_report_type'], PDO::PARAM_INT);
-        $query->bindParam(':form_report_type_email', serialize($form_data['form_report_type_email']), PDO::PARAM_STR);
+        $query->bindParam(':form_report_type_email', $form_data['form_report_type_email'], PDO::PARAM_STR);
         $query->bindParam(':template', $form_data['template'], PDO::PARAM_STR);
         
         if ($query->execute()) {
