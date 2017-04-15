@@ -12,7 +12,7 @@ if (! defined('NV_MAINFILE'))
 
 function nv_form_result($question_data, $answer_data)
 {
-    global $lang_module, $global_config, $module_info, $module_name, $module_data, $module_file;
+    global $lang_module, $global_config, $module_info, $module_name, $module_data, $module_file, $user_info;
     
     $xtpl = new XTemplate('view_answer.tpl', NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
@@ -24,6 +24,7 @@ function nv_form_result($question_data, $answer_data)
             $xtpl->assign('QUESTION', $data);
             
             $answer = $answer_data;
+
             if (isset($answer[$qid]) and $data['report']) {
                 $ans = $answer[$qid];
                 $question_type = $data['question_type'];
@@ -49,7 +50,7 @@ function nv_form_result($question_data, $answer_data)
                     $answer_result = $ans;
                 }
                 
-                $answer['username'] = empty($answer['username']) ? $lang_module['report_guest'] : nv_show_name_user($answer['first_name'], $answer['last_name'], $answer['username']);
+                $answer['username'] = ! defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
                 
                 $xtpl->assign('ANSWER', $answer_result);
                 

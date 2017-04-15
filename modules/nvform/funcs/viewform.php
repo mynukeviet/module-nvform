@@ -73,18 +73,17 @@ if ($nv_Request->isset_request('submit', 'post')) {
     require NV_ROOTDIR . '/modules/' . $module_file . '/form.check.php';
     
     if (empty($error)) {
-        if (! isset($user_info['userid']))
-            $user_info['userid'] = 0;
-        
+        $userid = ! defined('NV_IS_USER') ? 0 : $user_info['userid'];
+        $answer_info['answer_time'] = $answer_info['answer_edit_time'] = NV_CURRENTTIME;
         if ($filled) {
-            $sth = $db->prepare("UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_extend = :answer_extend, answer_edit_time = " . NV_CURRENTTIME . " WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid']);
+            $sth = $db->prepare("UPDATE " . NV_PREFIXLANG . '_' . $module_data . "_answer SET answer = :answer, answer_extend = :answer_extend, answer_edit_time = " . $answer_info['answer_edit_time'] . " WHERE fid = " . $fid . " AND who_answer = " . $userid);
         } else {
-            $sth = $db->prepare("INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, answer_extend, who_answer, answer_time) VALUES (" . $fid . ", :answer, :answer_extend, " . $user_info['userid'] . ", " . NV_CURRENTTIME . ")");
+            $sth = $db->prepare("INSERT INTO " . NV_PREFIXLANG . '_' . $module_data . "_answer (fid, answer, answer_extend, who_answer, answer_time) VALUES (" . $fid . ", :answer, :answer_extend, " . $userid . ", " . $answer_info['answer_time'] . ")");
         }
-        $answer_info = serialize($answer_info);
-        $answer_info_extend = serialize($answer_info_extend);
-        $sth->bindParam(':answer', $answer_info, PDO::PARAM_STR);
-        $sth->bindParam(':answer_extend', $answer_info_extend, PDO::PARAM_STR);
+        $_answer_info = serialize($answer_info);
+        $_answer_info_extend = serialize($answer_info_extend);
+        $sth->bindParam(':answer', $_answer_info, PDO::PARAM_STR);
+        $sth->bindParam(':answer_extend', $_answer_info_extend, PDO::PARAM_STR);
         
         if ($sth->execute()) {
             // Báo cáo kết qủa qua email
@@ -108,7 +107,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
                     $listmail = array_unique($listmail);
                     
                     // Nội dung email
-                    $answer_info['username'] = empty($user_info['userid']) ? $lang_module['report_guest'] : nv_show_name_user($user_info['full_name']);
+                    $answer_info['username'] = ! defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
                     
                     $xtpl = new XTemplate('sendmail.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
                     $xtpl->assign('FORM_DATA', nv_form_result($question_info, $answer_info));
@@ -149,5 +148,5 @@ if (! empty($form_info['image'])) {
 $contents = nv_theme_nvform_viewform($form_info, $question_info, $answer_info, $answer_info_extend, $info);
 
 include NV_ROOTDIR . '/includes/header.php';
-echo nv_site_theme($contents, !$embed);
+echo nv_site_theme($contents, ! $embed);
 include NV_ROOTDIR . '/includes/footer.php';

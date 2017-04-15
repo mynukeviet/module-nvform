@@ -25,7 +25,7 @@ $allow_func = array(
 );
 
 define('NV_IS_FILE_ADMIN', true);
-require_once NV_ROOTDIR .  '/modules/' . $module_file . '/global.functions.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
 
 // Danh sach cac kieu du lieu
 $array_field_type = array(
