@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_IS_MOD_NVFORM'))
-    die('Stop!!!');
+if (!defined('NV_IS_MOD_NVFORM')) die('Stop!!!');
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];

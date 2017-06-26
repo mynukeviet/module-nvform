@@ -7,10 +7,9 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Sat, 10 Dec 2011 06:46:54 GMT
  */
-if (! defined('NV_MAINFILE'))
-    die('Stop!!!');
+if (!defined('NV_MAINFILE')) die('Stop!!!');
 
-if (! nv_function_exists('nv_block_form_content')) {
+if (!nv_function_exists('nv_block_form_content')) {
 
     function nv_block_config_form_content($module, $data_block, $lang_block)
     {
@@ -79,8 +78,8 @@ if (! nv_function_exists('nv_block_form_content')) {
         
         $form_info = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $mod_data . ' WHERE status = 1 AND id = ' . $block_config['formid'])->fetch();
         
-        if (! empty($form_info)) {
-            if ($form_info['start_time'] > NV_CURRENTTIME or ($form_info['end_time'] > 0 and $form_info['end_time'] < NV_CURRENTTIME) or ! nv_user_in_groups($form_info['groups_view'])) {
+        if (!empty($form_info)) {
+            if ($form_info['start_time'] > NV_CURRENTTIME or ($form_info['end_time'] > 0 and $form_info['end_time'] < NV_CURRENTTIME) or !nv_user_in_groups($form_info['groups_view'])) {
                 return '';
             } else {
                 // Lấy thông tin câu hỏi
@@ -97,7 +96,7 @@ if (! nv_function_exists('nv_block_form_content')) {
                         $answer_info = unserialize($_rows['answer']);
                     }
                     
-                    if (! empty($answer_info) and ! $block_config['dis_form_answered']) {
+                    if (!empty($answer_info) and !$block_config['dis_form_answered']) {
                         return '';
                     }
                 }
@@ -147,7 +146,7 @@ if (! nv_function_exists('nv_block_form_content')) {
                 $dis_title = $block_config['dis_form_title'];
                 $dis_description = $block_config['dis_form_description'];
                 $dis_description_html = $block_config['dis_form_description_html'];
-                if (! file_exists(NV_ROOTDIR . '/modules/' . $mod_file . '/form.build.php')) {
+                if (!file_exists(NV_ROOTDIR . '/modules/' . $mod_file . '/form.build.php')) {
                     return '';
                 }
                 require_once NV_ROOTDIR . '/modules/' . $mod_file . '/form.build.php';

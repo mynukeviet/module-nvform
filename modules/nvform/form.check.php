@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 12/5/2012 11:29
  */
-if (! defined('NV_MAINFILE'))
-    die('Stop!!!');
+if (!defined('NV_MAINFILE')) die('Stop!!!');
 
 foreach ($question_info as $row_f) {
     $old_value = '';
@@ -23,8 +22,8 @@ foreach ($question_info as $row_f) {
         if (isset($input_file) and is_uploaded_file($input_file['tmp_name'])) {
             $folder = 'form_' . $row_f['fid'];
             $question_choices = unserialize($row_f['question_choices']);
-            if (! empty($question_choices)) {
-                if (! file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $folder)) {
+            if (!empty($question_choices)) {
+                if (!file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $folder)) {
                     nv_mkdir(NV_UPLOADS_REAL_DIR . '/' . $module_upload, $folder);
                 }
                 $upload = new upload(explode(',', $question_choices['type']), $question_choices['ext'], $global_config['forbid_mimes'], $row_f['max_length'], NV_MAX_WIDTH, NV_MAX_HEIGHT);
@@ -52,7 +51,7 @@ foreach ($question_info as $row_f) {
                     $value = str_replace(NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload . '/', '', $value);
                     
                     // Xoa file cu (neu co)
-                    if (! empty($old_value) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $old_value)) {
+                    if (!empty($old_value) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $old_value)) {
                         @nv_deletefile(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $old_value);
                     }
                 } else {
@@ -71,7 +70,7 @@ foreach ($question_info as $row_f) {
             $number_type = $number_type['number_type'];
             $pattern = ($number_type == 1) ? "/^[0-9]+$/" : "/^[0-9\.]+$/";
             
-            if (! preg_match($pattern, $value)) {
+            if (!preg_match($pattern, $value)) {
                 $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
             } else {
                 $value = ($number_type == 1) ? intval($value) : floatval($value);
@@ -97,22 +96,22 @@ foreach ($question_info as $row_f) {
             }
         } elseif ($row_f['question_type'] == 'textbox') {
             if ($row_f['match_type'] == 'alphanumeric') {
-                if (! preg_match("/^[a-zA-Z0-9\_]+$/", $value)) {
+                if (!preg_match("/^[a-zA-Z0-9\_]+$/", $value)) {
                     $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                 }
             } elseif ($row_f['match_type'] == 'email') {
                 $error = nv_check_valid_email($value);
             } elseif ($row_f['match_type'] == 'url') {
-                if (! nv_is_url($value)) {
+                if (!nv_is_url($value)) {
                     $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                 }
             } elseif ($row_f['match_type'] == 'regex') {
-                if (! preg_match("/" . $row_f['match_regex'] . "/", $value)) {
+                if (!preg_match("/" . $row_f['match_regex'] . "/", $value)) {
                     $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                 }
             } elseif ($row_f['match_type'] == 'callback') {
                 if (function_exists($row_f['func_callback'])) {
-                    if (! call_user_func($row_f['func_callback'], $value)) {
+                    if (!call_user_func($row_f['func_callback'], $value)) {
                         $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                     }
                 } else {
@@ -134,12 +133,12 @@ foreach ($question_info as $row_f) {
             $value = nv_nl2br($value, '<br />');
             
             if ($row_f['match_type'] == 'regex') {
-                if (! preg_match("/" . $row_f['match_regex'] . "/", $value)) {
+                if (!preg_match("/" . $row_f['match_regex'] . "/", $value)) {
                     $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                 }
             } elseif ($row_f['match_type'] == 'callback') {
                 if (function_exists($row_f['func_callback'])) {
-                    if (! call_user_func($row_f['func_callback'], $value)) {
+                    if (!call_user_func($row_f['func_callback'], $value)) {
                         $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
                     }
                 } else {
@@ -165,15 +164,15 @@ foreach ($question_info as $row_f) {
             $value = implode(',', $temp_value);
         } elseif ($row_f['question_type'] == 'select' or $row_f['question_type'] == 'radio') {
             $row_f['question_choices'] = unserialize($row_f['question_choices']);
-            if (! isset($row_f['question_choices'][$value])) {
+            if (!isset($row_f['question_choices'][$value])) {
                 $error = sprintf($lang_module['field_match_type_error'], $row_f['title']);
             }
         }
     }
     $answer_info[$row_f['qid']] = $value;
     
-    $row_f['user_editable'] = $row_f['user_editable'] == - 1 ? $form_info['user_editable'] : $row_f['user_editable'];
-    if ($filled and ! $row_f['user_editable'] and $value != $old_value) {
+    $row_f['user_editable'] = $row_f['user_editable'] == -1 ? $form_info['user_editable'] : $row_f['user_editable'];
+    if ($filled and !$row_f['user_editable'] and $value != $old_value) {
         $error = sprintf($lang_module['field_no_edit'], $row_f['title']);
     }
     

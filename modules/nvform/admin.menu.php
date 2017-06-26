@@ -7,7 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_ADMIN')) {
+if (!defined('NV_ADMIN')) {
     die('Stop!!!');
 }
 

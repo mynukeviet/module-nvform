@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 2-10-2010 18:49
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $id = $nv_Request->get_int('id', 'post', 0);
 $op = $nv_Request->get_string('op', 'post', '');
@@ -25,8 +24,7 @@ if ($op == 'form') {
 
 $sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE ' . $field . '=' . $id;
 $id = $db->query($sql)->fetchColumn();
-if (empty($id) or empty($op))
-    die('NO_' . $id);
+if (empty($id) or empty($op)) die('NO_' . $id);
 
 $new_status = $nv_Request->get_int('new_status', 'post');
 $new_status = (int) $new_status;

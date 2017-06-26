@@ -7,27 +7,24 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 24-06-2011 10:35
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $fid = $nv_Request->get_int('fid', 'get', 0);
 $question_data = $answer_data = array();
 
 // Xoa cau tra loi
 if ($nv_Request->isset_request('del', 'post')) {
-    if (! defined('NV_IS_AJAX'))
-        die('Wrong URL');
+    if (!defined('NV_IS_AJAX')) die('Wrong URL');
     
     $aid = $nv_Request->get_int('aid', 'post', 0);
     
-    if (empty($aid))
-        die('NO');
+    if (empty($aid)) die('NO');
     
     $answer = $db->query('SELECT answer FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid)->fetchColumn();
     
     $sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid;
     if ($db->exec($sql)) {
-        if (! empty($answer)) {
+        if (!empty($answer)) {
             $answer = unserialize($answer);
             foreach ($answer as $qid => $ans) {
                 $question_type = $db->query('SELECT question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid)->fetchColumn();
@@ -84,9 +81,9 @@ foreach ($answer_data as $answer) {
                 } else {
                     $answer_info = $data[$ans];
                 }
-            } elseif ($question_type == 'date' and ! empty($ans)) {
+            } elseif ($question_type == 'date' and !empty($ans)) {
                 $answer_info = nv_date('d/m/Y', $ans);
-            } elseif ($question_type == 'time' and ! empty($ans)) {
+            } elseif ($question_type == 'time' and !empty($ans)) {
                 $answer_info = nv_date('H:i', $ans);
             } elseif ($question_type == 'grid') {
                 $data = unserialize($question_data[$qid]['question_choices']);
@@ -125,13 +122,13 @@ foreach ($answer_data as $answer) {
     }
     
     $answer['answer_time'] = nv_date('d/m/Y H:i', $answer['answer_time']);
-    $answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
+    $answer['answer_edit_time'] = !$answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
     $answer['answer_view_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_answer&id=' . $answer['id'];
     
     $answer['no'] = $i;
     $xtpl->assign('ANSWER', $answer);
     $xtpl->parse('main.tr');
-    $i ++;
+    $i++;
 }
 
 $xtpl->assign('FID', $fid);

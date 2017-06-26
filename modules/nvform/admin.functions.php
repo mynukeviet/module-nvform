@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_ADMIN') or ! defined('NV_MAINFILE') or ! defined('NV_IS_MODADMIN'))
-    die('Stop!!!');
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN')) die('Stop!!!');
 
 $allow_func = array(
     'main',
@@ -76,13 +75,13 @@ function nv_update_answer($form_id)
         sort($array_qid_old);
         if ($array_qid != $array_qid_old) {
             foreach ($array_qid as $qid) {
-                if (! in_array($qid, $array_qid_old)) {
+                if (!in_array($qid, $array_qid_old)) {
                     $row_answer[$qid] = '';
                 }
             }
             
             foreach ($array_qid_old as $qid_old) {
-                if (! in_array($qid_old, $array_qid)) {
+                if (!in_array($qid_old, $array_qid)) {
                     unset($row_answer[$qid_old]);
                 }
             }

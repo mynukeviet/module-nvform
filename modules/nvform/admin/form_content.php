@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $page_title = $lang_module['form_content'];
 
@@ -53,8 +52,9 @@ if ($id > 0) {
         die();
     }
     $form_data['template'] = unserialize($form_data['template']);
-    
-    $form_data['form_report_type_email'] = unserialize($form_data['form_report_type_email']);
+    if ($form_data['form_report_type'] == 1) {
+        $form_data['form_report_type_email'] = unserialize($form_data['form_report_type_email']);
+    }
     if (empty($form_data['form_report_type_email'])) {
         $form_data['form_report_type_email'] = array(
             'form_report_type_email' => 0,
@@ -92,10 +92,12 @@ if ($nv_Request->get_int('save', 'post') == '1') {
             'listmail' => $nv_Request->get_title('listmail', 'post', '')
         );
         $form_data['form_report_type_email'] = serialize($array);
+    } else {
+        $form_data['form_report_type_email'] = '';
     }
     $form_data['template'] = $nv_Request->get_array('template', 'post', array());
     
-    if (! empty($form_data['start_time']) and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m)) {
+    if (!empty($form_data['start_time']) and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['start_time'], $m)) {
         $phour = $nv_Request->get_int('phour', 'post', 0);
         $pmin = $nv_Request->get_int('pmin', 'post', 0);
         $form_data['start_time'] = mktime($phour, $pmin, 0, $m[2], $m[1], $m[3]);
@@ -103,7 +105,7 @@ if ($nv_Request->get_int('save', 'post') == '1') {
         $form_data['start_time'] = NV_CURRENTTIME;
     }
     
-    if (! empty($form_data['end_time']) and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['end_time'], $m)) {
+    if (!empty($form_data['end_time']) and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $form_data['end_time'], $m)) {
         $ehour = $nv_Request->get_int('ehour', 'post', 0);
         $emin = $nv_Request->get_int('emin', 'post', 0);
         $form_data['end_time'] = mktime($ehour, $emin, 0, $m[2], $m[1], $m[3]);
@@ -112,17 +114,17 @@ if ($nv_Request->get_int('save', 'post') == '1') {
     }
     
     $_groups_post = $nv_Request->get_array('groups_view', 'post', 6);
-    $form_data['groups_view'] = ! empty($_groups_post) ? implode(',', nv_groups_post(array_intersect($_groups_post, array_keys($groups_list)))) : '';
+    $form_data['groups_view'] = !empty($_groups_post) ? implode(',', nv_groups_post(array_intersect($_groups_post, array_keys($groups_list)))) : '';
     
     if (empty($form_data['title'])) {
         $error = $lang_module['error_formtitle'];
-    } elseif (! empty($form_data['start_time']) and ! empty($form_data['end_time'])) {
+    } elseif (!empty($form_data['start_time']) and !empty($form_data['end_time'])) {
         if ($form_data['start_time'] > $form_data['end_time']) {
             $error = $lang_module['error_formtime'];
         }
     }
     
-    if (! empty($form_data['template']['background_image'])) {
+    if (!empty($form_data['template']['background_image'])) {
         $path = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
         $form_data['template']['background_image'] = substr($form_data['template']['background_image'], $path);
     }
@@ -130,7 +132,7 @@ if ($nv_Request->get_int('save', 'post') == '1') {
     if (empty($error)) {
         $form_data['template'] = serialize($form_data['template']);
         $form_data['description_html'] = nv_editor_nl2br($form_data['description_html']);
-        if (! empty($form_data['image'])) {
+        if (!empty($form_data['image'])) {
             $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
             $form_data['image'] = substr($form_data['image'], $lu);
         }
@@ -175,7 +177,7 @@ if ($nv_Request->get_int('save', 'post') == '1') {
     }
 }
 
-$form_data['template']['background_image'] = ! empty($form_data['template']['background_image']) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['template']['background_image'] : '';
+$form_data['template']['background_image'] = !empty($form_data['template']['background_image']) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['template']['background_image'] : '';
 $form_data['question_report_check'] = $form_data['question_report'] ? 'checked="checked"' : '';
 $form_data['user_editable_check'] = $form_data['user_editable'] ? 'checked="checked"' : '';
 
@@ -189,7 +191,7 @@ $xtpl->assign('UPLOADS_DIR_USER', NV_UPLOADS_DIR . '/' . $module_upload);
 $xtpl->assign('NV_ADMIN_THEME', $global_config['admin_theme']);
 
 // Thời gian
-if (! empty($form_data['start_time'])) {
+if (!empty($form_data['start_time'])) {
     $tdate = date('H|i', $form_data['start_time']);
     $form_data['start_time'] = date('d/m/Y', $form_data['start_time']);
     list ($phour, $pmin) = explode('|', $tdate);
@@ -198,12 +200,12 @@ if (! empty($form_data['start_time'])) {
 }
 
 $select = '';
-for ($i = 0; $i <= 23; ++ $i) {
+for ($i = 0; $i <= 23; ++$i) {
     $select .= "<option value=\"" . $i . "\"" . (($i == $phour) ? ' selected="selected"' : '') . ">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>\n";
 }
 $xtpl->assign('phour', $select);
 
-if (! empty($form_data['end_time'])) {
+if (!empty($form_data['end_time'])) {
     $tdate = date('H|i', $form_data['end_time']);
     $form_data['end_time'] = date('d/m/Y', $form_data['end_time']);
     list ($ehour, $emin) = explode('|', $tdate);
@@ -211,18 +213,18 @@ if (! empty($form_data['end_time'])) {
     $form_data['end_time'] = '';
 }
 $select = '';
-for ($i = 0; $i < 60; ++ $i) {
+for ($i = 0; $i < 60; ++$i) {
     $select .= "<option value=\"" . $i . "\"" . (($i == $pmin) ? ' selected="selected"' : '') . ">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>\n";
 }
 $xtpl->assign('pmin', $select);
 
 $select = '';
-for ($i = 0; $i <= 23; ++ $i) {
+for ($i = 0; $i <= 23; ++$i) {
     $select .= "<option value=\"" . $i . "\"" . (($i == $ehour) ? ' selected="selected"' : '') . ">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>\n";
 }
 $xtpl->assign('ehour', $select);
 $select = '';
-for ($i = 0; $i < 60; ++ $i) {
+for ($i = 0; $i < 60; ++$i) {
     $select .= "<option value=\"" . $i . "\"" . (($i == $emin) ? ' selected="selected"' : '') . ">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>\n";
 }
 $xtpl->assign('emin', $select);
@@ -254,15 +256,12 @@ foreach ($style_list as $key => $_title) {
     $xtpl->parse('main.question_display');
 }
 
-if (empty($alias))
-    $xtpl->parse('main.get_alias');
-    
-    // Trình soạn thảo
-if (! empty($form_data['description_html']))
-    $form_data['description_html'] = nv_htmlspecialchars($form_data['description_html']);
+if (empty($alias)) $xtpl->parse('main.get_alias');
 
-if (defined('NV_EDITOR'))
-    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+// Trình soạn thảo
+if (!empty($form_data['description_html'])) $form_data['description_html'] = nv_htmlspecialchars($form_data['description_html']);
+
+if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $form_data['description_html'] = nv_aleditor('description_html', '100%', '300px', $form_data['description_html']);
@@ -270,7 +269,7 @@ if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $form_data['description_html'] = '<textarea style="width:100%;height:300px" name="bodytext">' . $form_data['description_html'] . '</textarea>';
 }
 
-if (! empty($form_data['image']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $form_data['image'])) {
+if (!empty($form_data['image']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $form_data['image'])) {
     $form_data['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $form_data['image'];
 }
 

@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 2-10-2010 18:49
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $id = $nv_Request->get_int('id', 'post', 0);
 $fid = $nv_Request->get_int('fid', 'post', 0);
@@ -18,8 +17,7 @@ $table = '';
 $field = '';
 $form_id = '';
 
-if (empty($op))
-    die('NO_' . $id);
+if (empty($op)) die('NO_' . $id);
 
 if ($op == 'form') {
     $field = 'id';
@@ -34,21 +32,18 @@ if ($fid) {
 
 $sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE 1 = 1 AND ' . $field . '=' . $id . $form_id;
 $id = $db->query($sql)->fetchColumn();
-if (empty($id))
-    die('NO_' . $id);
+if (empty($id)) die('NO_' . $id);
 
 $new_weight = $nv_Request->get_int('new_weight', 'post', 0);
-if (empty($new_weight))
-    die('NO_' . $mod);
+if (empty($new_weight)) die('NO_' . $mod);
 
 $sql = 'SELECT ' . $field . ' FROM ' . NV_PREFIXLANG . '_' . $module_data . $table . ' WHERE 1 = 1 AND ' . $field . ' !=' . $id . $form_id . ' ORDER BY weight ASC';
 $result = $db->query($sql);
 
 $weight = 0;
 while ($row = $result->fetch()) {
-    ++ $weight;
-    if ($weight == $new_weight)
-        ++ $weight;
+    ++$weight;
+    if ($weight == $new_weight) ++$weight;
     
     $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . $table . ' SET weight=' . $weight . ' WHERE 1 = 1 AND ' . $field . '=' . $row[$field] . $form_id;
     $db->query($sql);

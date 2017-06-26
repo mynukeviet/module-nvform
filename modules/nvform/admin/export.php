@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Dec 3, 2010 11:33:22 AM
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $fid = $nv_Request->get_int('fid', 'get,post', 0);
 
@@ -19,8 +18,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     $type = $nv_Request->get_title('type', 'get, post', '');
     $is_zip = $nv_Request->get_int('is_zip', 'get, post', 0);
     
-    if (empty($type))
-        die('NO');
+    if (empty($type)) die('NO');
     
     $question_data = array();
     $result = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid = ' . $fid);
@@ -34,7 +32,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
         $answer_data[] = $row;
     }
     
-    if (! class_exists('PHPExcel')) {
+    if (!class_exists('PHPExcel')) {
         die('NO_' . $lang_module['report_required_phpexcel']);
     }
     
@@ -80,7 +78,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     
     $columnIndex = 4; // Cot bat dau ghi du lieu
     $rowIndex = 3; // Dong bat dau ghi du lieu
-                   
+    
     // Tieu de cot
     $objPHPExcel->getActiveSheet()
         ->setCellValue(PHPExcel_Cell::stringFromColumnIndex(0) . $rowIndex, $lang_module['question_number'])
@@ -93,7 +91,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     foreach ($question_data as $question) {
         $TextColumnIndex = PHPExcel_Cell::stringFromColumnIndex($_columnIndex);
         $objPHPExcel->getActiveSheet()->setCellValue($TextColumnIndex . $rowIndex, nv_get_plaintext($question['title']));
-        $_columnIndex ++;
+        $_columnIndex++;
     }
     
     // Hien thi cau tra loi
@@ -101,9 +99,9 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     $number = 1;
     foreach ($answer_data as $answer) {
         $j = $columnIndex;
-        $answer['username'] = ! $answer['username'] ? $lang_module['report_guest'] : $answer['username'];
+        $answer['username'] = !$answer['username'] ? $lang_module['report_guest'] : $answer['username'];
         $answer['answer_time'] = nv_date('d/m/Y H:i', $answer['answer_time']);
-        $answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? 'N/A' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
+        $answer['answer_edit_time'] = !$answer['answer_edit_time'] ? 'N/A' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
         
         $col = PHPExcel_Cell::stringFromColumnIndex(0);
         $CellValue = $number;
@@ -121,7 +119,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
         $CellValue = nv_unhtmlspecialchars($answer['answer_edit_time']);
         $objPHPExcel->getActiveSheet()->setCellValue($col . $i, $CellValue);
         
-        $number ++;
+        $number++;
         
         $answer['answer'] = unserialize($answer['answer']);
         foreach ($answer['answer'] as $qid => $ans) {
@@ -138,9 +136,9 @@ if ($nv_Request->isset_request('export', 'post, get')) {
                     } else {
                         $ans = $data[$ans];
                     }
-                } elseif ($question_type == 'date' and ! empty($ans)) {
+                } elseif ($question_type == 'date' and !empty($ans)) {
                     $ans = nv_date('d/m/Y', $ans);
-                } elseif ($question_type == 'time' and ! empty($ans)) {
+                } elseif ($question_type == 'time' and !empty($ans)) {
                     $ans = nv_date('H:i', $ans);
                 } elseif ($question_type == 'grid') {
                     $data = unserialize($question_data[$qid]['question_choices']);
@@ -168,9 +166,9 @@ if ($nv_Request->isset_request('export', 'post, get')) {
             $col = PHPExcel_Cell::stringFromColumnIndex($j);
             $CellValue = htmlspecialchars(nv_editor_br2nl(($ans)));
             $objPHPExcel->getActiveSheet()->setCellValue($col . $i, $CellValue);
-            $j ++;
+            $j++;
         }
-        $i ++;
+        $i++;
     }
     
     $highestRow = $i - 1;
@@ -241,7 +239,7 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     ));
     
     if ($type == 'pdf') {
-        if (! PHPExcel_Settings::setPdfRenderer($rendererName, $rendererLibraryPath)) {
+        if (!PHPExcel_Settings::setPdfRenderer($rendererName, $rendererLibraryPath)) {
             die('NOTICE: Please set the $rendererName and $rendererLibraryPath values' . '<br />' . 'at the top of this script as appropriate for your directory structure');
         }
     }
@@ -250,10 +248,9 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     $file_src = NV_ROOTDIR . '/' . NV_TEMP_DIR . '/' . $form_info['alias'] . '.' . $array['objExt'];
     $objWriter->save($file_src);
     
-    if (! $download and file_exists($file_src))
-        die('OK_' . str_replace(NV_ROOTDIR . NV_BASE_SITEURL, '', $file_src));
+    if (!$download and file_exists($file_src)) die('OK_' . str_replace(NV_ROOTDIR . NV_BASE_SITEURL, '', $file_src));
     
-    if (! $is_zip) {
+    if (!$is_zip) {
         $download = new NukeViet\Files\Download($file_src, NV_ROOTDIR . '/' . NV_TEMP_DIR);
         $download->download_file();
         die('OK');
@@ -285,7 +282,7 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
 $xtpl->assign('FID', $fid);
 
-if (! class_exists('PHPExcel')) {
+if (!class_exists('PHPExcel')) {
     $xtpl->parse('main.PHPExcel_req');
 } else {
     $default = 'xlsx';

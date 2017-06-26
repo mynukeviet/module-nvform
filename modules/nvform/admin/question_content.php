@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $ini = nv_parse_ini_file(NV_ROOTDIR . '/includes/ini/mime.ini', true);
 $myini = array(
@@ -32,10 +31,9 @@ foreach ($ini as $type => $extmime) {
         $myini['mimes'] = array_merge($myini['mimes'], $m);
     } else {
         foreach ($m as $m2) {
-            if (! is_array($m2))
-                $m2 = array(
-                    $m2
-                );
+            if (!is_array($m2)) $m2 = array(
+                $m2
+            );
             $myini['mimes'] = array_merge($myini['mimes'], $m2);
         }
     }
@@ -72,12 +70,12 @@ if ($qid) {
     // Bind data to form
     $question = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid)->fetch();
     
-    if (! $question) {
+    if (!$question) {
         Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question');
         die();
     }
     
-    if (! empty($question['question_choices'])) {
+    if (!empty($question['question_choices'])) {
         $question_choices = unserialize($question['question_choices']);
         $question_choices_extend = unserialize($question['question_choices_extend']);
     }
@@ -91,7 +89,7 @@ if ($qid) {
     $lang_submit = $lang_module['question_add'];
     $question['title'] = '';
     $question['required'] = 0;
-    $question['user_editable'] = - 1;
+    $question['user_editable'] = -1;
     $question['question_type'] = 'textbox';
     $question['question_form'] = $fid;
     $question['match_type'] = 'none';
@@ -145,7 +143,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $question['match_type'] = nv_substr($nv_Request->get_title('match_type', 'post', '', 0, $preg_replace), 0, 50);
         $question['match_regex'] = ($question['match_type'] == 'regex') ? $nv_Request->get_string('match_regex', 'post', '', false) : '';
         $question['func_callback'] = ($question['match_type'] == 'callback') ? $nv_Request->get_string('match_callback', 'post', '', false) : '';
-        if ($question['func_callback'] != '' and ! function_exists($question['func_callback'])) {
+        if ($question['func_callback'] != '' and !function_exists($question['func_callback'])) {
             $question['func_callback'] = '';
         }
         
@@ -189,7 +187,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         }
         
         $question['current_date'] = $nv_Request->get_int('current_date', 'post', 0);
-        if (! $question['current_date'] and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string('default_date', 'post'), $m)) {
+        if (!$question['current_date'] and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string('default_date', 'post'), $m)) {
             $question['default_value'] = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
         } else {
             $question['default_value'] = 0;
@@ -206,7 +204,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $time_questions = 1;
         
         $question['current_time'] = $nv_Request->get_int('current_time', 'post', 0);
-        if (! $question['current_time'] and preg_match('/^([0-9]{1,2})\:([0-9]{1,2})$/', $nv_Request->get_string('default_time', 'post'), $m)) {
+        if (!$question['current_time'] and preg_match('/^([0-9]{1,2})\:([0-9]{1,2})$/', $nv_Request->get_string('default_time', 'post'), $m)) {
             $question['default_value'] = mktime($m[1], $m[2], 0, 0, 0, 0);
         } else {
             $question['default_value'] = 0;
@@ -224,14 +222,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         );
         
         // Loai bo gia tri rong
-        if (! empty($question_grid['col'])) {
+        if (!empty($question_grid['col'])) {
             foreach ($question_grid['col'] as $key => $choices) {
                 if (empty($choices['key']) or empty($choices['value'])) {
                     unset($question_grid['col'][$key]);
                 }
             }
         }
-        if (! empty($question_grid['row'])) {
+        if (!empty($question_grid['row'])) {
             foreach ($question_grid['row'] as $key => $choices) {
                 if (empty($choices['key']) or empty($choices['value'])) {
                     unset($question_grid['row'][$key]);
@@ -280,7 +278,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $question_choice_text = $nv_Request->get_array('question_choice_text', 'post');
         $question_choices = array_combine(array_map('strip_punctuation', $question_choice_value), array_map('strip_punctuation', $question_choice_text));
         
-        if (! empty($question_choices)) {
+        if (!empty($question_choices)) {
             unset($question_choices['']);
             $question['question_choices'] = serialize($question_choices);
             
@@ -293,7 +291,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
                     $question_choice_extend[$value] = $question_choice_extend[$key];
                 }
             }
-            if (! empty($question_choice_extend)) {
+            if (!empty($question_choice_extend)) {
                 $question['question_choices_extend'] = serialize($question_choice_extend);
             }
         } else {
@@ -302,7 +300,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     }
     
     if (empty($error)) {
-        if (! $qid) {
+        if (!$qid) {
             $weight = $db->query("SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_question WHERE fid = " . $question['question_form'])->fetchColumn();
             $weight = intval($weight) + 1;
             
@@ -346,7 +344,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     }
 }
 
-if (! $qid) {
+if (!$qid) {
     foreach ($lform as $row) {
         $form_list = array(
             'id' => $row['id'],
@@ -404,14 +402,14 @@ if ($question['question_type'] == 'textbox' || $question['question_type'] == 'te
 }
 
 $number = $number_grid_col = $number_grid_row = 1;
-if (! empty($question_choices)) {
+if (!empty($question_choices)) {
     if ($question['question_type'] == 'grid' or $question['question_type'] == 'table') {
         $default_value = explode('||', $question['default_value_number']);
         
         // Loop collumn
-        if (! empty($question_choices['col'])) {
+        if (!empty($question_choices['col'])) {
             foreach ($question_choices['col'] as $choices) {
-                if (! empty($choices['value'])) {
+                if (!empty($choices['value'])) {
                     $ck = $default_value[0] == $choices['key'] ? 'checked="checked"' : '';
                     $xtpl->assign('COL', array(
                         'number' => $number_grid_col,
@@ -420,16 +418,16 @@ if (! empty($question_choices)) {
                         'checked' => $ck
                     ));
                     $xtpl->parse('main.loop_question_grid_col');
-                    $number_grid_col ++;
+                    $number_grid_col++;
                 }
             }
             $xtpl->assign('COL_NUMFIELD', $number_grid_col);
         }
         
         // Loop row
-        if (! empty($question_choices['row'])) {
+        if (!empty($question_choices['row'])) {
             foreach ($question_choices['row'] as $key => $choices) {
-                if (! empty($choices['value'])) {
+                if (!empty($choices['value'])) {
                     $ck = $default_value[1] == $choices['key'] ? 'checked="checked"' : '';
                     $xtpl->assign('ROW', array(
                         'number' => $number_grid_row,
@@ -438,7 +436,7 @@ if (! empty($question_choices)) {
                         'checked' => $ck
                     ));
                     $xtpl->parse('main.loop_question_grid_row');
-                    $number_grid_row ++;
+                    $number_grid_row++;
                 }
             }
             $xtpl->assign('ROW_NUMFIELD', $number_grid_row);
@@ -448,7 +446,7 @@ if (! empty($question_choices)) {
         foreach ($question_choices as $key => $value) {
             $xtpl->assign('FIELD_CHOICES', array(
                 'checked' => ($number == $question['default_value']) ? ' checked="checked"' : '',
-                "number" => $number ++,
+                "number" => $number++,
                 'key' => $key,
                 'value' => $value
             ));
@@ -457,7 +455,7 @@ if (! empty($question_choices)) {
                 $number_extend = 0;
                 foreach ($question_choices_extend[$key] as $choices_extend) {
                     $xtpl->assign('FIELD_CHOICES_EXTEND', array(
-                        "number" => $number_extend ++,
+                        "number" => $number_extend++,
                         'value' => $choices_extend
                     ));
                     $xtpl->parse('main.loop_field_choice.loop_field_choice_extend');
@@ -519,9 +517,9 @@ if ($question['question_type'] == 'plaintext') {
 
 $question['checked_required'] = ($question['required']) ? ' checked="checked"' : '';
 $question['checked_break'] = ($question['break']) ? ' checked="checked"' : '';
-$question['checked_report'] = (! $question['report']) ? ' checked="checked"' : '';
+$question['checked_report'] = (!$question['report']) ? ' checked="checked"' : '';
 
-if (! $qid) // Neu sua thi khong cho phep thay doi kieu cau hoi
+if (!$qid) // Neu sua thi khong cho phep thay doi kieu cau hoi
 {
     foreach ($array_field_type as $key => $value) {
         $xtpl->assign('FIELD_TYPE', array(
@@ -562,7 +560,7 @@ foreach ($array_match_type as $key => $value) {
 
 $sys_max_size = min(nv_converttoBytes(ini_get('upload_max_filesize')), nv_converttoBytes(ini_get('post_max_size')));
 $p_size = $sys_max_size / 100;
-for ($index = 1; $index <= 100; ++ $index) {
+for ($index = 1; $index <= 100; ++$index) {
     $size = floor($index * $p_size);
     
     $xtpl->assign('SIZE', array(
@@ -574,7 +572,7 @@ for ($index = 1; $index <= 100; ++ $index) {
     $xtpl->parse('main.size');
 }
 
-$question_choices['type'] = ! empty($question_choices['type']) ? explode(',', $question_choices['type']) : array();
+$question_choices['type'] = !empty($question_choices['type']) ? explode(',', $question_choices['type']) : array();
 foreach ($myini['types'] as $key => $name) {
     $xtpl->assign('TYPES', array(
         'key' => $key,
@@ -584,7 +582,7 @@ foreach ($myini['types'] as $key => $name) {
     $xtpl->parse('main.types');
 }
 
-$question_choices['ext'] = ! empty($question_choices['ext']) ? explode(',', $question_choices['ext']) : array();
+$question_choices['ext'] = !empty($question_choices['ext']) ? explode(',', $question_choices['ext']) : array();
 foreach ($myini['exts'] as $key => $name) {
     $xtpl->assign('EXTS', array(
         'key' => $key,
@@ -594,8 +592,7 @@ foreach ($myini['exts'] as $key => $name) {
     $xtpl->parse('main.exts');
 }
 
-if (defined('NV_EDITOR'))
-    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 
 $question['title'] = htmlspecialchars(nv_editor_br2nl($question['title']));
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
@@ -619,7 +616,7 @@ foreach ($array_user_editable as $key => $value) {
     $xtpl->parse('main.user_editable');
 }
 
-if (! empty($error)) {
+if (!empty($error)) {
     $xtpl->assign('ERROR', $error);
     $xtpl->parse('main.error');
 }

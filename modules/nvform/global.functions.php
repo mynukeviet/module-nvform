@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_MAINFILE'))
-    die('Stop!!!');
+if (!defined('NV_MAINFILE')) die('Stop!!!');
 
 function nv_form_result($question_data, $answer_data)
 {
@@ -17,20 +16,19 @@ function nv_form_result($question_data, $answer_data)
     $xtpl = new XTemplate('view_answer.tpl', NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
     
-    if (! empty($question_data)) {
+    if (!empty($question_data)) {
         foreach ($question_data as $data) {
             $qid = $data['qid'];
             $data['title'] = nv_get_plaintext($data['title']);
             $xtpl->assign('QUESTION', $data);
             
             $answer = $answer_data;
-
+            
             if (isset($answer[$qid]) and $data['report']) {
                 $ans = $answer[$qid];
                 $question_type = $data['question_type'];
                 
-                if ($question_type == 'plaintext')
-                    continue;
+                if ($question_type == 'plaintext') continue;
                 
                 if ($question_type == 'multiselect' or $question_type == 'select' or $question_type == 'radio' or $question_type == 'checkbox') {
                     $data = unserialize($data['question_choices']);
@@ -42,15 +40,15 @@ function nv_form_result($question_data, $answer_data)
                     } else {
                         $answer_result = $data[$ans];
                     }
-                } elseif ($question_type == 'date' and ! empty($ans)) {
+                } elseif ($question_type == 'date' and !empty($ans)) {
                     $answer_result = nv_date('d/m/Y', $ans);
-                } elseif ($question_type == 'time' and ! empty($ans)) {
+                } elseif ($question_type == 'time' and !empty($ans)) {
                     $answer_result = nv_date('H:i', $ans);
                 } else {
                     $answer_result = $ans;
                 }
                 
-                $answer['username'] = ! defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
+                $answer['username'] = !defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
                 
                 $xtpl->assign('ANSWER', $answer_result);
                 
@@ -58,7 +56,7 @@ function nv_form_result($question_data, $answer_data)
                     $data = unserialize($data['question_choices']);
                     
                     // Loop collumn
-                    if (! empty($data['col'])) {
+                    if (!empty($data['col'])) {
                         foreach ($data['col'] as $choices) {
                             $xtpl->assign('COL', array(
                                 'key' => $choices['key'],
@@ -69,14 +67,14 @@ function nv_form_result($question_data, $answer_data)
                     }
                     
                     // Loop row
-                    if (! empty($data['row'])) {
+                    if (!empty($data['row'])) {
                         foreach ($data['row'] as $choices) {
                             $xtpl->assign('ROW', array(
                                 'key' => $choices['key'],
                                 'value' => $choices['value']
                             ));
                             
-                            if (! empty($data['col'])) {
+                            if (!empty($data['col'])) {
                                 foreach ($data['col'] as $col) {
                                     $xtpl->assign('NAME', array(
                                         'col' => $col['key'],
@@ -95,7 +93,7 @@ function nv_form_result($question_data, $answer_data)
                     $data = unserialize($data['question_choices']);
                     
                     // Loop collumn
-                    if (! empty($data['col'])) {
+                    if (!empty($data['col'])) {
                         foreach ($data['col'] as $choices) {
                             $xtpl->assign('COL', array(
                                 'key' => $choices['key'],
@@ -106,14 +104,14 @@ function nv_form_result($question_data, $answer_data)
                     }
                     
                     // Loop row
-                    if (! empty($data['row'])) {
+                    if (!empty($data['row'])) {
                         foreach ($data['row'] as $choices) {
                             $xtpl->assign('ROW', array(
                                 'key' => $choices['key'],
                                 'value' => $choices['value']
                             ));
                             
-                            if (! empty($data['col'])) {
+                            if (!empty($data['col'])) {
                                 foreach ($data['col'] as $col) {
                                     $value = $col['key'] . '||' . $choices['key'];
                                     if ($answer[$qid] == $value) {
@@ -138,7 +136,7 @@ function nv_form_result($question_data, $answer_data)
             }
             
             $answer['answer_time'] = nv_date('d/m/Y H:i', $answer['answer_time']);
-            $answer['answer_edit_time'] = ! $answer['answer_edit_time'] ? '-' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
+            $answer['answer_edit_time'] = !$answer['answer_edit_time'] ? '-' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
             $xtpl->assign('ANSWER', $answer);
             
             $xtpl->parse('main.question');

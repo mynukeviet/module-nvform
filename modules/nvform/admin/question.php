@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 24-06-2011 10:35
  */
-if (! defined('NV_IS_FILE_ADMIN'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
 $page_title = $lang_module['question_list'];
 $array = array();
@@ -16,13 +15,12 @@ $where = '';
 
 // Xóa câu hỏi
 if ($nv_Request->isset_request('del', 'post')) {
-    if (! defined('NV_IS_AJAX'))
-        die('Wrong URL');
+    if (!defined('NV_IS_AJAX')) die('Wrong URL');
     
     $qid = $nv_Request->get_int('qid', 'post', 0);
     
     $question = $db->query('SELECT fid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid)->fetch();
-    if (! empty($question)) {
+    if (!empty($question)) {
         $sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid = ' . $qid;
         $db->exec($sql);
         
@@ -30,7 +28,7 @@ if ($nv_Request->isset_request('del', 'post')) {
         $result = $db->query($sql);
         $weight = 0;
         while ($row = $result->fetch()) {
-            ++ $weight;
+            ++$weight;
             $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_question SET weight=' . $weight . ' WHERE qid = ' . $row['qid'];
             $db->query($sql);
         }
@@ -88,7 +86,7 @@ $page = 1;
 foreach ($_rows as $row) {
     $row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=question_content&amp;qid=' . $row['qid'];
     
-    for ($i = 1; $i <= $num; ++ $i) {
+    for ($i = 1; $i <= $num; ++$i) {
         $xtpl->assign('WEIGHT', array(
             'w' => $i,
             'selected' => ($i == $row['weight']) ? ' selected="selected"' : ''
@@ -109,8 +107,7 @@ foreach ($_rows as $row) {
     
     $xtpl->assign('FIELD_TYPE_TEXT', $array_field_type[$row['question_type']]);
     
-    if ($row['break'])
-        $page ++;
+    if ($row['break']) $page++;
     $row['page'] = $page;
     
     $row['title'] = nv_get_plaintext($row['title']);

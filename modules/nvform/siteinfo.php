@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Tue, 08 Apr 2014 15:13:43 GMT
  */
-if (! defined('NV_IS_FILE_SITEINFO'))
-    die('Stop!!!');
+if (!defined('NV_IS_FILE_SITEINFO')) die('Stop!!!');
 
 $lang_siteinfo = nv_get_lang_module($mod);
 /*
