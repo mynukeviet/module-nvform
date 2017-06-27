@@ -13,7 +13,8 @@ Xem [LICENSE.txt](LICENSE.txt) để biết thêm thông tin.
 ## Sử dụng chức năng xuất báo cáo ra file
 
 Để sử dụng chức năng này, cần cài đặt thư viện PHPExcel và mPDF, bằng một trong hai cách dưới đây
-### Cài đặt qua composer
+### Cài đặt qua composer (khuyến khích sử dụng)
+(Hãy bỏ qua phương án này nếu bạn không hiểu composer là gì)
 ```
 composer require phpoffice/phpexcel
 composer require mpdf/mpdf
