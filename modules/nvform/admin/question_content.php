@@ -26,7 +26,7 @@ foreach ($ini as $type => $extmime) {
     $myini['types'][] = $type;
     $myini['exts'] = array_merge($myini['exts'], array_keys($extmime));
     $m = array_values($extmime);
-    
+
     if (is_string($m)) {
         $myini['mimes'] = array_merge($myini['mimes'], $m);
     } else {
@@ -69,20 +69,20 @@ if ($qid) {
     $lang_submit = $lang_module['question_edit'];
     // Bind data to form
     $question = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid)->fetch();
-    
+
     if (!$question) {
         Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question');
         die();
     }
-    
+
     if (!empty($question['question_choices'])) {
         $question_choices = unserialize($question['question_choices']);
         $question_choices_extend = unserialize($question['question_choices_extend']);
     }
-    
+
     $question['question_form'] = $question['fid'];
     $question['default_value_number'] = $question['default_value'];
-    
+
     $action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;qid=' . $qid;
 } else {
     $action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op;
@@ -113,14 +113,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         'pattern' => '/[^a-zA-Z0-9\_]/',
         'replacement' => ''
     );
-    
+
     $question['title'] = $nv_Request->get_editor('title', '', NV_ALLOWED_HTML_TAGS);
     $question['required'] = $nv_Request->get_int('required', 'post', 0);
     $question['user_editable'] = $nv_Request->get_int('user_editable', 'post', 0);
     $question['break'] = $nv_Request->get_int('break', 'post', 0);
     $question['report'] = $nv_Request->get_int('report', 'post', 1);
     $question['class'] = $nv_Request->get_title('class', 'post', '');
-    
+
     if ($qid) {
         $data_old = $db->query('SELECT fid, question_type FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE qid=' . $qid)->fetch();
         $question['question_form'] = $data_old['fid'];
@@ -129,7 +129,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $question['question_form'] = $nv_Request->get_int('question_form', 'post', 0);
         $question['question_type'] = nv_substr($nv_Request->get_title('question_type', 'post', '', 0, $preg_replace), 0, 50);
     }
-    
+
     // Set default value
     $question['default_value'] = '';
     $question['min_length'] = 0;
@@ -137,7 +137,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $question['match_type'] = 'none';
     $question['func_callback'] = '';
     $question['match_regex'] = '';
-    
+
     if ($question['question_type'] == 'textbox' || $question['question_type'] == 'textarea' || $question['question_type'] == 'editor') {
         $text_questions = 1;
         $question['match_type'] = nv_substr($nv_Request->get_title('match_type', 'post', '', 0, $preg_replace), 0, 50);
@@ -146,11 +146,11 @@ if ($nv_Request->isset_request('submit', 'post')) {
         if ($question['func_callback'] != '' and !function_exists($question['func_callback'])) {
             $question['func_callback'] = '';
         }
-        
+
         $question['min_length'] = $nv_Request->get_int('min_length', 'post', 255);
         $question['max_length'] = $nv_Request->get_int('max_length', 'post', 255);
         $question['default_value'] = $nv_Request->get_title('default_value', 'post', '');
-        
+
         $editor_mode = $nv_Request->get_int('editor_mode', 'post', 0);
         $question['question_choices'] = serialize(array(
             'editor_mode' => $editor_mode
@@ -165,10 +165,10 @@ if ($nv_Request->isset_request('submit', 'post')) {
         }
         $question['min_length'] = $nv_Request->get_int('min_number_length', 'post', 0);
         $question['max_length'] = $nv_Request->get_int('max_number_length', 'post', 0);
-        
+
         $question_choices['number_type'] = $question['number_type'];
         $question['default_value'] = $question['default_value_number'];
-        
+
         if ($question['min_length'] >= $question['max_length']) {
             $error = $lang_module['question_number_error'];
         } else {
@@ -181,11 +181,11 @@ if ($nv_Request->isset_request('submit', 'post')) {
         if (preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string('min_date', 'post'), $m)) {
             $question['min_length'] = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
         }
-        
+
         if (preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string('max_date', 'post'), $m)) {
             $question['max_length'] = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
         }
-        
+
         $question['current_date'] = $nv_Request->get_int('current_date', 'post', 0);
         if (!$question['current_date'] and preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $nv_Request->get_string('default_date', 'post'), $m)) {
             $question['default_value'] = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
@@ -202,7 +202,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         }
     } elseif ($question['question_type'] == 'time') {
         $time_questions = 1;
-        
+
         $question['current_time'] = $nv_Request->get_int('current_time', 'post', 0);
         if (!$question['current_time'] and preg_match('/^([0-9]{1,2})\:([0-9]{1,2})$/', $nv_Request->get_string('default_time', 'post'), $m)) {
             $question['default_value'] = mktime($m[1], $m[2], 0, 0, 0, 0);
@@ -213,14 +213,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $question['question_choices'] = serialize(array(
             'current_time' => $question['current_time']
         ));
-    } elseif ($question['question_type'] == 'grid' or $question['question_type'] == 'table') {
+    } elseif ($question['question_type'] == 'grid' or $question['question_type'] == 'grid_row' or $question['question_type'] == 'table') {
         $grid_questions = 1;
-        
+
         $question_grid = array(
             'col' => $nv_Request->get_array('question_grid_col', 'post', array()),
             'row' => $nv_Request->get_array('question_grid_row', 'post', array())
         );
-        
+
         // Loai bo gia tri rong
         if (!empty($question_grid['col'])) {
             foreach ($question_grid['col'] as $key => $choices) {
@@ -236,26 +236,26 @@ if ($nv_Request->isset_request('submit', 'post')) {
                 }
             }
         }
-        
+
         // Thiet dat gia tri mac dinh
         $default_col = $nv_Request->get_title('question_grid_col_default', 'post');
         $default_col = $question_grid['col'][$default_col]['key'];
         $default_row = $nv_Request->get_title('question_grid_row_default', 'post');
         $default_row = $question_grid['row'][$default_row]['key'];
         $question['default_value'] = $default_col . '||' . $default_row;
-        
+
         $question['question_choices'] = serialize($question_grid);
     } elseif ($question['question_type'] == 'file') {
         $file_questions = 1;
-        
+
         $question['max_length'] = $nv_Request->get_float('nv_max_size', 'post');
         $question['max_length'] = min(nv_converttoBytes(ini_get('upload_max_filesize')), nv_converttoBytes(ini_get('post_max_size')), $question['max_length']);
-        
+
         $question_file['type'] = $nv_Request->get_typed_array('type', 'post', 'int');
         $question_file['type'] = array_flip($question_file['type']);
         $question_file['type'] = array_intersect_key($myini['types'], $question_file['type']);
         $question_file['type'] = implode(',', $question_file['type']);
-        
+
         $question_file['ext'] = $nv_Request->get_typed_array('ext', 'post', 'int');
         $question_file['ext'] = array_flip($question_file['ext']);
         $question_file['ext'] = array_intersect_key($myini['exts'], $question_file['ext']);
@@ -267,21 +267,21 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $question_file['ext'][] = 'inc';
         $question_file['ext'] = array_unique($question_file['ext']);
         $question_file['ext'] = implode(',', $question_file['ext']);
-        
+
         $question['question_choices'] = serialize($question_file);
     } else {
         $choice_type_text = 1;
         $question['max_length'] = 255;
         $question['default_value'] = $nv_Request->get_int('default_value_choice', 'post', 0);
-        
+
         $question_choice_value = $nv_Request->get_array('question_choice', 'post');
         $question_choice_text = $nv_Request->get_array('question_choice_text', 'post');
         $question_choices = array_combine(array_map('strip_punctuation', $question_choice_value), array_map('strip_punctuation', $question_choice_text));
-        
+
         if (!empty($question_choices)) {
             unset($question_choices['']);
             $question['question_choices'] = serialize($question_choices);
-            
+
             $question_choice_extend = $nv_Request->get_array('question_choice_extend', 'post');
             foreach ($question_choice_value as $key => $value) {
                 if (isset($question_choice_extend[$key])) {
@@ -298,18 +298,18 @@ if ($nv_Request->isset_request('submit', 'post')) {
             $error = $lang_module['question_choices_empty'];
         }
     }
-    
+
     if (empty($error)) {
         if (!$qid) {
             $weight = $db->query("SELECT MAX(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_question WHERE fid = " . $question['question_form'])->fetchColumn();
             $weight = intval($weight) + 1;
-            
+
             $sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_question
 				(title, fid, weight, question_type, question_choices, question_choices_extend, match_type, match_regex, func_callback, min_length, max_length, required, user_editable, default_value, break, report, class, status) VALUES
 				('" . $question['title'] . "', " . $question['question_form'] . ", " . $weight . ", '" . $question['question_type'] . "', '" . $question['question_choices'] . "', '" . $question['question_choices_extend'] . "', '" . $question['match_type'] . "',
 				'" . $question['match_regex'] . "', '" . $question['func_callback'] . "', " . $question['min_length'] . ", " . $question['max_length'] . ",
 				" . $question['required'] . ", '" . $question['user_editable'] . "', :default_value, " . $question['break'] . ", " . $question['report'] . ", '" . $question['class'] . "', 1)";
-            
+
             $data_insert = array();
             $data_insert['default_value'] = $question['default_value'];
             $save = $db->insert_id($sql, 'qid', $data_insert);
@@ -331,12 +331,12 @@ if ($nv_Request->isset_request('submit', 'post')) {
 				report = " . $question['report'] . ",
 			    class = '" . $question['class'] . "'
 				WHERE qid = " . $qid;
-            
+
             $stmt = $db->prepare($query);
             $stmt->bindParam(':default_value', $question['default_value'], PDO::PARAM_STR, strlen($question['default_value']));
             $save = $stmt->execute();
         }
-        
+
         if ($save) {
             Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=question&fid=' . $question['question_form']);
             die();
@@ -391,7 +391,7 @@ if ($question['question_type'] == 'textbox' || $question['question_type'] == 'te
     $question['current_time_1'] = ($question_choices['current_time'] == 1) ? ' checked="checked"' : '';
     $question['current_time_0'] = ($question_choices['current_time'] == 0) ? ' checked="checked"' : '';
     $question['default_time'] = empty($question['default_value']) ? '' : date('H:i', $question['default_value']);
-} elseif ($question['question_type'] == 'grid' or $question['question_type'] == 'table') {
+} elseif ($question['question_type'] == 'grid' or $question['question_type'] == 'grid_row' or $question['question_type'] == 'table') {
     $grid_questions = 1;
 } elseif ($question['question_type'] == 'file') {
     $file_questions = 1;
@@ -403,9 +403,9 @@ if ($question['question_type'] == 'textbox' || $question['question_type'] == 'te
 
 $number = $number_grid_col = $number_grid_row = 1;
 if (!empty($question_choices)) {
-    if ($question['question_type'] == 'grid' or $question['question_type'] == 'table') {
+    if ($question['question_type'] == 'grid' or $question['question_type'] == 'grid_row' or $question['question_type'] == 'table') {
         $default_value = explode('||', $question['default_value_number']);
-        
+
         // Loop collumn
         if (!empty($question_choices['col'])) {
             foreach ($question_choices['col'] as $choices) {
@@ -423,7 +423,7 @@ if (!empty($question_choices)) {
             }
             $xtpl->assign('COL_NUMFIELD', $number_grid_col);
         }
-        
+
         // Loop row
         if (!empty($question_choices['row'])) {
             foreach ($question_choices['row'] as $key => $choices) {
@@ -450,7 +450,7 @@ if (!empty($question_choices)) {
                 'key' => $key,
                 'value' => $value
             ));
-            
+
             if (isset($question_choices_extend[$key])) {
                 $number_extend = 0;
                 foreach ($question_choices_extend[$key] as $choices_extend) {
@@ -551,7 +551,7 @@ foreach ($array_match_type as $key => $value) {
         "checked" => ($question['match_type'] == $key) ? ' checked="checked"' : '',
         "match_disabled" => ($question['match_type'] != $key) ? ' disabled="disabled"' : ''
     ));
-    
+
     if ($key == 'regex' or $key == 'callback') {
         $xtpl->parse('main.match_type.match_input');
     }
@@ -562,13 +562,13 @@ $sys_max_size = min(nv_converttoBytes(ini_get('upload_max_filesize')), nv_conver
 $p_size = $sys_max_size / 100;
 for ($index = 1; $index <= 100; ++$index) {
     $size = floor($index * $p_size);
-    
+
     $xtpl->assign('SIZE', array(
         'key' => $size,
         'title' => nv_convertfromBytes($size),
         'selected' => ($size == $question['max_length']) ? ' selected="selected"' : ''
     ));
-    
+
     $xtpl->parse('main.size');
 }
 

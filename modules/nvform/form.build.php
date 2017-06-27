@@ -19,7 +19,7 @@ foreach ($question_info as $row) {
     $row['required'] = ($row['required']) ? 'required' : '';
     $row['user_editable'] = $row['user_editable'] == -1 ? $form_info['user_editable'] : $row['user_editable'];
     $xtpl->assign('QUESTION', $row);
-    
+
     if ($row['required']) {
         $xtpl->parse('main.loop.required');
     }
@@ -64,7 +64,7 @@ foreach ($question_info as $row) {
                 function nv_aleditor($textareaname, $width = '100%', $height = '450px', $val = '', $customtoolbar = '')
                 {
                     global $module_data;
-                    
+
                     $return = '<textarea style="width: ' . $width . '; height:' . $height . ';" id="' . $module_data . '_' . $textareaname . '" name="' . $textareaname . '">' . $val . '</textarea>';
                     $return .= "<script type=\"text/javascript\">
 					CKEDITOR.replace( '" . $module_data . "_" . $textareaname . "', {" . (!empty($customtoolbar) ? 'toolbar : "' . $customtoolbar . '",' : '') . " width: '" . $width . "',height: '" . $height . "',});
@@ -74,11 +74,11 @@ foreach ($question_info as $row) {
             }
             define('NV_EDITOR_LOADED', true);
         }
-        
+
         if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
             $row['question_choices'] = unserialize($row['question_choices']);
             $row['value'] = nv_htmlspecialchars(nv_editor_br2nl($row['value']));
-            
+
             $edits = nv_aleditor('question[' . $row['qid'] . ']', '100%', '350px', $row['value'], !$row['question_choices']['editor_mode'] ? 'Basic' : '');
             $xtpl->assign('EDITOR', $edits);
             $xtpl->parse('main.loop.editor');
@@ -91,7 +91,7 @@ foreach ($question_info as $row) {
     } elseif ($row['question_type'] == 'select') {
         $row['question_choices'] = unserialize($row['question_choices']);
         $row['question_choices_extend'] = !empty($row['question_choices_extend']) ? unserialize($row['question_choices_extend']) : array();
-        
+
         foreach ($row['question_choices'] as $key => $value) {
             $xtpl->assign('QUESTION_CHOICES', array(
                 'key' => $key,
@@ -100,7 +100,7 @@ foreach ($question_info as $row) {
                 "value" => $value
             ));
             $xtpl->parse('main.loop.select.loop');
-            
+
             if (isset($row['question_choices_extend'][$key])) {
                 $number = 0;
                 if ($answer_info and !$row['user_editable'] and isset($form_info['filled'])) {
@@ -119,18 +119,18 @@ foreach ($question_info as $row) {
                 $xtpl->parse('main.loop.select.choice_extend');
             }
         }
-        
+
         if ($answer_info and !$row['user_editable'] and isset($form_info['filled'])) {
             $row['readonly'] = 'readonly="readonly"';
         }
         $xtpl->assign('QUESTION', $row);
-        
+
         $xtpl->parse('main.loop.select');
     } elseif ($row['question_type'] == 'radio') {
         $number = 0;
         $row['question_choices'] = unserialize($row['question_choices']);
         $row['question_choices_extend'] = !empty($row['question_choices_extend']) ? unserialize($row['question_choices_extend']) : array();
-        
+
         foreach ($row['question_choices'] as $key => $value) {
             $readonly = '';
             $row['readonly'] = '';
@@ -147,7 +147,7 @@ foreach ($question_info as $row) {
                 "value" => $value,
                 'number' => $number
             ));
-            
+
             if (isset($row['question_choices_extend'][$key])) {
                 foreach ($row['question_choices_extend'][$key] as $key => $value) {
                     $xtpl->assign('FIELD_CHOICES_EXTEND', array(
@@ -158,10 +158,10 @@ foreach ($question_info as $row) {
                     ));
                     $xtpl->parse('main.loop.radio.choice_extend.loop');
                 }
-                
+
                 $xtpl->parse('main.loop.radio.choice_extend');
             }
-            
+
             $xtpl->parse('main.loop.radio');
         }
     } elseif ($row['question_type'] == 'checkbox') {
@@ -169,7 +169,7 @@ foreach ($question_info as $row) {
         if ($answer_info and !$row['user_editable'] and isset($form_info['filled'])) {
             $row['readonly'] = 'onclick="return false;"';
         }
-        
+
         $number = 0;
         $row['question_choices'] = unserialize($row['question_choices']);
         $valuecheckbox = (!empty($row['value'])) ? explode(',', $row['value']) : array();
@@ -194,17 +194,23 @@ foreach ($question_info as $row) {
             ));
             $xtpl->parse('main.loop.multiselect.loop');
         }
-        
+
         if ($answer_info and !$row['user_editable'] and isset($form_info['filled'])) {
             $row['readonly'] = 'readonly="readonly"';
         }
-        
+
         $xtpl->assign('QUESTION', $row);
-        
+
         $xtpl->parse('main.loop.multiselect');
-    } elseif ($row['question_type'] == 'grid') {
+    } elseif ($row['question_type'] == 'grid' or $row['question_type'] == 'grid_row') {
+
+        $type = 'grid';
+        if ($row['question_type'] == 'grid_row') {
+            $type = 'grid_row';
+        }
+
         $question_choices = unserialize($row['question_choices']);
-        
+
         // Loop collumn
         if (!empty($question_choices['col'])) {
             foreach ($question_choices['col'] as $choices) {
@@ -212,10 +218,10 @@ foreach ($question_info as $row) {
                     'key' => $choices['key'],
                     'value' => $choices['value']
                 ));
-                $xtpl->parse('main.loop.grid.col');
+                $xtpl->parse('main.loop.' . $type . '.col');
             }
         }
-        
+
         // Loop row
         if (!empty($question_choices['row'])) {
             foreach ($question_choices['row'] as $choices) {
@@ -223,28 +229,32 @@ foreach ($question_info as $row) {
                     'key' => $choices['key'],
                     'value' => $choices['value']
                 ));
-                
+
                 if (!empty($question_choices['col'])) {
                     foreach ($question_choices['col'] as $col) {
                         $value = $col['key'] . '||' . $choices['key'];
-                        $ck = $row['value'] == $value ? 'checked' : '';
+                        if ($type == 'grid') {
+                            $ck = $row['value'] == $value ? 'checked' : '';
+                        } elseif ($type == 'grid_row') {
+                            $ck = (is_array($row['value']) and in_array($value, $row['value'])) ? 'checked' : '';
+                        }
                         $xtpl->assign('GRID', array(
                             'value' => $value,
                             'checked' => $ck
                         ));
-                        $xtpl->parse('main.loop.grid.row.td');
+                        $xtpl->parse('main.loop.' . $type . '.row.td');
                     }
                 }
-                
-                $xtpl->parse('main.loop.grid.row');
+
+                $xtpl->parse('main.loop.' . $type . '.row');
             }
         }
-        
-        $xtpl->parse('main.loop.grid');
+
+        $xtpl->parse('main.loop.' . $type);
     } elseif ($row['question_type'] == 'table') {
         $question_choices = unserialize($row['question_choices']);
         $row['value'] = isset($answer_info[$row['qid']]) ? $answer_info[$row['qid']] : '';
-        
+
         // Loop collumn
         if (!empty($question_choices['col'])) {
             foreach ($question_choices['col'] as $choices) {
@@ -255,7 +265,7 @@ foreach ($question_info as $row) {
                 $xtpl->parse('main.loop.table.col');
             }
         }
-        
+
         // Loop row
         if (!empty($question_choices['row'])) {
             foreach ($question_choices['row'] as $choices) {
@@ -263,7 +273,7 @@ foreach ($question_info as $row) {
                     'key' => $choices['key'],
                     'value' => $choices['value']
                 ));
-                
+
                 if (!empty($question_choices['col'])) {
                     foreach ($question_choices['col'] as $col) {
                         $xtpl->assign('NAME', array(
@@ -274,35 +284,35 @@ foreach ($question_info as $row) {
                         $xtpl->parse('main.loop.table.row.td');
                     }
                 }
-                
+
                 $xtpl->parse('main.loop.table.row');
             }
         }
-        
+
         $xtpl->parse('main.loop.table');
     } elseif ($row['question_type'] == 'file') {
         $row['value'] = str_replace('form_' . $row['qid'] . '/', '', $row['value']);
         $row['question_choices'] = unserialize($row['question_choices']);
         $row['file_type'] = str_replace(',', ', ', $row['question_choices']['type']);
         $xtpl->assign('QUESTION', $row);
-        
+
         $xtpl->parse('main.loop.file');
         $xtpl->parse('main.enctype');
     }
-    
+
     if ($form_info['question_display'] == 'question_display_left') {
         $xtpl->parse('main.loop.display_left_label');
         $xtpl->parse('main.loop.display_left_div');
     } elseif ($form_info['question_display'] == 'question_display_two_column') {
         $xtpl->parse('main.loop.display_two_column');
     }
-    
+
     if ($row['break']) {
         $page++;
         $break++;
     }
     $xtpl->assign('PAGE', $page);
-    
+
     $xtpl->parse('main.loop');
     $i++;
 }

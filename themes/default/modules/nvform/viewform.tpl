@@ -129,6 +129,25 @@
 					<!-- END: row -->
 				</table>
 				<!-- END: grid -->
+				
+				<!-- BEGIN: grid_row -->
+				<table class="table">
+					<tr>
+						<td>&nbsp;</td>
+						<!-- BEGIN: col -->
+						<th>{COL.value}</th>
+						<!-- END: col -->
+					</tr>
+					<!-- BEGIN: row -->
+					<tr>
+						<th>{ROW.value}</th>
+						<!-- BEGIN: td -->
+						<td><input type="radio" name="question[{QUESTION.qid}][{ROW.key}]" value="{GRID.value}" {GRID.checked} /></td>
+						<!-- END: td -->
+					</tr>
+					<!-- END: row -->
+				</table>
+				<!-- END: grid_row -->
 
 				<!-- BEGIN: table -->
 				<table class="table table-striped table-bordered table-hover">

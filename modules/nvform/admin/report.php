@@ -15,13 +15,13 @@ $question_data = $answer_data = array();
 // Xoa cau tra loi
 if ($nv_Request->isset_request('del', 'post')) {
     if (!defined('NV_IS_AJAX')) die('Wrong URL');
-    
+
     $aid = $nv_Request->get_int('aid', 'post', 0);
-    
+
     if (empty($aid)) die('NO');
-    
+
     $answer = $db->query('SELECT answer FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid)->fetchColumn();
-    
+
     $sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE id = ' . $aid;
     if ($db->exec($sql)) {
         if (!empty($answer)) {
@@ -66,7 +66,7 @@ while ($row = $result->fetch()) {
 $i = 1;
 foreach ($answer_data as $answer) {
     $answer['answer'] = unserialize($answer['answer']);
-    
+
     foreach ($answer['answer'] as $qid => $ans) {
         $answer_info = '';
         if (isset($question_data[$qid]) and $question_data[$qid]['report']) {
@@ -96,18 +96,34 @@ foreach ($answer_data as $answer) {
                 }
                 foreach ($data['row'] as $row) {
                     if ($result[1] == $row['key']) {
-                        $answer_info .= ' - ' . $col['value'];
+                        $answer_info .= ' - ' . $row['value'];
                         break;
+                    }
+                }
+            } elseif ($question_type == 'grid_row') {
+                $answer_info = '';
+                $data = unserialize($question_data[$qid]['question_choices']);
+                foreach ($ans as $index => $_ans) {
+                    $result = explode('||', $_ans);
+                    foreach ($data['col'] as $col) {
+                        if ($result[0] == $col['key']) {
+                            $answer_info .= $col['value'];
+                        }
+                    }
+                    foreach ($data['row'] as $row) {
+                        if ($result[1] == $row['key']) {
+                            $answer_info .= ' - ' . $row['value'] . '<br />';
+                        }
                     }
                 }
             } else {
                 $answer_info = $ans;
             }
-            
+
             $answer['username'] = empty($answer['username']) ? $lang_module['report_guest'] : nv_show_name_user($answer['first_name'], $answer['last_name'], $answer['username']);
-            
+
             $xtpl->assign('ANSWER', $answer_info);
-            
+
             if ($question_type == 'table') {
                 $xtpl->parse('main.tr.td.table');
             } elseif ($question_type == 'file' and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $ans)) {
@@ -116,15 +132,15 @@ foreach ($answer_data as $answer) {
             } else {
                 $xtpl->parse('main.tr.td.other');
             }
-            
+
             $xtpl->parse('main.tr.td');
         }
     }
-    
+
     $answer['answer_time'] = nv_date('d/m/Y H:i', $answer['answer_time']);
     $answer['answer_edit_time'] = !$answer['answer_edit_time'] ? '<span class="label label-danger">N/A</span>' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
     $answer['answer_view_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_answer&id=' . $answer['id'];
-    
+
     $answer['no'] = $i;
     $xtpl->assign('ANSWER', $answer);
     $xtpl->parse('main.tr');

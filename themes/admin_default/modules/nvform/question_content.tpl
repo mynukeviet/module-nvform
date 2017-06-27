@@ -513,7 +513,7 @@
 			$("#datefields").show();
 		} else if (question_type == 'time') {
 			$("#timefields").show();
-		} else if (question_type == 'grid' || question_type == 'table') {
+		} else if (question_type == 'grid' || question_type == 'grid_row' || question_type == 'table') {
 			$("#gridfields").show();
 		} else if (question_type == 'file') {
 			$("#filefields").show();

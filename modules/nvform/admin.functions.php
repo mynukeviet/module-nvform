@@ -39,6 +39,7 @@ $array_field_type = array(
     'checkbox' => $lang_module['question_type_checkbox'],
     'multiselect' => $lang_module['question_type_multiselect'],
     'grid' => $lang_module['question_type_grid'],
+    'grid_row' => $lang_module['question_type_grid_row'],
     'table' => $lang_module['question_type_table'],
     'file' => $lang_module['question_type_file'],
     'plaintext' => $lang_module['question_type_plaintext']
@@ -53,20 +54,20 @@ $array_status = array(
 /**
  * nv_update_answer()
  *
- * @param mixed $form_id            
+ * @param mixed $form_id
  * @return
  *
  */
 function nv_update_answer($form_id)
 {
     global $db, $module_data;
-    
+
     $array_qid = $array_qid_old = array();
     $result = $db->query('SELECT qid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_question WHERE fid=' . $form_id . ' ORDER BY weight');
     while (list ($qid) = $result->fetch(3)) {
         $array_qid[] = $qid;
     }
-    
+
     $result = $db->query('SELECT id, answer FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer WHERE fid=' . $form_id);
     while (list ($id, $row_answer) = $result->fetch(3)) {
         $row_answer = unserialize($row_answer);
@@ -79,7 +80,7 @@ function nv_update_answer($form_id)
                     $row_answer[$qid] = '';
                 }
             }
-            
+
             foreach ($array_qid_old as $qid_old) {
                 if (!in_array($qid_old, $array_qid)) {
                     unset($row_answer[$qid_old]);
