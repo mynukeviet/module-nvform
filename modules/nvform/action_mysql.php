@@ -54,7 +54,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   title text NOT NULL,
   fid mediumint(8) NOT NULL DEFAULT '0',
   weight int(10) unsigned NOT NULL DEFAULT '1',
-  question_type enum('number','date','time','textbox','textarea','editor','select','radio','checkbox','multiselect','grid','table','file','plaintext') NOT NULL DEFAULT 'textbox',
+  question_type enum('number','date','time','textbox','textarea','editor','select','radio','checkbox','multiselect','grid', 'grid_row','table','file','plaintext') NOT NULL DEFAULT 'textbox',
   question_choices text NOT NULL,
   question_choices_extend text NOT NULL,
   match_type enum('none','alphanumeric','email','url','regex','callback') NOT NULL DEFAULT 'none',
