@@ -9,8 +9,18 @@
  */
 if (!defined('NV_IS_FILE_ADMIN')) die('Stop!!!');
 
-$fid = $nv_Request->get_int('fid', 'get,post', 0);
+if (!class_exists('PHPExcel')) {
+    if (file_exists(NV_ROOTDIR . '/includes/class/PHPExcel.php')) {
+        require_once NV_ROOTDIR . '/includes/class/PHPExcel.php';
+    } else {
+        $contents = nv_theme_alert($lang_module['report_required_phpexcel_title'], $lang_module['report_required_phpexcel_content'], 'danger');
+        include NV_ROOTDIR . '/includes/header.php';
+        echo nv_admin_theme($contents);
+        include NV_ROOTDIR . '/includes/footer.php';
+    }
+}
 
+$fid = $nv_Request->get_int('fid', 'get,post', 0);
 $form_info = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' WHERE id=' . $fid)->fetch();
 
 if ($nv_Request->isset_request('export', 'post, get')) {
@@ -30,10 +40,6 @@ if ($nv_Request->isset_request('export', 'post, get')) {
     $result = $db->query('SELECT t1.*, t2.username FROM ' . NV_PREFIXLANG . '_' . $module_data . '_answer t1 LEFT JOIN ' . NV_USERS_GLOBALTABLE . ' t2 ON t1.who_answer = t2.userid WHERE fid = ' . $fid);
     while ($row = $result->fetch()) {
         $answer_data[] = $row;
-    }
-
-    if (!class_exists('PHPExcel')) {
-        die('NO_' . $lang_module['report_required_phpexcel']);
     }
 
     if ($type == 'pdf') {
@@ -295,28 +301,24 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
 $xtpl->assign('FID', $fid);
 
-if (!class_exists('PHPExcel')) {
-    $xtpl->parse('main.PHPExcel_req');
-} else {
-    $default = 'xlsx';
-    $array_type = array(
-        'xlsx' => 'Microsoft Excel (XLSX)',
-        'csv' => 'Comma-separated values (CSV)',
-        'ods' => 'LibreOffice Calc (ODS)',
-        'pdf' => 'PDF'
-    );
+$default = 'xlsx';
+$array_type = array(
+    'xlsx' => 'Microsoft Excel (XLSX)',
+    'csv' => 'Comma-separated values (CSV)',
+    'ods' => 'LibreOffice Calc (ODS)',
+    'pdf' => 'PDF'
+);
 
-    foreach ($array_type as $key => $value) {
-        $ck = $key == $default ? 'checked="checked"' : '';
-        $xtpl->assign('TYPE', array(
-            'key' => $key,
-            'value' => $value,
-            'checked' => $ck
-        ));
-        $xtpl->parse('main.export.type');
-    }
-    $xtpl->parse('main.export');
+foreach ($array_type as $key => $value) {
+    $ck = $key == $default ? 'checked="checked"' : '';
+    $xtpl->assign('TYPE', array(
+        'key' => $key,
+        'value' => $value,
+        'checked' => $ck
+    ));
+    $xtpl->parse('main.export.type');
 }
+$xtpl->parse('main.export');
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
