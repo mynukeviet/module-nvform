@@ -24,7 +24,7 @@ $answer_data['answer'] = unserialize($answer_data['answer']);
 $xtpl = new XTemplate($op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('FORM_INFO', $form_info);
-$xtpl->assign('FORM_DATA', nv_form_result($question_data, $answer_data['answer']));
+$xtpl->assign('FORM_DATA', nv_form_result($question_data, $answer_data['answer']), 1);
 $xtpl->assign('COUNT', sprintf($lang_module['report_count'], count($answer_data)));
 
 unset($answer_data, $question_data);

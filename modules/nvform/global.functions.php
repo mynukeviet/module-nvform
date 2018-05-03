@@ -9,27 +9,32 @@
  */
 if (!defined('NV_MAINFILE')) die('Stop!!!');
 
-function nv_form_result($question_data, $answer_data)
+function nv_form_result($question_data, $answer_data, $is_admin = 0)
 {
     global $lang_module, $global_config, $module_info, $module_name, $module_data, $module_file, $user_info;
-    
-    $xtpl = new XTemplate('view_answer.tpl', NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $module_file);
+
+    if($is_admin){
+        $template = $global_config['module_theme'];
+    }else{
+        $template = $module_info['template'];
+    }
+    $xtpl = new XTemplate('view_answer.tpl', NV_ROOTDIR . '/themes/' . $template . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
-    
+
     if (!empty($question_data)) {
         foreach ($question_data as $data) {
             $qid = $data['qid'];
             $data['title'] = nv_get_plaintext($data['title']);
             $xtpl->assign('QUESTION', $data);
-            
+
             $answer = $answer_data;
-            
+
             if (isset($answer[$qid]) and $data['report']) {
                 $ans = $answer[$qid];
                 $question_type = $data['question_type'];
-                
+
                 if ($question_type == 'plaintext') continue;
-                
+
                 if ($question_type == 'multiselect' or $question_type == 'select' or $question_type == 'radio' or $question_type == 'checkbox') {
                     $data = unserialize($data['question_choices']);
                     if ($question_type == 'checkbox') {
@@ -47,14 +52,14 @@ function nv_form_result($question_data, $answer_data)
                 } else {
                     $answer_result = $ans;
                 }
-                
+
                 $answer['username'] = !defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
-                
+
                 $xtpl->assign('ANSWER', $answer_result);
-                
+
                 if ($question_type == 'table') {
                     $data = unserialize($data['question_choices']);
-                    
+
                     // Loop collumn
                     if (!empty($data['col'])) {
                         foreach ($data['col'] as $choices) {
@@ -65,7 +70,7 @@ function nv_form_result($question_data, $answer_data)
                             $xtpl->parse('main.question.answer.table.col');
                         }
                     }
-                    
+
                     // Loop row
                     if (!empty($data['row'])) {
                         foreach ($data['row'] as $choices) {
@@ -73,7 +78,7 @@ function nv_form_result($question_data, $answer_data)
                                 'key' => $choices['key'],
                                 'value' => $choices['value']
                             ));
-                            
+
                             if (!empty($data['col'])) {
                                 foreach ($data['col'] as $col) {
                                     $xtpl->assign('NAME', array(
@@ -84,14 +89,14 @@ function nv_form_result($question_data, $answer_data)
                                     $xtpl->parse('main.question.answer.table.row.td');
                                 }
                             }
-                            
+
                             $xtpl->parse('main.question.answer.table.row');
                         }
                     }
                     $xtpl->parse('main.question.answer.table');
                 } elseif ($question_type == 'grid') {
                     $data = unserialize($data['question_choices']);
-                    
+
                     // Loop collumn
                     if (!empty($data['col'])) {
                         foreach ($data['col'] as $choices) {
@@ -102,7 +107,7 @@ function nv_form_result($question_data, $answer_data)
                             $xtpl->parse('main.question.answer.grid.col');
                         }
                     }
-                    
+
                     // Loop row
                     if (!empty($data['row'])) {
                         foreach ($data['row'] as $choices) {
@@ -110,7 +115,7 @@ function nv_form_result($question_data, $answer_data)
                                 'key' => $choices['key'],
                                 'value' => $choices['value']
                             ));
-                            
+
                             if (!empty($data['col'])) {
                                 foreach ($data['col'] as $col) {
                                     $value = $col['key'] . '||' . $choices['key'];
@@ -122,23 +127,23 @@ function nv_form_result($question_data, $answer_data)
                                     $xtpl->parse('main.question.answer.grid.row.td');
                                 }
                             }
-                            
+
                             $xtpl->parse('main.question.answer.grid.row');
                         }
                     }
-                    
+
                     $xtpl->parse('main.question.answer.grid');
                 } else {
                     $xtpl->parse('main.question.answer.other');
                 }
-                
+
                 $xtpl->parse('main.question.answer');
             }
-            
+
             $answer['answer_time'] = nv_date('d/m/Y H:i', $answer['answer_time']);
             $answer['answer_edit_time'] = !$answer['answer_edit_time'] ? '-' : nv_date('d/m/Y H:i', $answer['answer_edit_time']);
             $xtpl->assign('ANSWER', $answer);
-            
+
             $xtpl->parse('main.question');
         }
     }
@@ -149,7 +154,7 @@ function nv_form_result($question_data, $answer_data)
 /**
  * nv_get_plaintext()
  *
- * @param mixed $string            
+ * @param mixed $string
  * @return
  *
  */
@@ -170,7 +175,7 @@ function nv_get_plaintext($string, $keep_image = false, $keep_link = false)
             }
         }
     }
-    
+
     // Get link tags
     if ($keep_link) {
         if (preg_match_all("/\<a[^\>]*href=\"([^\"]+)\"[^\>]*\>(.*)\<\/a\>/isU", $string, $match)) {
@@ -179,7 +184,7 @@ function nv_get_plaintext($string, $keep_image = false, $keep_link = false)
             }
         }
     }
-    
+
     $string = str_replace('&nbsp;', ' ', strip_tags($string));
     return preg_replace('/[ ]+/', ' ', $string);
 }

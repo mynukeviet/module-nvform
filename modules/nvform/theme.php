@@ -138,7 +138,7 @@ function nv_theme_nvform_viewform($form_info, $question_info, $answer_info, $ans
  * @return
  *
  */
-function nv_theme_nvform_alert($message_title, $message_content, $type = 'info', $link_back = '', $time_back = 0)
+function nv_theme_nvform_alert($message_title, $message_content, $type = 'info', $link_back = '', $time_back = 0, $embed = 0)
 {
     global $module_file, $module_info, $page_title;
 
@@ -167,7 +167,7 @@ function nv_theme_nvform_alert($message_title, $message_content, $type = 'info',
     $contents = $xtpl->text('main');
 
     include (NV_ROOTDIR . "/includes/header.php");
-    echo nv_site_theme($contents);
+    echo nv_site_theme($contents, !$embed);
     include (NV_ROOTDIR . "/includes/footer.php");
     exit();
 }

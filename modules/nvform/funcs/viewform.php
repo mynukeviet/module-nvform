@@ -49,7 +49,7 @@ $embed = $nv_Request->isset_request('embed', 'get');
 if (defined('NV_IS_USER')) {
     $sql = "SELECT * FROM " . NV_PREFIXLANG . '_' . $module_data . "_answer WHERE fid = " . $fid . " AND who_answer = " . $user_info['userid'];
     $_rows = $db->query($sql)->fetch();
-    
+
     if ($_rows) {
         $filled = true;
         $form_info['filled'] = true;
@@ -60,17 +60,17 @@ if (defined('NV_IS_USER')) {
 
 if ($nv_Request->isset_request('submit', 'post')) {
     $error = '';
-    
+
     if ($filled) {
         $old_answer_info = $answer_info;
         $old_answer_info_extend = $answer_info_extend;
     }
-    
+
     $answer_info = $nv_Request->get_array('question', 'post');
     $answer_info_extend = $nv_Request->get_array('question_extend', 'post', array());
-    
+
     require NV_ROOTDIR . '/modules/' . $module_file . '/form.check.php';
-    
+
     if (empty($error)) {
         $userid = !defined('NV_IS_USER') ? 0 : $user_info['userid'];
         $answer_info['answer_time'] = $answer_info['answer_edit_time'] = NV_CURRENTTIME;
@@ -83,14 +83,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $_answer_info_extend = serialize($answer_info_extend);
         $sth->bindParam(':answer', $_answer_info, PDO::PARAM_STR);
         $sth->bindParam(':answer_extend', $_answer_info_extend, PDO::PARAM_STR);
-        
+
         if ($sth->execute()) {
             // Báo cáo kết qủa qua email
             if (($form_info['form_report_type'] == 1) and !$filled) {
                 $form_report_type_email = unserialize($form_info['form_report_type_email']);
                 $subject = $lang_module['reply'] . ': ' . $form_info['title'];
                 $listmail = array();
-                
+
                 // Lấy danh sách email
                 if ($form_report_type_email['form_report_type_email'] == 0 and !empty($form_report_type_email['group_email'])) {
                     $result = $db->query('SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN (' . implode(',', $form_report_type_email['group_email']) . ')');
@@ -101,24 +101,24 @@ if ($nv_Request->isset_request('submit', 'post')) {
                     $listmail = explode(';', $form_report_type_email['listmail']);
                     $listmail = array_map('trim', $listmail);
                 }
-                
+
                 if (!empty($listmail)) {
                     $listmail = array_unique($listmail);
-                    
+
                     // Nội dung email
                     $answer_info['username'] = !defined('NV_IS_USER') ? $lang_module['report_guest'] : $user_info['full_name'];
-                    
+
                     $xtpl = new XTemplate('sendmail.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
                     $xtpl->assign('FORM_DATA', nv_form_result($question_info, $answer_info));
-                    
+
                     $xtpl->parse('main');
                     $message = $xtpl->text('main');
                     $message = nv_site_theme($message, false);
-                    
+
                     nv_sendmail($global_config['site_email'], $listmail, $subject, $message);
                 }
             }
-            
+
             $info = $lang_module['success_info'];
             if (defined('NV_IS_USER')) {
                 $link_form = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $form_info['alias'] . '-' . $form_info['id'] . $global_config['rewrite_exturl'];
@@ -129,7 +129,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
                     $info .= '<br />' . sprintf($lang_module['success_user_info'], $link_form);
                 }
             }
-            nv_theme_nvform_alert($lang_module['success'], $info, 'success');
+            nv_theme_nvform_alert($lang_module['success'], $info, 'success', '', 0, $embed);
         }
     } else {
         $info = $error;
